@@ -4,7 +4,7 @@
   "description": "Economic MMO-RTS videogame",
   "main": "index.js",
   "scripts": {
-  	"start": "node index.js",
+    "start": "node index.js",
     "test": "mocha"
   },
   "repository": {
@@ -30,5 +30,9 @@
   "homepage": "https://github.com/demiurgosoft/maelstrom#readme",
   "dependencies": {
     "express": "^4.13.3"
+  },
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3"
   }
 }
