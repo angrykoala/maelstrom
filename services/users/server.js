@@ -35,7 +35,7 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 //app.use(session({secret: 'dont panic'})); // session secret
  
-require('./app/routes.js')(app);
+require('./app/routes.js')(app,passport);
 
 app.listen(port,function(){
 console.log("Server listening on port "+port);
