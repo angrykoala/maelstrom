@@ -8,40 +8,33 @@ Description: Users microsevice for maelstrom using mongoose
 
 //MongoDB
 var mongoose = require('mongoose');
-var db_config=require('./config/database.js');
-mongoose.connect(db_config.url);
+var dbConfig = require('./config/database.js');
+mongoose.connect(dbConfig.url);
 
 var db = mongoose.connection;
-db.on('error',function(err){
-	console.error('DB connection error:')
+db.on('error', function(err) {
+	console.error('DB connection error:' + err);
 });
 
-db.once('open',function(){
+db.once('open', function() {
 	console.log("database opened");
+
+
+
+	var express = require('express');
+	var app = express();
+	var port = process.env.PORT || 8080;
+
+	var bodyParser = require('body-parser');
+	app.use(bodyParser()); // get information from body
+
+	require('./app/routes.js')(app);
+
+	app.listen(port, function() {
+		console.log("Server listening on port " + port);
+	});
+
 });
- 
- 
-var express = require('express');
-var app = express();
-var port = process.env.PORT || 8080;
- 
-var morgan = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-
-app.use(morgan('dev')); // log every request to the console
-app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser()); // get information from html forms
-//app.use(session({secret: 'dont panic'})); // session secret
- 
-require('./app/routes.js')(app,passport);
-
-app.listen(port,function(){
-console.log("Server listening on port "+port);
-}); 
- 
-
 /* 
 db.once('open', function (callback) {
   var userSchema = mongoose.Schema({

@@ -1,0 +1,18 @@
+{
+  "name": "user",
+  "version": "0.0.1",
+  "description": "user login and signin with jwt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "demiurgosoft",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "jsonwebtoken": "^5.4.0",
+    "mongoose": "^4.1.11"
+  }
+}
