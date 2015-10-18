@@ -22,12 +22,13 @@ app.listen(port, function() {
 	console.log("Server listening on port " + port);
 });
 
-dbHandler.saveUser({
-	username: "pepe3",
-	password: "wasabiwasabi",
-	email: "mymail2"
-}, function(err, res) {
-	console.log(err);
-	console.log(res);
+// This code should go to test
+// dbHandler.saveUser({
+// 	username: "pepe3",
+// 	password: "wasabiwasabi",
+// 	email: "mymail2"
+// }, function(err, res) {
+// 	console.log(err);
+// 	console.log(res);
 	
-});
+// });
