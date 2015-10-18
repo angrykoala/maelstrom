@@ -6,32 +6,28 @@ Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Users microsevice for maelstrom using mongoose
 */
 
-//MongoDB
-var mongoose = require('mongoose');
-var dbConfig = require('./config/database.js');
-mongoose.connect(dbConfig.url);
+var dbHandler = require('./app/dbhandler');
 
-var db = mongoose.connection;
-db.on('error', function(err) {
-	console.error('DB connection error:' + err);
+
+var express = require('express');
+var app = express();
+var port = process.env.PORT || 8080;
+
+var bodyParser = require('body-parser');
+app.use(bodyParser()); // get information from body
+
+//require('./app/routes.js')(app);
+
+app.listen(port, function() {
+	console.log("Server listening on port " + port);
 });
 
-db.once('open', function() {
-	console.log("database opened");
-
-
-
-	var express = require('express');
-	var app = express();
-	var port = process.env.PORT || 8080;
-
-	var bodyParser = require('body-parser');
-	app.use(bodyParser()); // get information from body
-
-	require('./app/routes.js')(app);
-
-	app.listen(port, function() {
-		console.log("Server listening on port " + port);
-	});
-
+dbHandler.saveUser({
+	username: "pepe3",
+	password: "wasabiwasabi",
+	email: "mymail2"
+}, function(err, res) {
+	console.log(err);
+	console.log(res);
+	
 });

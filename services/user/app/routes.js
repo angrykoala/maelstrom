@@ -28,29 +28,17 @@ module.exports = function(app) {
 		res.sendfile('./views/signup.html');
 	});
 	app.post('/signup', function(req, res) {
-		var name = req.body.username;
-		var mail = req.body.email;
-		var pass = req.body.password;
-		if (name != undefined && mail != undefined && pass != undefined) {
-			User.findOne({
-					$or: [{
-						"username": name
-					}, {
-						"email": mail
-					}]
-				},
-				function(err, user) {
-					if (err) console.log(err);
-					else if (!user) {
-						var newUser = new User({
-							username: name,
-							email: mail
-						});
-						newUser.password = newUser.generateHash(pass);
-						newUser.save();
-						res.end("user saved correctly");
-					} else res.end("User already exists");
-				});
+		var info = {
+			username: req.body.username,
+			password: req.body.password,
+			email: req.body.email
+		};
+
+		if (info.name && info.mail && info.pass) {
+			dbHandler.saveUser(info, function() {
+
+
+			});
 		}
 	});
 	app.post('/logout', function(req, res) {
