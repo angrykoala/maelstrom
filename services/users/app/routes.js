@@ -1,8 +1,8 @@
 /*
-Name:
-Version:
-Author:
-Description:
+Name: Routes
+Project: Mäelstrom - Users
+Author: demiurgosoft <demiurgosoft@hotmail.com>
+Description: API REST for login and signup
 */
 
 var dbHandler = require('./dbhandler');
@@ -16,12 +16,13 @@ module.exports = function(app) {
 
 	});
 	app.post('/login', function(req, res) {
-		console.log("login");
-		User.find({
-			username: req.body.username
-		}, function(err, result) {
-			if (err) return console.error(err);
-			res.json(result);
+		dbHandler.findUser(req.body.username, function(err, usr) {
+			if (err) res.end(err);
+			else if (!usr) res.end("User not found");
+			else {
+				if (usr.validPassword(req.body.password)) res.json(usr);
+				else res.end("Password not valid");
+			}
 		});
 	});
 	app.get('/signup', function(req, res) {
@@ -34,12 +35,12 @@ module.exports = function(app) {
 			email: req.body.email
 		};
 
-		if (info.name && info.mail && info.pass) {
-			dbHandler.saveUser(info, function() {
-
-
+		if (!info.name && !info.mail && !info.pass) {
+			dbHandler.saveUser(info, function(err, usr) {
+				if (err) res.end(err.toString());
+				else res.json(usr);
 			});
-		}
+		} else res.end("Not info provided");
 	});
 	app.post('/logout', function(req, res) {
 

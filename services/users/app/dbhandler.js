@@ -1,25 +1,13 @@
 /*
-Name:
-Version:
-Author:
-Description:
+Name: DB Handler
+Project: Mäelstrom - Users
+Author: demiurgosoft <demiurgosoft@hotmail.com>
+Description: Mongoose database handler
 */
+
 
 var User = require('./models/user');
 
-//MongoDB
-var mongoose = require('mongoose');
-var dbConfig = require('../config/database.js');
-mongoose.connect(dbConfig.url);
-
-var db = mongoose.connection;
-db.on('error', function(err) {
-	console.error('DB connection error:' + err);
-});
-
-db.once('open', function() {
-	console.log("database opened");
-});
 
 //Calls done with boolean value if user with username or email exists
 function isUser(username, email, done) {
@@ -39,7 +27,7 @@ var Handler = {
 	findUser: function(username, done) {
 		User.findOne({
 			$or: [{
-				"username": username
+				"username": new RegExp("^" + username, "i")
 			}, {
 				"email": username
 			}]
@@ -55,15 +43,12 @@ var Handler = {
 			else {
 				var newUser = new User({
 					username: userInfo.username,
-					email: userInfo.email
+					email: userInfo.email,
+					password: userInfo.password
 				});
-				if (userInfo.password.length < 4 || userInfo.password.length > 25) done(new Error("Save: Not valid password"));
-				else {
-					newUser.password = User.generateHash(userInfo.password);
-					newUser.save(function(err) {
-						done(err, newUser);
-					});
-				}
+				newUser.save(function(err) {
+					done(err, newUser);
+				});
 			}
 		});
 	},
@@ -75,8 +60,6 @@ var Handler = {
 					result.remove(function(err) {
 						done(err);
 					});
-
-
 				} else done(new Error("Remove: user not found or invalid password"));
 
 			}
