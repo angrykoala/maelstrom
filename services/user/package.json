@@ -2,9 +2,12 @@
   "name": "user",
   "version": "0.0.1",
   "description": "user login and signin with jwt",
+  "repository": {
+    "url": "git://github.com/JJ/maelstrom.git"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tap test/unit/*.js"
   },
   "author": "demiurgosoft",
   "license": "AGPL-3.0",
