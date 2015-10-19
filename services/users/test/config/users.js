@@ -2,25 +2,25 @@
 //correct value indicates if user data is correct
 module.exports = {
 	arthur: {
-		username: "Arthur",
+		username: "arthur",
 		email: "arthur@dent.com",
 		password: "dontpanic42",
 		correct: true
 	},
 	ford: {
 		username: "ford_prefect",
-		email: "fordprefect@theguide.com",
+		email: "ford_prefect@theguide.com",
 		password: "Bring_Your_Towel",
 		correct: true
 	},
 	zaphod: {
 		username: "zaphodbeeblebrox",
-		email: "zaphod@mail.net",
+		email: "Zaphod@mail.net",
 		password: "goldenheart",
 		correct: true
 	},
 	marvin: {
-		username: "Marvin",
+		username: "marvin",
 		email: "sadrobot",
 		password: "brainlikeaplanet",
 		correct: false
@@ -35,6 +35,18 @@ module.exports = {
 		username: "jeltz vogon",
 		email: "jeltz@vogon.com",
 		password: "ProstetnicVogonJeltz",
+		correct: false
+	},
+	deepthinking: {
+		username: "Deep",
+		email: "deep@thinking.com",
+		password: "theansweris42",
+		correct: false
+	},
+	slartibartfast: {
+		username: "earthdesigner",
+		email: "earth@DESigner.Com",
+		password: "ilovecoasts",
 		correct: false
 	}
 };

@@ -10,30 +10,21 @@ var mongoose = require('mongoose');
 
 var User = require('../app/models/user.js');
 var testUsers = require('./config/users.js');
-var dbConfig = require('./config/database.js');
-
+var auxFunc=require('./config/functions.js');
 
 describe('User Model', function() {
 	var db;
 	before(function(done) {
-		mongoose.connect(dbConfig.url);
-		db = mongoose.connection;
-		db.on('error', function(err) {
-			done(err);
-		});
-		db.once('open', function() {
-			done();
-		});
-
+		db=auxFunc.connectDB(done);
 	});
 	beforeEach(function(done) {
-		clearCollection(function(err) {
+		auxFunc.clearUsers(function(err) {
 			if (err) done(err);
 			else done();
 		});
 	});
 	after(function(done) {
-		clearCollection(function(err) {
+		auxFunc.clearUsers(function(err) {
 			if (err) done(err);
 			else {
 				db.close();
@@ -42,7 +33,7 @@ describe('User Model', function() {
 		});
 	});
 	it('Document creation', function(done) {
-		this.timeout(1500);
+		this.timeout(2500);
 		var userTest;
 		userTest = new User(testUsers.arthur);
 		userTest.save();
@@ -53,12 +44,18 @@ describe('User Model', function() {
 			User.find({}, function(err, res) {
 				assert.notOk(err, "Error:User.find");
 				assert.strictEqual(res.length, 2);
-				done();
+				userTest = new User(testUsers.arthur);//inserting same user twice
+				userTest.save();
+				User.find({}, function(err, res) {
+					assert.notOk(err, "Error:User.find");
+					assert.strictEqual(res.length, 2);
+					done();
+				});
 			});
 		});
 	});
 	it('Document creation rules', function(done) {
-		this.timeout(3500);
+		this.timeout(2500);
 
 		var correctUsers = 0;
 		for (var key in testUsers) {
@@ -71,17 +68,7 @@ describe('User Model', function() {
 		User.find({}, function(err, res) {
 			assert.notOk(err, "Error: User find");
 			assert.strictEqual(res.length, correctUsers);
-			for (var key in testUsers) {
-				if (testUsers.hasOwnProperty(key)) {
-					var newuser = new User(testUsers[key]);
-					newuser.save();
-				}
-			}
-			User.find({}, function(err, res) {
-				assert.notOk(err, "Error: User find");
-				assert.strictEqual(res.length, correctUsers);
-				done();
-			});
+			done();
 		});
 	});
 	it('Password Validation', function(done) {
@@ -105,11 +92,3 @@ describe('User Model', function() {
 		});
 	});
 });
-
-
-function clearCollection(done) {
-	User.remove({}, function(err, res) {
-		if (err) done(err);
-		else done();
-	});
-}

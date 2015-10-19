@@ -11,25 +11,18 @@ var mongoose = require('mongoose');
 var User = require('../app/models/user.js');
 var dbHandler = require('../app/dbhandler.js');
 var testUsers = require('./config/users.js');
-var dbConfig = require('./config/database.js');
+var auxFunc=require('./config/functions.js');
 
 
 
 describe('User Database Handler', function() {
 	var db;
 	before(function(done) {
-		mongoose.connect(dbConfig.url);
-		db = mongoose.connection;
-		db.on('error', function(err) {
-			done(err);
-		});
-		db.once('open', function() {
-			done();
-		});
+		db=auxFunc.connectDB(done);
 
 	});
 	beforeEach(function(done) {
-		clearCollection(function(err) {
+		auxFunc.clearUsers(function(err) {
 			if (err) done(err);
 			else {
 				var myuser = new User(testUsers.arthur);
@@ -39,7 +32,7 @@ describe('User Database Handler', function() {
 		});
 	});
 	after(function(done) {
-		clearCollection(function(err) {
+		auxFunc.clearUsers(function(err) {
 			if (err) done(err);
 			else {
 				db.close();
@@ -134,15 +127,29 @@ describe('User Database Handler', function() {
 			});
 		});
 	});
-	it.skip('Update User', function() {
+	it.skip('Update User', function(done) {
+		dbHandler.findUser("arthur",function(err,usr){
+			assert.notOk(err);
+			assert.ok(usr.id);
+			var oldId=usr.id;
+			dbHandler.updateUser(oldId,testUsers.ford,function(err){
+				assert.notOk(err);
+				dbHandler.findUser("ford",function(err,usr2){
+						assert.notOk(err);
+						//TODO: fix and complete
+						assert.strictEqual(usr2.id,oldId);
+						assert.strictEqual(usr2.username,testUsers.ford.username);
+						assert.strictEqual(usr2.email,testUsers.ford.email);
+						asert.strictEqual(usr2.password,testUsers.ford.password);
+						
+						done();
+					
+				});
+				
+			});
 
+			
+		});
 
 	});
 });
-
-function clearCollection(done) {
-	User.remove({}, function(err, res) {
-		if (err) done(err);
-		else done();
-	});
-}

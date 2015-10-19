@@ -28,7 +28,7 @@ var Handler = {
 		if (!username) return done(new Error("Not username or email provided"));
 		User.findOne({
 			$or: [{
-				"username": new RegExp("^" + username, "i")
+				"username": username
 			}, {
 				"email": username
 			}]
@@ -69,9 +69,19 @@ var Handler = {
 			} else done(new Error("Remove: user not found or invalid password"));
 		});
 	},
-	updateUser: function(username, changes, done) {
-		//TODO: solve issue #25
-
+	updateUser: function(userId, changes, done) {
+		if (!userId) done(new Error("No id provided"));
+		else {
+			isUser(changes["username"], changes["email"], function(err, res) {
+				if (!res) {
+					User.update({
+						_id: userId
+					}, {
+						$set: changes
+					}, done);
+				}
+			});
+		}
 	}
 };
 module.exports = Handler;
