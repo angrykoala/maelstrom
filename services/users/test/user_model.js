@@ -44,7 +44,6 @@ describe('User Model', function() {
 				done();
 			}
 		});
-		//clear connection db close
 	});
 	it('Document creation', function(done) {
 		this.timeout(1500);
@@ -74,7 +73,7 @@ describe('User Model', function() {
 			}
 		}
 		User.find({}, function(err, res) {
-			assert.notOk(err, "Error:User.find");
+			assert.notOk(err, "Error: User find");
 			assert.strictEqual(res.length, correctUsers);
 			for (var key in testUsers) {
 				if (testUsers.hasOwnProperty(key)) {
@@ -83,17 +82,32 @@ describe('User Model', function() {
 				}
 			}
 			User.find({}, function(err, res) {
-				assert.notOk(err, "Error:User.find");
+				assert.notOk(err, "Error: User find");
 				assert.strictEqual(res.length, correctUsers);
 				done();
 			});
 		});
 	});
-    it.skip('Password Validation', function(done) {
-
-    	done();
-
-    });
+	it('Password Validation', function(done) {
+		this.timeout(2000);
+		var newUser = new User(testUsers.arthur);
+		newUser.save();
+		User.find({
+			_id: newUser._id
+		}, function(err, usr) {
+			assert.notOk(err, "Error: Password validation");
+			assert.strictEqual(usr.length, 1);
+			usr[0].validPassword(testUsers.arthur.password, function(err, res) {
+				assert.notOk(err, "Error: Password validation");
+				assert.strictEqual(res, true);
+				usr[0].validPassword("dontpanic43", function(err, res) {
+					assert.notOk(err, "Error: Password validation");
+					assert.strictEqual(res, false);
+					done();
+				});
+			});
+		});
+	});
 });
 
 
