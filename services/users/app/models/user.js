@@ -33,7 +33,7 @@ var userSchema = mongoose.Schema({
 
 //Will fire before save checking password and hashing it
 userSchema.pre('save', function(next) {
-	var doc=this;
+	var doc = this;
 	//only works if password is bein modified or is new
 	if (!doc.isModified('password')) return next();
 	if (!dbConfig.regexp.password.test(doc.password)) return next(new Error("Save: Password not valid"));
@@ -50,12 +50,12 @@ userSchema.pre('save', function(next) {
 // Methods
 
 // Checks if password is valid
-userSchema.methods.validPassword = function(password,done) {
-	if (!dbConfig.regexp.password.test(password)) return done(null,false);
+userSchema.methods.validPassword = function(password, done) {
+	if (!dbConfig.regexp.password.test(password)) return done(null, false);
 	else bcrypt.compare(password, this.password, function(err, res) {
-		return done(err,res);
+		return done(err, res);
 	});
 };
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model(dbConfig.schema.user, userSchema);

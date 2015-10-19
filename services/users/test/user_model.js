@@ -46,7 +46,7 @@ describe('User Model', function() {
 		});
 		//clear connection db close
 	});
-	it("Document creation", function(done) {
+	it('Document creation', function(done) {
 		this.timeout(1500);
 		var userTest;
 		userTest = new User(testUsers.arthur);
@@ -62,7 +62,7 @@ describe('User Model', function() {
 			});
 		});
 	});
-	it("Document creation rules", function(done) {
+	it('Document creation rules', function(done) {
 		this.timeout(3500);
 
 		var correctUsers = 0;
@@ -89,9 +89,12 @@ describe('User Model', function() {
 			});
 		});
 	});
-});
-it.skip("Password Validation");
+    it.skip('Password Validation', function(done) {
 
+    	done();
+
+    });
+});
 
 
 function clearCollection(done) {
