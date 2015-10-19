@@ -44,10 +44,9 @@ module.exports = function(app) {
 				else res.json(usr);
 			});
 	});
-	app.post('/logout', function(req, res) {
+/*	app.post('/logout', function(req, res) {
 
-
-	});
+	});*/
 
 
 };
