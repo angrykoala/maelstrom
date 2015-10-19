@@ -6,27 +6,32 @@ Description: API REST for login and signup
 */
 
 var dbHandler = require('./dbhandler');
+var path = require('path');
+var rootPath={ root: path.join(__dirname, '../views') }
 
 module.exports = function(app) {
 	app.get('/', function(req, res) {
 		res.end("Maelstrom Users");
 	});
 	app.get('/login', function(req, res) {
-		res.sendfile('./views/login.html');
+		res.sendFile('login.html',rootPath);
 
 	});
 	app.post('/login', function(req, res) {
 		dbHandler.findUser(req.body.username, function(err, usr) {
-			if (err) res.end(err);
+			if (err) res.end(err.toString());
 			else if (!usr) res.end("User not found");
 			else {
-				if (usr.validPassword(req.body.password)) res.json(usr);
-				else res.end("Password not valid");
+				usr.validPassword(req.body.password,function(err,isValid){
+					if(err) res.end(err.toString());
+					else if(isValid) res.json(usr);
+					else res.end("Incorrect password");	
+				});
 			}
 		});
 	});
 	app.get('/signup', function(req, res) {
-		res.sendfile('./views/signup.html');
+		res.sendFile('./signup.html',rootPath);
 	});
 	app.post('/signup', function(req, res) {
 		var info = {
@@ -34,13 +39,10 @@ module.exports = function(app) {
 			password: req.body.password,
 			email: req.body.email
 		};
-
-		if (!info.name && !info.mail && !info.pass) {
 			dbHandler.saveUser(info, function(err, usr) {
 				if (err) res.end(err.toString());
 				else res.json(usr);
 			});
-		} else res.end("Not info provided");
 	});
 	app.post('/logout', function(req, res) {
 

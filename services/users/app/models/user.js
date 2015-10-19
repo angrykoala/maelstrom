@@ -33,7 +33,7 @@ var userSchema = mongoose.Schema({
 userSchema.pre('save', function(next) {
 	//only works if password is bein modified or is new
 	if (!this.isModified('password')) return next();
-	if (!dbConfig.regexp.password.test(this.password)) return next(new Error("Password not valid"));
+	if (!dbConfig.regexp.password.test(this.password)) return next(new Error("Save: Password not valid"));
 	this.password = bcrypt.hashSync(this.password);
 	next();
 	//Async hash doesnt work
@@ -47,11 +47,10 @@ userSchema.pre('save', function(next) {
 // Methods
 
 // Checks if password is valid
-userSchema.methods.validPassword = function(password) {
-	if (!dbConfig.regexp.password.test(password)) return false;
+userSchema.methods.validPassword = function(password,done) {
+	if (!dbConfig.regexp.password.test(password)) return done(null,false);
 	else bcrypt.compare(password, this.password, function(err, res) {
-		if (err) console.error(err);
-		return res;
+		return done(err,res);
 	});
 };
 

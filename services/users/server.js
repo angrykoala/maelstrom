@@ -11,8 +11,10 @@ var app = express();
 var port = process.env.PORT || 8080;
 
 var bodyParser = require('body-parser');
-app.use(bodyParser()); // get information from body
-app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json()); // get information from body
+app.use(bodyParser.urlencoded({extended: true}));
+//app.use(express.static(__dirname + '/public'));
+
 require('./app/routes.js')(app);
 
 var mongoose = require('mongoose');
