@@ -89,7 +89,7 @@ describe('User Model', function() {
 		var newUser = new User(testUsers.arthur);
 		newUser.save();
 		User.find({
-			_id: newUser._id
+			_id: newUser.id
 		}, function(err, usr) {
 			assert.notOk(err, "Error: Password validation");
 			assert.strictEqual(usr.length, 1);

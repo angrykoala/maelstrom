@@ -34,6 +34,10 @@ var Handler = {
 			}]
 		}, done);
 	},
+	findById: function(userId,done){
+		if(!userId) return done(new Error("Not id provided"));
+		else User.findOne({_id:userId},done);		
+	},
 	//Saves user if everything is correct and there is not other user with same username/email
 	//userInfo should have the necessary user information (username,password and email)
 	saveUser: function(userInfo, done) {
@@ -53,19 +57,19 @@ var Handler = {
 			}
 		});
 	},
-	removeUser: function(username, password, done) {
-		findUser(username, function(err, result) {
+	removeUser: function(userId, done) {
+		this.findById(userId, function(err, result) {
 			if (err) done(err);
-			else {
-				if (result && result.validPassword(password)) {
+			else if (result) {
 					result.remove(function(err) {
 						done(err);
 					});
 				} else done(new Error("Remove: user not found or invalid password"));
-
-			}
-
 		});
+	},
+	updateUser: function(username,changes,done){
+		//TODO: solve issue #25
+		
 	}
 };
 module.exports = Handler;
