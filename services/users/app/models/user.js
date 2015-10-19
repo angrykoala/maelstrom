@@ -1,6 +1,6 @@
 /*
 Name: User Schema
-Project: Mäelstrom - Users
+Project: Maelström - Users
 Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Users microsevice for maelstrom using mongoose and JWT
 */

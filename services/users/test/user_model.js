@@ -1,6 +1,6 @@
 /*
 Name: Users Model - Test
-Project: Mäelstrom - Users
+Project: Maelström - Users
 Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Unit test for user model
 */

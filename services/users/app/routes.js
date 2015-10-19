@@ -1,6 +1,6 @@
 /*
 Name: Routes
-Project: Mäelstrom - Users
+Project: Maelström - Users
 Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: API REST for login and signup
 */

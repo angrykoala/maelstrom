@@ -1,11 +1,3 @@
-/*
-Name: Users test
-Project: Ma
-Project: Mäelstrom - Users
-Author: demiurgosoft <demiurgosoft@hotmail.com>
-Description: Users to use in test
-*/
-
 //Information of users for testing
 //correct value indicates if user data is correct
 module.exports = {
