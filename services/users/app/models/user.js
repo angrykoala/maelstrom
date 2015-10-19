@@ -29,8 +29,7 @@ var userSchema = mongoose.Schema({
 	}
 });
 
-// methods
-
+//Will fire before save checking password and hashing it
 userSchema.pre('save', function(next) {
 	//only works if password is bein modified or is new
 	if (!this.isModified('password')) return next();
@@ -45,7 +44,9 @@ userSchema.pre('save', function(next) {
 	});*/
 });
 
-// checking if password is valid
+// Methods
+
+// Checks if password is valid
 userSchema.methods.validPassword = function(password) {
 	if (!dbConfig.regexp.password.test(password)) return false;
 	else bcrypt.compare(password, this.password, function(err, res) {

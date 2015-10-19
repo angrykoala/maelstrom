@@ -1,21 +1,38 @@
 {
-  "name": "user",
-  "version": "0.0.1",
-  "description": "user login and signin with jwt",
-  "repository": {
-    "url": "git://github.com/JJ/maelstrom.git"
+  "name": "maelstrom-users",
+  "version": "0.0.2",
+  "description": "Users handler with mongoose and JWT for maelstrom",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
   },
-  "main": "index.js",
   "scripts": {
-    "test": "tap test/unit/*.js"
+    "test": "mocha",
+    "start": "node server.js"
   },
-  "author": "demiurgosoft",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/demiurgosoft/maelstrom.git"
+  },
+  "keywords": [
+    "user",
+    "users",
+    "maelstrom",
+    "MMO",
+    "mongoose",
+    "JSW",
+    "token"
+  ],
+  "author": "demiurgosoft <demiurgosoft@hotmail.com>",
   "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/demiurgosoft/maelstrom/issues"
+  },
+  "homepage": "https://github.com/demiurgosoft/maelstrom#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
-    "jsonwebtoken": "^5.4.0",
     "mongoose": "^4.1.11"
   }
 }
