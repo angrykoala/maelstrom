@@ -15,12 +15,14 @@ var userSchema = mongoose.Schema({
 	username: {
 		type: String,
 		required: true,
-		match: [dbConfig.regexp.user, 'Invalid username']
+		match: [dbConfig.regexp.user, 'Invalid username'],
+		unique: true
 	},
 	email: {
 		type: String,
 		required: true,
-		match: [dbConfig.regexp.email, 'Invalid mail']
+		match: [dbConfig.regexp.email, 'Invalid mail'],
+		unique: true
 
 	},
 	password: {
@@ -31,15 +33,16 @@ var userSchema = mongoose.Schema({
 
 //Will fire before save checking password and hashing it
 userSchema.pre('save', function(next) {
+	var doc=this;
 	//only works if password is bein modified or is new
-	if (!this.isModified('password')) return next();
-	if (!dbConfig.regexp.password.test(this.password)) return next(new Error("Save: Password not valid"));
+	if (!doc.isModified('password')) return next();
+	if (!dbConfig.regexp.password.test(doc.password)) return next(new Error("Save: Password not valid"));
 	this.password = bcrypt.hashSync(this.password);
 	next();
 	//Async hash doesnt work
-	/*bcrypt.hash(this.password, null,null, function(err,hash){
+	/*	bcrypt.hash(doc.password, null,null, function(err,hash){
 		if (err) return next(err);
-		this.password=hash;
+		doc.password=hash;
 		next();
 	});*/
 });
