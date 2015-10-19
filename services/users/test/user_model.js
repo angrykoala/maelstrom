@@ -29,11 +29,7 @@ describe('User Model', function() {
 	beforeEach(function(done) {
 		clearCollection(function(err) {
 			if (err) done(err);
-			else {
-
-				//insert messages    
-				done();
-			}
+			else done();
 		});
 	});
 	after(function(done) {
@@ -67,7 +63,7 @@ describe('User Model', function() {
 		var correctUsers = 0;
 		for (var key in testUsers) {
 			if (testUsers.hasOwnProperty(key)) {
-				if (testUsers[key].correct == true) correctUsers++;
+				if (testUsers[key].correct === true) correctUsers++;
 				var newuser = new User(testUsers[key]);
 				newuser.save();
 			}
@@ -99,7 +95,7 @@ describe('User Model', function() {
 			assert.strictEqual(usr.length, 1);
 			usr[0].validPassword(testUsers.arthur.password, function(err, res) {
 				assert.notOk(err, "Error: Password validation");
-				assert.strictEqual(res, true);
+				assert.ok(res);
 				usr[0].validPassword("dontpanic43", function(err, res) {
 					assert.notOk(err, "Error: Password validation");
 					assert.strictEqual(res, false);

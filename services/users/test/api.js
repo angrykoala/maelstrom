@@ -15,23 +15,23 @@ var dbConfig = require('./config/database.js');
 
 
 describe('User API', function() {
-    it.skip('/',function(){
-        
-        
-    });
-    it.skip('/signup',function(){
-        
-        
-    });
-    it.skip('/login success',function(){
-        
-        
-    });
-    it.skip('/login failure',function(){
-        
-        
-    });
-    
-    
-    
+	it.skip('/', function() {
+
+
+	});
+	it.skip('/signup', function() {
+
+
+	});
+	it.skip('/login success', function() {
+
+
+	});
+	it.skip('/login failure', function() {
+
+
+	});
+
+
+
 });
