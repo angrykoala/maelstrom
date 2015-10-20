@@ -13,7 +13,7 @@ var rootPath = {
 
 module.exports = function(app) {
 	app.get('/', function(req, res) {
-		res.end("Maelstrom Users");
+		res.send("Maelstrom Users");
 	});
 	app.get('/login', function(req, res) {
 		res.sendFile('login.html', rootPath);
@@ -21,13 +21,25 @@ module.exports = function(app) {
 	});
 	app.post('/login', function(req, res) {
 		dbHandler.findUser(req.body.username, function(err, usr) {
-			if (err) res.end(err.toString());
-			else if (!usr) res.end("User not found");
+			if (err) {
+				console.error("POST /login: " + err);
+				res.status(500).json({
+					error: err.toString()
+				});
+			} else if (!usr) res.status(404).json({
+				error: "User not found"
+			});
 			else {
 				usr.validPassword(req.body.password, function(err, isValid) {
-					if (err) res.end(err.toString());
-					else if (isValid) res.json(usr);
-					else res.end("Incorrect password");
+					if (err) {
+						console.error("POST /login: " + err);
+						res.status(500).json({
+							error: err.toString()
+						});
+					} else if (isValid) res.json(usr); //TODO: send token
+					else res.status(403).json({
+						error: "Incorrect password"
+					});
 				});
 			}
 		});
@@ -36,15 +48,27 @@ module.exports = function(app) {
 		res.sendFile('./signup.html', rootPath);
 	});
 	app.post('/signup', function(req, res) {
-		var info = {
-			username: req.body.username,
-			password: req.body.password,
-			email: req.body.email
-		};
-		dbHandler.saveUser(info, function(err, usr) {
-			if (err) res.end(err.toString());
-			else res.json(usr);
+		if (!req.body) res.status(400).json({
+			error: "empty forms"
 		});
+		else {
+			var info = {
+				username: req.body["username"],
+				password: req.body["password"],
+				email: req.body["email"]
+			};
+			if (!info.username || !info.password || !info.email) res.status(400).json({
+				error: "empty forms"
+			});
+			else dbHandler.saveUser(info, function(err, usr) {
+				if (err) {
+					console.log(err);
+					res.status(500).json({
+						error: err.toString()
+					});
+				} else res.status(201).json(usr);
+			});
+		}
 	});
 	/*	app.post('/logout', function(req, res) {
 

@@ -43,7 +43,7 @@ var Handler = {
 	//Saves user if everything is correct and there is not other user with same username/email
 	//userInfo should have the necessary user information (username,password and email)
 	saveUser: function(userInfo, done) {
-		//	if (!userInfo.username || !userInfo.email || !userInfo.password) done(new Error("Save: User info incorrect"));
+		if (!userInfo.username || !userInfo.email || !userInfo.password) done(new Error("Save: User info incorrect"));
 		isUser(userInfo.username, userInfo.email, function(err, isUser) {
 			if (err) done(err);
 			else if (isUser === true) done(new Error("Save: User already exists"));
