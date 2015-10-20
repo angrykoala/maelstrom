@@ -127,7 +127,7 @@ describe('User Database Handler', function() {
 		});
 	});
 	it('Update User', function(done) {
-		this.timeout("1500");
+		this.timeout("2500");
 		dbHandler.findUser("arthur", function(err, usr) {
 			assert.notOk(err);
 			assert.ok(usr.id);
@@ -154,11 +154,7 @@ describe('User Database Handler', function() {
 						});
 					});
 				});
-
 			});
-
-
 		});
-
 	});
 });
