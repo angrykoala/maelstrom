@@ -28,7 +28,7 @@ var Handler = {
 		if (!username) return done(new Error("Not username or email provided"));
 		User.findOne({
 			$or: [{
-				"username": username
+				"username": new RegExp("^" + username, "i")
 			}, {
 				"email": username
 			}]
