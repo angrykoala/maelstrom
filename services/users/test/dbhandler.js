@@ -11,14 +11,14 @@ var mongoose = require('mongoose');
 var User = require('../app/models/user.js');
 var dbHandler = require('../app/dbhandler.js');
 var testUsers = require('./config/users.js');
-var auxFunc=require('./config/functions.js');
+var auxFunc = require('./config/functions.js');
 
 
 
 describe('User Database Handler', function() {
 	var db;
 	before(function(done) {
-		db=auxFunc.connectDB(done);
+		db = auxFunc.connectDB(done);
 
 	});
 	beforeEach(function(done) {
@@ -41,9 +41,8 @@ describe('User Database Handler', function() {
 		});
 	});
 
-
 	it('Save User', function(done) {
-		this.timeout(1500);
+		this.timeout(2500);
 		dbHandler.saveUser(testUsers.ford, function(err, usr) {
 			assert.notOk(err, "Error: DB Handler save");
 			assert.instanceOf(usr, User);
@@ -127,28 +126,38 @@ describe('User Database Handler', function() {
 			});
 		});
 	});
-	it.skip('Update User', function(done) {
-		dbHandler.findUser("arthur",function(err,usr){
+	it('Update User', function(done) {
+		this.timeout("1500");
+		dbHandler.findUser("arthur", function(err, usr) {
 			assert.notOk(err);
 			assert.ok(usr.id);
-			var oldId=usr.id;
-			dbHandler.updateUser(oldId,testUsers.ford,function(err){
+			var oldId = usr.id;
+			dbHandler.updateUser(oldId, testUsers.ford, function(err) {
 				assert.notOk(err);
-				dbHandler.findUser("ford",function(err,usr2){
+				dbHandler.findUser("ford", function(err, usr2) {
+					assert.notOk(err);
+					assert.strictEqual(usr2.id, oldId);
+					assert.strictEqual(usr2.username, testUsers.ford.username);
+					assert.strictEqual(usr2.email, testUsers.ford.email);
+					assert.strictEqual(usr2.password, testUsers.ford.password);
+					dbHandler.findUser("arthur", function(err, usr3) {
 						assert.notOk(err);
-						//TODO: fix and complete
-						assert.strictEqual(usr2.id,oldId);
-						assert.strictEqual(usr2.username,testUsers.ford.username);
-						assert.strictEqual(usr2.email,testUsers.ford.email);
-						asert.strictEqual(usr2.password,testUsers.ford.password);
-						
-						done();
-					
+						assert.isNull(usr3);
+						dbHandler.saveUser(testUsers.arthur, function(err, usr4) {
+							assert.notOk(err);
+							assert.instanceOf(usr, User);
+							assert.ok(usr4.id);
+							dbHandler.updateUser(usr4.id, testUsers.ford, function(err) {
+								assert.ok(err);
+								done();
+							});
+						});
+					});
 				});
-				
+
 			});
 
-			
+
 		});
 
 	});

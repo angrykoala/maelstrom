@@ -10,12 +10,12 @@ var mongoose = require('mongoose');
 
 var User = require('../app/models/user.js');
 var testUsers = require('./config/users.js');
-var auxFunc=require('./config/functions.js');
+var auxFunc = require('./config/functions.js');
 
 describe('User Model', function() {
 	var db;
 	before(function(done) {
-		db=auxFunc.connectDB(done);
+		db = auxFunc.connectDB(done);
 	});
 	beforeEach(function(done) {
 		auxFunc.clearUsers(function(err) {
@@ -44,7 +44,7 @@ describe('User Model', function() {
 			User.find({}, function(err, res) {
 				assert.notOk(err, "Error:User.find");
 				assert.strictEqual(res.length, 2);
-				userTest = new User(testUsers.arthur);//inserting same user twice
+				userTest = new User(testUsers.arthur); //inserting same user twice
 				userTest.save();
 				User.find({}, function(err, res) {
 					assert.notOk(err, "Error:User.find");
