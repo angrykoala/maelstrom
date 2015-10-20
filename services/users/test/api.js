@@ -43,24 +43,62 @@ describe('User API', function() {
 			}
 		});
 	});
-	it.skip('/signup', function(done) {
+	it('/signup', function(done) {
 		var myUser = testUsers.ford;
 		request(app).post('/signup').send(myUser).expect(201).end(function(err, res) {
 			assert.notOk(err);
-
-
-			console.log(res.status);
-			done()
-
+			User.find({
+				username: myUser.username
+			}, function(err, res) {
+				assert.notOk(err);
+				assert.strictEqual(res.length, 1);
+				assert.ok(res[0]);
+				assert.strictEqual(res[0].email, myUser.email);
+				request(app).post('/signup').send(myUser).expect(500).end(function(err, res) {
+					assert.notOk(err);
+					assert.property(res.body, "error");
+					assert.ok(res.error);
+					request(app).post('/signup').send({
+						username: "Marvin"
+					}).expect(400).end(function(err, res) {
+						assert.notOk(err);
+						assert.property(res.body, "error");
+						assert.ok(res.error);
+						done();
+					});
+				});
+			});
 		});
-
 	});
-	it.skip('/login success', function() {
-
-
-	});
-	it.skip('/login failure', function() {
-
-
+	it('/login', function(done) {
+		this.timeout(2500);
+		var myUser = testUsers.arthur;
+		request(app).post('/login').send({
+			username: myUser.username,
+			password: myUser.password
+		}).expect(200).end(function(err, res) {
+			assert.notOk(err);
+			//TODO:check JWT
+			request(app).post('/login').send({
+				username: myUser.email,
+				password: myUser.password
+			}).expect(200).end(function(err, res) {
+				assert.notOk(err);
+				//TODO: compare JWT
+				request(app).post('/login').send({
+					username: myUser.username
+				}).expect(500).end(function(err, res) {
+					assert.notOk(err);
+					assert.property(res.body, "error");
+					assert.ok(res.error);
+					request(app).post('/login').send(testUsers.ford).expect(404).end(function(err, res) {
+						assert.notOk(err);
+						assert.property(res.body, "error");
+						assert.ok(res.error);
+						done();
+					});
+				});
+			});
+		});
 	});
 });

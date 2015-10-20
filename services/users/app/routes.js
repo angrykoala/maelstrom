@@ -22,7 +22,7 @@ module.exports = function(app) {
 	app.post('/login', function(req, res) {
 		dbHandler.findUser(req.body.username, function(err, usr) {
 			if (err) {
-				console.error("POST /login: " + err);
+				//console.error("POST /login: " + err);
 				res.status(500).json({
 					error: err.toString()
 				});
@@ -32,7 +32,7 @@ module.exports = function(app) {
 			else {
 				usr.validPassword(req.body.password, function(err, isValid) {
 					if (err) {
-						console.error("POST /login: " + err);
+						//console.error("POST /login: " + err);
 						res.status(500).json({
 							error: err.toString()
 						});
@@ -62,7 +62,7 @@ module.exports = function(app) {
 			});
 			else dbHandler.saveUser(info, function(err, usr) {
 				if (err) {
-					console.log(err);
+					//console.log("POST /signup"+err);
 					res.status(500).json({
 						error: err.toString()
 					});
