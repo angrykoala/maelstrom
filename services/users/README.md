@@ -10,4 +10,5 @@ Users service for Mäelstrom project, login and authentication with mongodb and 
 	2. To test the service using mocha: `npm test`
 2. To start the service: `npm start`
 
+
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3

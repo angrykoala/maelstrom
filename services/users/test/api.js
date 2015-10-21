@@ -8,6 +8,7 @@ Description: Unit test for user model
 var assert = require('chai').assert;
 var mongoose = require('mongoose');
 var request = require('supertest');
+var jwt = require('jsonwebtoken');
 
 var User = require('../app/models/user.js');
 var testUsers = require('./config/users.js');
@@ -47,6 +48,9 @@ describe('User API', function() {
 		var myUser = testUsers.ford;
 		request(app).post('/signup').send(myUser).expect(201).end(function(err, res) {
 			assert.notOk(err);
+			assert.property(res.body, "token");
+			assert.ok(res.body.token);
+			checkToken(res.body.token, myUser);
 			User.find({
 				username: myUser.username
 			}, function(err, res) {
@@ -78,13 +82,17 @@ describe('User API', function() {
 			password: myUser.password
 		}).expect(200).end(function(err, res) {
 			assert.notOk(err);
-			//TODO:check JWT
+			assert.property(res.body, "token");
+			assert.ok(res.body.token);
+			checkToken(res.body.token, myUser);
 			request(app).post('/login').send({
 				username: myUser.email,
 				password: myUser.password
 			}).expect(200).end(function(err, res) {
 				assert.notOk(err);
-				//TODO: compare JWT
+				assert.property(res.body, "token");
+				assert.ok(res.body.token);
+				checkToken(res.body.token, myUser);
 				request(app).post('/login').send({
 					username: myUser.username
 				}).expect(500).end(function(err, res) {
@@ -102,3 +110,12 @@ describe('User API', function() {
 		});
 	});
 });
+
+
+function checkToken(token, usr) {
+	var decoded = jwt.decode(token);
+	assert.property(decoded, "id");
+	assert.property(decoded, "username");
+	//	assert.strictEqual(decoded.id,usr.id);
+	assert.strictEqual(decoded.username, usr.username);
+}

@@ -6,7 +6,12 @@ Description: API REST for login and signup
 */
 
 var dbHandler = require('./dbhandler');
+var config = require('../config/server');
 var path = require('path');
+var jwt = require('jsonwebtoken');
+
+
+//remove with ejs
 var rootPath = {
 	root: path.join(__dirname, '../views')
 }
@@ -16,7 +21,7 @@ module.exports = function(app) {
 		res.send("Maelstrom Users");
 	});
 	app.get('/login', function(req, res) {
-		res.sendFile('login.html', rootPath);
+		res.sendFile('login.html', rootPath); //check if jwt available
 
 	});
 	app.post('/login', function(req, res) {
@@ -36,7 +41,9 @@ module.exports = function(app) {
 						res.status(500).json({
 							error: err.toString()
 						});
-					} else if (isValid) res.json(usr); //TODO: send token
+					} else if (isValid) res.json({
+						token: generateToken(usr)
+					});
 					else res.status(403).json({
 						error: "Incorrect password"
 					});
@@ -66,13 +73,28 @@ module.exports = function(app) {
 					res.status(500).json({
 						error: err.toString()
 					});
-				} else res.status(201).json(usr);
+				} else res.status(201).json({
+					token: generateToken(usr)
+				});
 			});
 		}
 	});
 	/*	app.post('/logout', function(req, res) {
 
 		});*/
-
-
 };
+
+function generateToken(usr) {
+	return jwt.sign({
+		id: usr.id,
+		username: usr.username
+	}, config.secret, {
+		expiresIn: config.tokenExpire
+	});
+}
+
+function verifyToken(token, done) {
+	token.verify(config.secret, function(err, decoded) {
+		done(err, decoded);
+	});
+}

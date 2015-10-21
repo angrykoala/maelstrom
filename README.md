@@ -10,10 +10,10 @@ _Version: 0.0.1_
 Economy and trading **MMO-RTS**(_Massively Multiplayer Online - Real Time Strategy_) simulation videogame framework under Node.js. 
 
 ## Services
-Maelström is composed of several independent _microservices_, which are under service/ folder:
+Maelström is composed of several [_microservices_](https://github.com/demiurgosoft/maelstrom/tree/master/services) which provides the features with low interdependence between them, this is a list of both, implemented and planned microservices and their current status
 
-|Service|Version|Description              |
-|:------|:-----:|:------------------------|
-|User   |0.0.2  |Login,signup and storage of users, provides _Json Web Tokens_ for session|
+|**Service** |**Status** |**Version**|**Description**                  |
+|:----------:|:---------:|:---------:|:--------------------------------|
+|Users		 |In Progress|0.0.2  	 |Users login/signup and sessions  |
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
