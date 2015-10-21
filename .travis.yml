@@ -9,8 +9,6 @@ node_js:
     - "0.10"
 services:
     - mongodb
-#env:
-#    - TEST_DIR=services/users/
 before_script:
     - sleep 5
 script:

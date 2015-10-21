@@ -6,7 +6,7 @@
   "scripts": {
     "install": "npm --prefix services/*/ install services/*/ && rm -r -f services/*/etc/",
     "test": "istanbul cover _mocha services/*/test/",
-    "coveralls": "npm test -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "clean": "rm -r -f *~ node_modules coverage && npm --prefix services/*/ run clean services/*/ && rm -r -f services/*/etc/"
   },
   "repository": {
