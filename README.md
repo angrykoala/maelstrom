@@ -14,6 +14,6 @@ Maelström is composed of several [_microservices_](https://github.com/demiurgos
 
 |**Service** |**Status** |**Version**|**Description**                  |
 |:----------:|:---------:|:---------:|:--------------------------------|
-|Users		 |In Progress|0.0.2  	 |Users login/signup and sessions  |
+|Users		 |In Progress|0.0.3  	 |Users login/signup and sessions  |
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
