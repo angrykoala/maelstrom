@@ -2,6 +2,7 @@ language: node_js
 node_js:
     - "stable"
     - "4.2.1"
+    - "4.1"
     - "4.0"
     - "0.12"
     - "0.11"
@@ -14,3 +15,5 @@ before_script:
     - sleep 5
 script:
     - cd $TEST_DIR && npm install && npm test
+after_success:
+    - npm run coveralls
