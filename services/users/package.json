@@ -10,8 +10,7 @@
     "test": "istanbul cover _mocha",
     "start": "node server.js",
     "astyle": "js-beautify --indent-with-tabs --brace-style collapse -r *.js app/*.js app/*/*.js config/*.js test/*.js test/*/*.js",
-    "clean": "rm -r -f *~ node_modules coverage",
-    "coveralls": "npm test -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+    "clean": "rm -r -f *~ node_modules coverage"
   },
   "repository": {
     "type": "git",
@@ -41,10 +40,8 @@
   },
   "devDependencies": {
     "chai": "^3.3.0",
-    "coveralls": "^2.11.4",
     "istanbul": "^0.4.0",
     "mocha": "^2.3.3",
-    "mocha-lcov-reporter": "^1.0.0",
     "supertest": "^1.1.0"
   }
 }

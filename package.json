@@ -1,0 +1,32 @@
+{
+  "name": "maelstrom",
+  "version": "0.0.1",
+  "description": "economic RTS-MMO ",
+  "main": "index.js",
+  "scripts": {
+    "install": "npm --prefix services/*/ install services/*/ && rm -r -f services/*/etc/",
+    "test": "istanbul cover _mocha services/*/test/",
+    "coveralls": "npm test -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "clean": "rm -r -f *~ node_modules coverage && npm --prefix services/*/ run clean services/*/ && rm -r -f services/*/etc/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/demiurgosoft/maelstrom.git"
+  },
+  "keywords": [
+    "mmo",
+    "rts"
+  ],
+  "author": "demiurgosoft <demiurgosoft@hotmail.com>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/demiurgosoft/maelstrom/issues"
+  },
+  "homepage": "https://github.com/demiurgosoft/maelstrom#readme",
+  "devDependencies": {
+    "coveralls": "^2.11.4",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.3",
+    "mocha-lcov-reporter": "^1.0.0"
+  }
+}
