@@ -2,5 +2,5 @@ language: node_js
 node_js:
   - "4.2.1"
 env:
-  - TEST_DIR=services/
+  - TEST_DIR=services/users/
 script: cd $TEST_DIR && npm install && npm test
