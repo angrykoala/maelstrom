@@ -4,6 +4,9 @@ _by @demiurgosoft_
 
 _Version: 0.0.1_
 
+[![Build Status](https://travis-ci.org/demiurgosoft/maelstrom.svg)](https://travis-ci.org/demiurgosoft/maelstrom)
+
+
 Economy and trading **MMO-RTS**(_Massively Multiplayer Online - Real Time Strategy_) simulation videogame framework under Node.js. 
 
 ## Services
