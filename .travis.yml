@@ -6,6 +6,6 @@ services:
 env:
     - TEST_DIR=services/users/
 before_script:
-    - sleep 15
+    - sleep 5
 script:
     - cd $TEST_DIR && npm install && npm test
