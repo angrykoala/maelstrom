@@ -1,5 +1,6 @@
 //Information of users for testing
 //correct value indicates if user data is correct
+
 module.exports = {
 	arthur: {
 		username: "arthur",

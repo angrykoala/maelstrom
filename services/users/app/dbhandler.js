@@ -79,7 +79,7 @@ var Handler = {
 					}, {
 						$set: changes
 					}, done);
-				} else done(new Error("User already exists"));
+				} else done(new Error("username/email already exists"));
 			});
 		}
 	}

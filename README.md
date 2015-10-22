@@ -14,7 +14,7 @@ Each service can be deployed and tested separately, however, you can simple run 
 * `npm install` will install all the dependencies for each service
     * `npm install --production` will only install production dependencies (not dev dependencies, note that dev-dependencies are necessary to execute the tests)
 * `npm test` will test every service with mocha and generate coverage info
-        * `npm run coverall` is used by travis-ci
+    * `npm run coverall` is used by travis-ci and coverall
 * `npm clean` will clean all services and root folders, this will remove all backup files, unnecessary folders and **all** dependencies 
 
 

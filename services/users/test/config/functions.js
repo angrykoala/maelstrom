@@ -7,6 +7,9 @@ var Config = require('./server.js');
 var express = require('express');
 var bodyParser = require('body-parser');
 
+var bcrypt = require('bcrypt-nodejs');
+var dbConfig = require('../../config/database.js');
+
 var server;
 //auxiliary functions for testing
 module.exports = {
@@ -41,5 +44,9 @@ module.exports = {
 	},
 	closeServer: function() {
 		if (server) server.close();
+	},
+	checkPassword:function(password,hash){
+		if (!dbConfig.regexp.password.test(password)) return false;
+		else return  bcrypt.compareSync(password, hash);
 	}
 }
