@@ -15,6 +15,7 @@ var testUsers = require('./config/users.js');
 var dbConfig = require('./config/server.js');
 var auxFunc = require('./config/functions.js');
 
+
 describe('User API', function() {
 	var db;
 	var app;
@@ -50,7 +51,7 @@ describe('User API', function() {
 			assert.notOk(err);
 			assert.property(res.body, "token");
 			assert.ok(res.body.token);
-			checkToken(res.body.token, myUser);
+			var tok = res.body.token;
 			User.find({
 				username: myUser.username
 			}, function(err, res) {
@@ -58,6 +59,7 @@ describe('User API', function() {
 				assert.strictEqual(res.length, 1);
 				assert.ok(res[0]);
 				assert.strictEqual(res[0].email, myUser.email);
+				checkToken(tok, res[0]);
 				request(app).post('/signup').send(myUser).expect(500).end(function(err, res) {
 					assert.notOk(err);
 					assert.property(res.body, "error");
@@ -103,7 +105,15 @@ describe('User API', function() {
 						assert.notOk(err);
 						assert.property(res.body, "error");
 						assert.ok(res.error);
-						done();
+						request(app).post('/login').send({
+							username: myUser.username,
+							password: "incorrectpassword"
+						}).expect(403).end(function(err, res) {
+							assert.notOk(err);
+							assert.property(res.body, "error");
+							assert.ok(res.error);
+							done();
+						});
 					});
 				});
 			});
@@ -116,6 +126,6 @@ function checkToken(token, usr) {
 	var decoded = jwt.decode(token);
 	assert.property(decoded, "id");
 	assert.property(decoded, "username");
-	//	assert.strictEqual(decoded.id,usr.id);
+	if (usr["id"]) assert.strictEqual(decoded.id, usr.id);
 	assert.strictEqual(decoded.username, usr.username);
 }

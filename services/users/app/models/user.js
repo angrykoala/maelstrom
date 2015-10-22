@@ -47,15 +47,14 @@ userSchema.pre('save', function(next) {
 	});*/
 });
 userSchema.pre('update', function() {
-	var query=this._update.$set;
-	if(query["password"]){
-		if (!dbConfig.regexp.password.test(query.password)){
+	var query = this._update.$set;
+	if (query["password"]) {
+		if (!dbConfig.regexp.password.test(query.password)) {
 			delete(query["password"]);
 			//return next(new Error("Save: Password not valid"),this);
-		 }
-		else query.password = bcrypt.hashSync(query.password);  
-		}
-  //	next(null);
+		} else query.password = bcrypt.hashSync(query.password);
+	}
+	//	next(null);
 });
 // Methods
 

@@ -89,33 +89,33 @@ describe('User Model', function() {
 				assert.notOk(err);
 				assert.strictEqual(res.length, 1);
 				assert.strictEqual(res[0].username, "newusername");
-				assert.strictEqual(auxFunc.checkPassword(testUsers.arthur.password,res[0].password),true);
+				assert.strictEqual(auxFunc.checkPassword(testUsers.arthur.password, res[0].password), true);
 				User.update({
+					_id: newUser._id
+				}, {
+					$set: {
+						password: "newpassword",
+						email: "mynewmail@hotmail.com"
+					}
+				}, function(err) {
+					assert.notOk(err);
+					User.find({
 						_id: newUser._id
-					}, {
-						$set: {
-							password: "newpassword",
-							email: "mynewmail@hotmail.com"
-						}
-					}, function(err) {
+					}, function(err, res) {
 						assert.notOk(err);
-						User.find({
-							_id: newUser._id
-						}, function(err, res) {
+						assert.strictEqual(res.length, 1);
+						assert.strictEqual(res[0].email, "mynewmail@hotmail.com");
+						res[0].validPassword("newpassword", function(err, res) {
 							assert.notOk(err);
-							assert.strictEqual(res.length, 1);
-							assert.strictEqual(res[0].email, "mynewmail@hotmail.com");
-							res[0].validPassword("newpassword", function(err, res) {
-								assert.notOk(err);
-								assert.ok(res);
-								done();
-							});
+							assert.ok(res);
+							done();
 						});
+					});
 				});
 			});
 		});
 	});
-	
+
 	it('Password Validation', function(done) {
 		this.timeout(2000);
 		var newUser = new User(testUsers.arthur);

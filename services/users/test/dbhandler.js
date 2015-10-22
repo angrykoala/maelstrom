@@ -139,7 +139,7 @@ describe('User Database Handler', function() {
 					assert.strictEqual(usr2.id, oldId);
 					assert.strictEqual(usr2.username, testUsers.ford.username);
 					assert.strictEqual(usr2.email, testUsers.ford.email);
-					assert.strictEqual(auxFunc.checkPassword(testUsers.ford.password,usr2.password),true);
+					assert.strictEqual(auxFunc.checkPassword(testUsers.ford.password, usr2.password), true);
 					dbHandler.findUser("arthur", function(err, usr3) {
 						assert.notOk(err);
 						assert.isNull(usr3);

@@ -45,8 +45,8 @@ module.exports = {
 	closeServer: function() {
 		if (server) server.close();
 	},
-	checkPassword:function(password,hash){
+	checkPassword: function(password, hash) {
 		if (!dbConfig.regexp.password.test(password)) return false;
-		else return  bcrypt.compareSync(password, hash);
+		else return bcrypt.compareSync(password, hash);
 	}
 }
