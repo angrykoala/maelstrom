@@ -46,6 +46,7 @@ describe('User API', function() {
 		});
 	});
 	it('/signup', function(done) {
+		this.timeout(2500);
 		var myUser = testUsers.ford;
 		request(app).post('/signup').send(myUser).expect(201).end(function(err, res) {
 			assert.notOk(err);
@@ -77,7 +78,7 @@ describe('User API', function() {
 		});
 	});
 	it('/login', function(done) {
-		this.timeout(2500);
+		this.timeout(3500);
 		var myUser = testUsers.arthur;
 		request(app).post('/login').send({
 			username: myUser.username,

@@ -2,7 +2,7 @@ Maelström
 ===========
 _by @demiurgosoft_
 
-_Version: 0.0.1_
+_Version: 0.0_
 
 [![Build Status](https://travis-ci.org/demiurgosoft/maelstrom.svg)](https://travis-ci.org/demiurgosoft/maelstrom)
 [![Coverage Status](https://coveralls.io/repos/demiurgosoft/maelstrom/badge.svg?branch=master&service=github)](https://coveralls.io/github/demiurgosoft/maelstrom?branch=master)
@@ -21,8 +21,9 @@ Each service can be deployed and tested separately, however, you can simple run 
 ## Services
 Maelström is composed of several [_microservices_](https://github.com/demiurgosoft/maelstrom/tree/master/services) which provides the features with low interdependence between them, this is a list of both, implemented and planned microservices and their current status
 
-|**Service** |**Status** |**Version**|**Description**                  |
-|:----------:|:---------:|:---------:|:--------------------------------|
-|Users		 |In Progress|0.0.3  	 |Users login/signup and sessions  |
+|**Service** |**Status** |**Version**|**Description**                  			|
+|:----------:|:---------:|:---------:|:-----------------------------------------|
+|Users		 |In Progress|0.0.4  	 |Users login/signup and sessions  			|
+|Proxy		 |In Progress|0.0.1		 |Client conection with system with sockets	|
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3

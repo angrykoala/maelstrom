@@ -9,7 +9,7 @@ var dbHandler = require('./dbhandler');
 var config = require('../config/server');
 var path = require('path');
 var jwt = require('jsonwebtoken');
-var expressjwt=require('express-jwt');
+var expressjwt = require('express-jwt');
 
 
 //remove with ejs
@@ -19,7 +19,7 @@ var rootPath = {
 
 module.exports = function(app) {
 	config.setup(app);
-	app.get('/',function(req, res) {
+	app.get('/', function(req, res) {
 		res.send("Maelstrom Users");
 		console.log(req.user);
 	});
@@ -84,15 +84,18 @@ module.exports = function(app) {
 	/*	app.post('/logout', function(req, res) {
 
 		});*/
-	app.use('/restricted/*',expressjwt({secret: config.secret,credentialsRequired:true}));
+	app.use('/restricted/*', expressjwt({
+		secret: config.secret,
+		credentialsRequired: true
+	}));
 	/*app.get('/restricted', function(req,res){
 		//res.redirect('/restricted/dash');
 	});*/
-	app.get('/restricted/remove',function(req,res){
-			//TODO
+	app.get('/restricted/remove', function(req, res) {
+		//TODO
 	});
-	app.get('/restricted/update',function(req,res){
-			//TODO
+	app.get('/restricted/update', function(req, res) {
+		//TODO
 	});
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "maelstrom-users",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Users handler with mongoose and JWT for maelstrom",
   "main": "server.js",
   "directories": {
@@ -43,6 +43,7 @@
     "chai": "^3.3.0",
     "istanbul": "^0.4.0",
     "mocha": "^2.3.3",
-    "supertest": "^1.1.0"
+    "supertest": "^1.1.0",
+    "js-beautify": "^1.5.10"
   }
 }
