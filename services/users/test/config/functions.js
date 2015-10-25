@@ -32,10 +32,6 @@ module.exports = {
 	},
 	setupServer: function(done) {
 		var app = express();
-		app.use(bodyParser.json()); // get information from body
-		app.use(bodyParser.urlencoded({
-			extended: true
-		}));
 		require('../../app/routes.js')(app);
 		server = app.listen(Config.serverPort, function() {
 			done();

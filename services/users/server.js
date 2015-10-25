@@ -9,18 +9,13 @@ Description: Users microsevice for maelstrom using mongoose and JWT
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
 
 var serverConfig = require('./config/server.js');
 var dbConfig = require('./config/database.js');
 var dbHandler = require('./app/dbhandler');
 
-require('./app/routes.js')(app);
 
-app.use(bodyParser.json()); // get information from body
-app.use(bodyParser.urlencoded({
-	extended: true
-}));
+require('./app/routes.js')(app);
 //app.use(express.static(__dirname + '/public'));
 
 mongoose.connect(dbConfig.url);

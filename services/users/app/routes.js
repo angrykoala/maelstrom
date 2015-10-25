@@ -9,6 +9,7 @@ var dbHandler = require('./dbhandler');
 var config = require('../config/server');
 var path = require('path');
 var jwt = require('jsonwebtoken');
+var expressjwt=require('express-jwt');
 
 
 //remove with ejs
@@ -17,12 +18,13 @@ var rootPath = {
 }
 
 module.exports = function(app) {
-	app.get('/', function(req, res) {
+	config.setup(app);
+	app.get('/',function(req, res) {
 		res.send("Maelstrom Users");
+		console.log(req.user);
 	});
 	app.get('/login', function(req, res) {
-		res.sendFile('login.html', rootPath); //check if jwt available
-
+		res.sendFile('login.html', rootPath);
 	});
 	app.post('/login', function(req, res) {
 		dbHandler.findUser(req.body.username, function(err, usr) {
@@ -56,7 +58,7 @@ module.exports = function(app) {
 	});
 	app.post('/signup', function(req, res) {
 		if (!req.body) res.status(400).json({
-			error: "empty forms"
+			error: "empty fohttp://localhost:8080/signuprms"
 		});
 		else {
 			var info = {
@@ -82,6 +84,16 @@ module.exports = function(app) {
 	/*	app.post('/logout', function(req, res) {
 
 		});*/
+	app.use('/restricted/*',expressjwt({secret: config.secret,credentialsRequired:true}));
+	/*app.get('/restricted', function(req,res){
+		//res.redirect('/restricted/dash');
+	});*/
+	app.get('/restricted/remove',function(req,res){
+			//TODO
+	});
+	app.get('/restricted/update',function(req,res){
+			//TODO
+	});
 };
 
 function generateToken(usr) {
