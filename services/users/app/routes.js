@@ -88,13 +88,24 @@ module.exports = function(app) {
 		secret: config.secret,
 		credentialsRequired: true
 	}));
+	app.use(function(err, req, res, next) {
+		if (err.name === 'UnauthorizedError') res.status(401).json({
+			err: "invalid token"
+		});
+
+	});
 	/*app.get('/restricted', function(req,res){
 		//res.redirect('/restricted/dash');
 	});*/
-	app.get('/restricted/remove', function(req, res) {
-		//TODO
+	app.delete('/restricted/remove', function(req, res) {
+		dbHandler.removeUser(req.user.id, function(err) {
+			if (err) res.status(400).json({
+				err: err.toString()
+			});
+			else res.status(200).end();
+		});
 	});
-	app.get('/restricted/update', function(req, res) {
+	app.put('/restricted/update', function(req, res) {
 		//TODO
 	});
 };
@@ -105,11 +116,5 @@ function generateToken(usr) {
 		username: usr.username
 	}, config.secret, {
 		expiresIn: config.tokenExpire
-	});
-}
-
-function verifyToken(token, done) {
-	token.verify(config.secret, function(err, decoded) {
-		done(err, decoded);
 	});
 }

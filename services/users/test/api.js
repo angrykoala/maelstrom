@@ -120,6 +120,52 @@ describe('User API', function() {
 			});
 		});
 	});
+	it('/remove', function(done) {
+		this.timeout(3000);
+		var myUser = testUsers.arthur;
+		var myToken;
+		request(app).post('/login').send({
+			username: myUser.username,
+			password: myUser.password
+		}).expect(200).end(function(err, res) {
+			assert.notOk(err);
+			assert.property(res.body, "token");
+			assert.ok(res.body.token);
+			myToken = res.body.token;
+			checkToken(myToken, myUser);
+			request(app).delete('/restricted/remove').expect(401).end(function(err, res) {
+				assert.notOk(err);
+				assert.ok(res.body.err);
+				User.findOne({
+					username: myUser.username
+				}, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.strictEqual(res.username, myUser.username);
+					//Check stuff
+					request(app).delete('/restricted/remove').set('Authorization', "Bearer " + myToken).expect(200).end(function(err, res) {
+						assert.notOk(err);
+						User.findOne({
+							username: myUser.username
+						}, function(err, res) {
+							assert.notOk(err);
+							assert.notOk(res);
+							request(app).delete('/restricted/remove').set('Authorization', "Bearer " + myToken).expect(400).end(function(err, res) {
+								assert.notOk(err);
+								assert.ok(res.body.err);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+
+	it.skip('/update', function(done) {
+		this.timeout(2500);
+		done();
+	});
 });
 
 

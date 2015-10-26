@@ -66,7 +66,7 @@ var Handler = {
 				result.remove(function(err) {
 					done(err);
 				});
-			} else done(new Error("Remove: user not found or invalid password"));
+			} else done(new Error("Remove: user not found"));
 		});
 	},
 	updateUser: function(userId, changes, done) {
