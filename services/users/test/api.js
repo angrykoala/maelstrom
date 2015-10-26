@@ -143,7 +143,7 @@ describe('User API', function() {
 					assert.ok(res);
 					assert.strictEqual(res.username, myUser.username);
 					//Check stuff
-					request(app).delete('/restricted/remove').set('Authorization', "Bearer " + myToken).expect(200).end(function(err, res) {
+					request(app).delete('/restricted/remove').set('Authorization', "Bearer " + myToken).expect(204).end(function(err, res) {
 						assert.notOk(err);
 						User.findOne({
 							username: myUser.username
@@ -162,17 +162,57 @@ describe('User API', function() {
 		});
 	});
 
-	it.skip('/update', function(done) {
+	it('/update', function(done) {
 		this.timeout(2500);
-		done();
+		var myUser = testUsers.arthur;
+		var myToken;
+		request(app).post('/login').send({
+			username: myUser.username,
+			password: myUser.password
+		}).expect(200).end(function(err, res) {
+			assert.notOk(err);
+			assert.property(res.body, "token");
+			assert.ok(res.body.token);
+			myToken = res.body.token;
+			checkToken(myToken, myUser);
+			request(app).put('/restricted/update').expect(401).send({
+				username: "Marvin"
+			}).end(function(err, res) {
+				assert.notOk(err);
+				assert.ok(res.body.err);
+				request(app).put('/restricted/update').set('Authorization', "Bearer " + myToken).expect(204).send({
+					username: "Marvin"
+				}).end(function(err, res) {
+					assert.notOk(err);
+					User.findOne({
+						username: myUser.username
+					}, function(err, res) {
+						assert.notOk(err);
+						assert.notOk(res);
+						User.findOne({
+							username: "Marvin"
+						}, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.strictEqual(res["email"], myUser.email);
+							done();
+						});
+					});
+				});
+
+
+			});
+
+
+		});
 	});
 });
 
-
+//rule for checking token
 function checkToken(token, usr) {
 	var decoded = jwt.decode(token);
 	assert.property(decoded, "id");
-	assert.property(decoded, "username");
+	//assert.property(decoded, "username");
 	if (usr["id"]) assert.strictEqual(decoded.id, usr.id);
-	assert.strictEqual(decoded.username, usr.username);
+	//assert.strictEqual(decoded.username, usr.username);
 }

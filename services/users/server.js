@@ -14,7 +14,7 @@ var serverConfig = require('./config/server.js');
 var dbConfig = require('./config/database.js');
 var dbHandler = require('./app/dbhandler');
 
-var version=process.env.npm_package_version;
+var version = process.env.npm_package_version;
 
 require('./app/routes.js')(app);
 //app.use(express.static(__dirname + '/public'));
@@ -28,7 +28,7 @@ db.on('error', function(err) {
 
 db.once('open', function() {
 	console.log("Maelström - Users");
-	if(version) console.log("Version "+version);
+	if (version) console.log("Version " + version);
 	console.log("Database opened");
 	//Starts server once database has opened
 	app.listen(serverConfig.port, function() {

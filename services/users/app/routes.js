@@ -102,18 +102,24 @@ module.exports = function(app) {
 			if (err) res.status(400).json({
 				err: err.toString()
 			});
-			else res.status(200).end();
+			else res.status(204).end();
 		});
 	});
 	app.put('/restricted/update', function(req, res) {
-		//TODO
+		dbHandler.updateUser(req.user.id, req.body, function(err) {
+			if (err) res.status(400).json({
+				err: err.toString()
+			});
+			else res.status(204).end();
+		});
 	});
 };
 
+//rule for generating token from user
 function generateToken(usr) {
 	return jwt.sign({
-		id: usr.id,
-		username: usr.username
+		id: usr.id
+		//username: usr.username
 	}, config.secret, {
 		expiresIn: config.tokenExpire
 	});
