@@ -1,37 +1,37 @@
 {
-  "name": "maelstrom",
-  "version": "0.0.1",
-  "description": "economic RTS-MMO ",
-  "main": "index.js",
-  "scripts": {
-    "inst'all": "grunt auto_install",
-    "test": "istanbul cover --report html _mocha services/*/test/",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "clean": "grunt clean"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/demiurgosoft/maelstrom.git"
-  },
-  "keywords": [
-    "mmo",
-    "rts"
-  ],
-  "author": "demiurgosoft <demiurgosoft@hotmail.com>",
-  "license": "AGPL-3.0",
-  "bugs": {
-    "url": "https://github.com/demiurgosoft/maelstrom/issues"
-  },
-  "homepage": "https://github.com/demiurgosoft/maelstrom#readme",
-  "devDependencies": {
-    "coveralls": "^2.11.4",
-    "grunt-auto-install": "^0.3.0",
-    "grunt-contrib-clean": "^0.6.0",
-    "istanbul": "^0.4.0",
-    "mocha": "^2.3.3"
-  },
-  "dependencies": {
-    "grunt": "^0.4.5",
-    "grunt-cli": "^0.1.13"
-  }
+	"name": "maelstrom",
+	"version": "0.0.1",
+	"description": "economic RTS-MMO ",
+	"main": "index.js",
+	"scripts": {
+		"install": "grunt auto_install",
+		"test": "istanbul cover --report html _mocha services/*/test/",
+		"coveralls": "cat ./coverage/lcov.info | coveralls",
+		"clean": "grunt clean"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/demiurgosoft/maelstrom.git"
+	},
+	"keywords": [
+		"mmo",
+		"rts"
+	],
+	"author": "demiurgosoft <demiurgosoft@hotmail.com>",
+	"license": "AGPL-3.0",
+	"bugs": {
+		"url": "https://github.com/demiurgosoft/maelstrom/issues"
+	},
+	"homepage": "https://github.com/demiurgosoft/maelstrom#readme",
+	"devDependencies": {
+		"coveralls": "^2.11.4",
+		"grunt-auto-install": "^0.3.0",
+		"grunt-contrib-clean": "^0.6.0",
+		"istanbul": "^0.4.0",
+		"mocha": "^2.3.3"
+	},
+	"dependencies": {
+		"grunt": "^0.4.5",
+		"grunt-cli": "^0.1.13"
+	}
 }

@@ -12,6 +12,6 @@ services:
 before_script:
     - sleep 5
 script:
-    - npm install && npm test
+    - npm test
 after_success:
     - npm run coveralls

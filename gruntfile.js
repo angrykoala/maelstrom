@@ -22,13 +22,14 @@ module.exports = function(grunt) {
 			}
 		},
 		clean: {
-		node_modules:["node_modules/","services/*/node_modules/"],
-		coverage: ["coverage/","services/*/coverage/","etc/","services/*/etc/"]		
+			node_modules: ["node_modules/", "services/*/node_modules/"],
+			coverage: ["coverage/", "services/*/coverage/", "etc/", "services/*/etc/"],
+			backup: ["*.log", "services/*/*.log"]
 		}
 	});
 
 
-//tasks
+	//tasks
 
 
 	grunt.registerTask('astyle', 'beautify all the project', function() {
