@@ -19,10 +19,7 @@ var rootPath = {
 
 module.exports = function(app) {
 	config.setup(app);
-	app.get('/', function(req, res) {
-		res.send("Maelstrom Users");
-		console.log(req.user);
-	});
+
 	app.get('/login', function(req, res) {
 		res.sendFile('login.html', rootPath);
 	});
@@ -115,7 +112,7 @@ module.exports = function(app) {
 	});
 };
 
-//rule for generating token from user
+//rule for generating users tokens
 function generateToken(usr) {
 	return jwt.sign({
 		id: usr.id

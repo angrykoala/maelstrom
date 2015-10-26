@@ -199,11 +199,7 @@ describe('User API', function() {
 						});
 					});
 				});
-
-
 			});
-
-
 		});
 	});
 });
