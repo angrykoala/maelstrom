@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 	//load plugins
 	grunt.loadNpmTasks('grunt-auto-install');
 	grunt.loadNpmTasks('grunt-contrib-clean');
-
+	grunt.loadNpmTasks('grunt-mocha-test');
 
 	//config
 	grunt.initConfig({
@@ -25,16 +25,20 @@ module.exports = function(grunt) {
 			node_modules: ["node_modules/", "services/*/node_modules/"],
 			coverage: ["coverage/", "services/*/coverage/", "etc/", "services/*/etc/"],
 			backup: ["*.log", "services/*/*.log"]
+		},
+		mochaTest: {
+			options: {
+				reporter: 'spec'
+			},
+			users: {
+				src: ["services/users/test/*.js"]
+			},
+			proxy: {
+				src: ["services/proxy/test/*.js"]
+			}
 		}
 	});
 
-
-	//tasks
-
-
-	grunt.registerTask('astyle', 'beautify all the project', function() {
-		console.log('astyle');
-	});
 
 
 
