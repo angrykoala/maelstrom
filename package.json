@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"install": "grunt auto_install",
-		"test": "istanbul cover --report html _mocha services/*/test/",
+		"test": "istanbul cover _mocha services/*/test/",
 		"coveralls": "cat ./coverage/lcov.info | coveralls",
 		"clean": "grunt clean"
 	},
