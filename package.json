@@ -4,10 +4,10 @@
   "description": "economic RTS-MMO ",
   "main": "index.js",
   "scripts": {
-    "install": "npm --prefix services/*/ install services/*/ && rm -r -f services/*/etc/",
+    "inst'all": "grunt auto_install",
     "test": "istanbul cover --report html _mocha services/*/test/",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "clean": "rm -r -f *~ node_modules coverage && npm --prefix services/*/ run clean services/*/ && rm -r -f services/*/etc/"
+    "clean": "grunt clean"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,13 @@
   "homepage": "https://github.com/demiurgosoft/maelstrom#readme",
   "devDependencies": {
     "coveralls": "^2.11.4",
+    "grunt-auto-install": "^0.3.0",
+    "grunt-contrib-clean": "^0.6.0",
     "istanbul": "^0.4.0",
     "mocha": "^2.3.3"
+  },
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13"
   }
 }

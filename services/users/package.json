@@ -7,10 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "istanbul cover _mocha",
+    "test": "mocha",
     "start": "node server.js",
-    "astyle": "js-beautify --indent-with-tabs --brace-style collapse -r *.js app/*.js app/*/*.js config/*.js test/*.js test/*/*.js",
-    "clean": "rm -r -f *~ node_modules coverage"
+    "astyle": "js-beautify --indent-with-tabs --brace-style collapse -r *.js app/*.js app/*/*.js config/*.js test/*.js test/*/*.js"
   },
   "repository": {
     "type": "git",
@@ -41,7 +40,6 @@
   },
   "devDependencies": {
     "chai": "^3.3.0",
-    "istanbul": "^0.4.0",
     "mocha": "^2.3.3",
     "supertest": "^1.1.0",
     "js-beautify": "^1.5.10"

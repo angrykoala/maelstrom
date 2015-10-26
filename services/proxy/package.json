@@ -2,9 +2,11 @@
   "name": "maelstrom-proxy",
   "version": "0.0.1",
   "description": "Front-End proxy to connect clients and Back-End using Sockets.io",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "istanbul cover _mocha"
+    "test": "echo \"not tested\"",
+    "start": "node server.js",
+    "astyle": "js-beautify --indent-with-tabs --brace-style collapse -r *.js app/*.js app/*/*.js config/*.js test/*.js test/*/*.js",
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,6 @@
   "homepage": "https://github.com/demiurgosoft/maelstrom#readme",
   "devDependencies": {
     "chai": "^3.4.0",
-    "istanbul": "^0.4.0",
     "js-beautify": "^1.5.10",
     "mocha": "^2.3.3",
     "supertest": "^1.1.0"
