@@ -16,6 +16,7 @@ var auxFunc = require('./config/functions.js');
 
 
 describe('User Database Handler', function() {
+	this.timeout(4000);
 	var db;
 	before(function(done) {
 		db = auxFunc.connectDB(done);
@@ -42,7 +43,6 @@ describe('User Database Handler', function() {
 	});
 
 	it('Save User', function(done) {
-		this.timeout(2500);
 		dbHandler.saveUser(testUsers.ford, function(err, usr) {
 			assert.notOk(err, "Error: DB Handler save");
 			assert.instanceOf(usr, User);
@@ -61,7 +61,6 @@ describe('User Database Handler', function() {
 
 	});
 	it('Find User', function(done) {
-		this.timeout(1500);
 		dbHandler.findUser("Arthur", function(err, usr) {
 			assert.notOk(err, "Error: DB Handler find");
 			assert.ok(usr.id);
@@ -89,7 +88,6 @@ describe('User Database Handler', function() {
 		});
 	});
 	it('Find User by Id', function(done) {
-		this.timeout(1000);
 		dbHandler.findUser("Arthur", function(err, usr) {
 			assert.notOk(err, "Error: DB Handler find by ID");
 			assert.ok(usr);
@@ -108,7 +106,6 @@ describe('User Database Handler', function() {
 		});
 	});
 	it('Remove User', function(done) {
-		this.timeout(1000);
 		dbHandler.findUser("Arthur", function(err, usr) {
 			assert.notOk(err, "Error: DB Handler remove user");
 			var id = usr.id;
@@ -127,7 +124,6 @@ describe('User Database Handler', function() {
 		});
 	});
 	it('Update User', function(done) {
-		this.timeout("3000");
 		dbHandler.findUser("arthur", function(err, usr) {
 			assert.notOk(err);
 			assert.ok(usr.id);

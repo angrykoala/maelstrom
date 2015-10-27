@@ -16,6 +16,7 @@ var auxFunc = require('./config/functions.js');
 
 
 describe('User API', function() {
+	this.timeout(4000);
 	var db;
 	var app;
 	before(function(done) {
@@ -45,7 +46,6 @@ describe('User API', function() {
 		});
 	});
 	it('/signup', function(done) {
-		this.timeout(2500);
 		var myUser = testUsers.ford;
 		request(app).post('/signup').send(myUser).expect(201).end(function(err, res) {
 			assert.notOk(err);
@@ -77,7 +77,6 @@ describe('User API', function() {
 		});
 	});
 	it('/login', function(done) {
-		this.timeout(3500);
 		var myUser = testUsers.arthur;
 		request(app).post('/login').send({
 			username: myUser.username,
@@ -120,7 +119,6 @@ describe('User API', function() {
 		});
 	});
 	it('/remove', function(done) {
-		this.timeout(3000);
 		var myUser = testUsers.arthur;
 		var myToken;
 		request(app).post('/login').send({
@@ -162,7 +160,6 @@ describe('User API', function() {
 	});
 
 	it('/update', function(done) {
-		this.timeout(2500);
 		var myUser = testUsers.arthur;
 		var myToken;
 		request(app).post('/login').send({

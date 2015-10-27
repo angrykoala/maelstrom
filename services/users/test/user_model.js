@@ -13,6 +13,7 @@ var testUsers = require('./config/users.js');
 var auxFunc = require('./config/functions.js');
 
 describe('User Model', function() {
+	this.timeout(4000);
 	var db;
 	before(function(done) {
 		db = auxFunc.connectDB(done);
@@ -33,7 +34,6 @@ describe('User Model', function() {
 		});
 	});
 	it('Document creation', function(done) {
-		this.timeout(2500);
 		var userTest;
 		userTest = new User(testUsers.arthur);
 		userTest.save();
@@ -55,8 +55,6 @@ describe('User Model', function() {
 		});
 	});
 	it('Document creation rules', function(done) {
-		this.timeout(2500);
-
 		var correctUsers = 0;
 		for (var key in testUsers) {
 			if (testUsers.hasOwnProperty(key)) {
@@ -72,7 +70,6 @@ describe('User Model', function() {
 		});
 	});
 	it('Document update', function(done) {
-		this.timeout(3000);
 		var newUser = new User(testUsers.arthur);
 		newUser.save();
 		User.update({
@@ -117,7 +114,6 @@ describe('User Model', function() {
 	});
 
 	it('Password Validation', function(done) {
-		this.timeout(2000);
 		var newUser = new User(testUsers.arthur);
 		newUser.save();
 		User.find({
