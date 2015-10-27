@@ -8,8 +8,8 @@ Description: Unit test for user model
 var assert = require('chai').assert;
 var mongoose = require('mongoose');
 
-var User = require('../app/models/user.js');
-var testUsers = require('./config/users.js');
+var User = require('../app/models/user.js'); //user schema
+var testUsers = require('./config/users.js'); //users data for testing
 var auxFunc = require('./config/functions.js');
 
 describe('User Model', function() {

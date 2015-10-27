@@ -22,6 +22,7 @@ function isUser(username, email, done) {
 	});
 }
 
+//Exported handler
 var Handler = {
 	//Find user given username/email
 	findUser: function(username, done) {
@@ -34,6 +35,7 @@ var Handler = {
 			}]
 		}, done);
 	},
+	//Find user by id
 	findById: function(userId, done) {
 		if (!userId) return done(new Error("Not id provided"));
 		else User.findOne({
@@ -59,6 +61,7 @@ var Handler = {
 			}
 		});
 	},
+	//remove the user with given id
 	removeUser: function(userId, done) {
 		this.findById(userId, function(err, result) {
 			if (err) done(err);
@@ -69,6 +72,7 @@ var Handler = {
 			} else done(new Error("Remove: user not found"));
 		});
 	},
+	//update user with given ID, making given changes
 	updateUser: function(userId, changes, done) {
 		if (!userId) done(new Error("No id provided"));
 		else {

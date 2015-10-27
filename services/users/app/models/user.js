@@ -5,27 +5,26 @@ Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Users microsevice for maelstrom using mongoose and JWT
 */
 
-// load the things we need
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
-var dbConfig = require('../../config/database.js');
+var dbConfig = require('../../config/database.js'); //database configuration
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
-	username: {
+	username: { //username must be unique, match user regexp and required
 		type: String,
 		required: true,
 		match: [dbConfig.regexp.user, 'Invalid username'],
 		unique: true
 	},
-	email: {
+	email: {//password must be unique, match pass regexp and required
 		type: String,
 		required: true,
 		match: [dbConfig.regexp.email, 'Invalid mail'],
 		unique: true
 
 	},
-	password: {
+	password: { //password must be a string (hash)
 		type: String,
 		required: true,
 	}
@@ -46,6 +45,7 @@ userSchema.pre('save', function(next) {
 		next();
 	});*/
 });
+//will fire before updating, checking password and hashing it
 userSchema.pre('update', function() {
 	var query = this._update.$set;
 	if (query["password"]) {

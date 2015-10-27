@@ -1,7 +1,7 @@
 var http = require('http');
 var express = require('express');
-var serverConfig = require('./server.js');
-var jwt=require('jsonwebtoken')
+var serverConfig = require('../../config/server.js');
+var jwt=require('jsonwebtoken');
 var server;
 
 //auxiliary functions for testing
@@ -11,13 +11,9 @@ module.exports = {
 		server = http.createServer(app);
 		
 		var io = require('socket.io')(server); //socket io listening to server
-		var socketjwt = require('socketio-jwt');
 		var socketEvents=require('../../app/events.js');
 
-		io.set('authorization',socketjwt.authorize({
-			secret: serverConfig.secret,
-			handshake: true
-		}));
+		serverConfig.setupIO(io);
 
 		io.on('connection', function(socket) {
 			//console.log("Connected " +socket.client.request.decoded_token.username);
