@@ -4,7 +4,7 @@
   "description": "Front-End proxy to connect clients and Back-End using Sockets.io",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
+    "test": "istanbul cover --report none _mocha",
     "start": "node server.js",
     "astyle": "js-beautify --indent-with-tabs --brace-style collapse -r *.js app/*.js app/*/*.js config/*.js test/*.js test/*/*.js package.json"
   },
@@ -30,12 +30,13 @@
     "express-jwt": "^3.1.0",
     "socket.io": "^1.3.7",
     "socketio-jwt": "^4.3.2"
-    },
+  },
   "devDependencies": {
     "chai": "^3.4.0",
+    "istanbul": "^0.4.0",
     "js-beautify": "^1.5.10",
     "mocha": "^2.3.3",
-    "supertest": "^1.1.0",
-    "istanbul": "^0.4.0"
+    "socket.io-client": "^1.3.7",
+    "supertest": "^1.1.0"
   }
 }

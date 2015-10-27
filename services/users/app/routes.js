@@ -115,8 +115,8 @@ module.exports = function(app) {
 //rule for generating users tokens
 function generateToken(usr) {
 	return jwt.sign({
-		id: usr.id
-			//username: usr.username
+		id: usr.id,
+		username: usr.username
 	}, config.secret, {
 		expiresIn: config.tokenExpire
 	});

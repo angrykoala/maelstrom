@@ -10,6 +10,9 @@ var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt-nodejs');
 var dbConfig = require('../../config/database.js');
 
+var jwt = require('jsonwebtoken');
+var assert = require('chai').assert;
+
 var server;
 //auxiliary functions for testing
 module.exports = {
@@ -44,5 +47,12 @@ module.exports = {
 	checkPassword: function(password, hash) {
 		if (!dbConfig.regexp.password.test(password)) return false;
 		else return bcrypt.compareSync(password, hash);
+	},
+	checkToken: function(token, usr) {
+		var decoded = jwt.decode(token);
+		assert.property(decoded, "id");
+		assert.property(decoded, "username");
+		if (usr["id"]) assert.strictEqual(decoded.id, usr.id);
+		assert.strictEqual(decoded.username, usr.username);
 	}
 }
