@@ -17,7 +17,7 @@ var userSchema = mongoose.Schema({
 		match: [dbConfig.regexp.user, 'Invalid username'],
 		unique: true
 	},
-	email: {//password must be unique, match pass regexp and required
+	email: { //password must be unique, match pass regexp and required
 		type: String,
 		required: true,
 		match: [dbConfig.regexp.email, 'Invalid mail'],

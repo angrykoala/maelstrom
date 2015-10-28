@@ -18,7 +18,7 @@ var rootPath = {
 }
 
 module.exports = function(app) {
-	config.setup(app);//setup server
+	config.setup(app); //setup server
 
 	//gets login form
 	app.get('/login', function(req, res) {
@@ -87,7 +87,7 @@ module.exports = function(app) {
 	/*	app.post('/logout', function(req, res) {
 
 		});*/
-		
+
 	//all urls under restricted can only be accesed having a jwt in the header
 	//auth header must be: Bearer (jwt token)
 	app.use('/restricted/*', expressjwt({
@@ -113,7 +113,7 @@ module.exports = function(app) {
 			else res.status(204).end();
 		});
 	});
-	
+
 	//update user with jwt given, changes must be in the body (similar to login or signup)
 	app.put('/restricted/update', function(req, res) {
 		dbHandler.updateUser(req.user.id, req.body, function(err) {

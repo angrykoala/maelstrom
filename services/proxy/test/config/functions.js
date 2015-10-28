@@ -1,7 +1,7 @@
 var http = require('http');
 var express = require('express');
 var serverConfig = require('../../config/server.js');
-var jwt=require('jsonwebtoken');
+var jwt = require('jsonwebtoken');
 var server;
 
 //auxiliary functions for testing
@@ -9,9 +9,9 @@ module.exports = {
 	setupServer: function(done) {
 		var app = express();
 		server = http.createServer(app);
-		
+
 		var io = require('socket.io')(server); //socket io listening to server
-		var socketEvents=require('../../app/events.js');
+		var socketEvents = require('../../app/events.js');
 
 		serverConfig.setupIO(io);
 
@@ -27,13 +27,13 @@ module.exports = {
 	closeServer: function() {
 		if (server) server.close();
 	},
-	generateToken: function(usr,secret) {
-		if(!secret) secret=serverConfig.secret;
-			return jwt.sign({
-				id: usr.id,
-				username: usr.username
-			}, secret, {
-				expiresIn: 3600
-			});
+	generateToken: function(usr, secret) {
+		if (!secret) secret = serverConfig.secret;
+		return jwt.sign({
+			id: usr.id,
+			username: usr.username
+		}, secret, {
+			expiresIn: 3600
+		});
 	}
 }

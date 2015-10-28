@@ -5,10 +5,10 @@ module.exports = {
 	secret: "dontpanic42",
 	amqp: "amqp://localhost",
 	//setup io socket
-	setupIO: function(io){
-		io.set('authorization',socketjwt.authorize({
+	setupIO: function(io) {
+		io.set('authorization', socketjwt.authorize({
 			secret: this.secret,
 			handshake: true
-		}));		
+		}));
 	}
 }

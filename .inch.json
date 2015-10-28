@@ -1,0 +1,6 @@
+{
+    "files":{
+    "included":["services/*/*.js","services/*/*/*.js","services/*/*/*/*.js"],
+    "excluded":["services/*/test/*.js","services/*/test/*/*.js"]    
+    }
+}

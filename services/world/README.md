@@ -2,7 +2,7 @@ Maelström - World
 =================
 _by @demiurgosoft_
 
-Game server to handle maelstrom dynamic world and gme logic
+Game server to handle maelstrom dynamic world and game logic
 
 ## Geting Started
 1. To install the service and necessary dependencies: `npm install --production`

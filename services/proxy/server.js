@@ -15,12 +15,12 @@ var serverConfig = require('./config/server.js');
 var version = process.env.npm_package_version;
 
 var io = require('socket.io')(server); //socket io listening to server
-var socketEvents=require('./app/events.js');
+var socketEvents = require('./app/events.js');
 
 serverConfig.setupIO(io);
 
 io.on('connection', function(socket) {
-	console.log("new connection by "+socket.handshake.decoded_token.username);
+	console.log("new connection by " + socket.handshake.decoded_token.username);
 	socketEvents(socket);
 });
 
