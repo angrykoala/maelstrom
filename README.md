@@ -2,7 +2,7 @@ Maelström
 ===========
 _by @demiurgosoft_
 
-_Version: 0.0.1_
+_Version: 0.1_
 
 [![Build Status](https://travis-ci.org/demiurgosoft/maelstrom.svg)](https://travis-ci.org/demiurgosoft/maelstrom)
 [![Coverage Status](https://coveralls.io/repos/demiurgosoft/maelstrom/badge.svg?branch=master&service=github)](https://coveralls.io/github/demiurgosoft/maelstrom?branch=master)
@@ -24,7 +24,7 @@ Maelström is composed of several [_microservices_](https://github.com/demiurgos
 
 |**Service** |**Status** |**Version**|**Description**                  			|
 |:----------:|:---------:|:---------:|:-----------------------------------------|
-|Users		 |Working	 |0.0.5  	 |Users login/signup and sessions  			|
+|Users		 |Working	 |0.1.0  	 |Users login/signup and sessions  			|
 |Proxy		 |Not Working|0.0.3		 |Client conection with system with sockets	|
 |World       |Not Working|0.0.1      |World server and game logic               |
 
