@@ -124,10 +124,10 @@ describe('User Model', function() {
 			usr[0].validPassword(testUsers.arthur.password, function(err, res) {
 				assert.notOk(err);
 				assert.ok(res);
-				usr[0].validPassword("dontpanic43", function(err, res) {
+				usr[0].validPassword("dontpanic43@#&/", function(err, res) {
 					assert.notOk(err, "Error: Password validation");
 					assert.strictEqual(res, false);
-					usr[0].validPassword("dontpanic42@/&}", function(err, res) {
+					usr[0].validPassword("dontñpanic42@/&}", function(err, res) {
 						assert.ok(err);
 						assert.strictEqual(res, false);
 						done();

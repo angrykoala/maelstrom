@@ -2,7 +2,7 @@
 Name: User Schema
 Project: Maelström - Users
 Author: demiurgosoft <demiurgosoft@hotmail.com>
-Description: Users microsevice for maelstrom using mongoose and JWT
+Description: Users mongoose schema
 */
 
 var mongoose = require('mongoose');
@@ -14,7 +14,7 @@ var userSchema = mongoose.Schema({
 	username: { //username must be unique, match user regexp and required
 		type: String,
 		required: true,
-		match: [dbConfig.regexp.user, 'Invalid username'],
+		match: [dbConfig.regexp.username, 'Invalid username'],
 		unique: true
 	},
 	email: { //password must be unique, match pass regexp and required
