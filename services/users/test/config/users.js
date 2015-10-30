@@ -17,7 +17,7 @@ module.exports = {
 	zaphod: {
 		username: "zaphodbeeblebrox",
 		email: "Zaphod@mail.net",
-		password: "goldenheart",
+		password: "**goldenheart**",
 		correct: true
 	},
 	marvin: {
@@ -49,5 +49,23 @@ module.exports = {
 		email: "earth@DESigner.Com",
 		password: "ilovecoasts",
 		correct: false
+	},
+	whale:{
+		username: "flyingwhale",
+		password: "hello_ground",
+		correct: false
+	},
+	eddie:{
+		username: "eddie_goldenheart",
+		email: "eddie@golden.gal",
+		password: "C*mpl3x_(p~ss&$#wrd)?¿%{}",
+		correct: true		
+	},
+	funnyDoor:{
+		username: "thedoor",
+		email: "door@golden.gal",
+		pasword: "uuuu aaaaah",
+		correct: false
 	}
+	
 };
