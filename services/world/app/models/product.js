@@ -12,11 +12,24 @@ var productSchema = mongoose.Schema({
 	name: {
 		type: String,
 		required: true
-			//todo: regexp 
+		match: [dbConfig.regexp.product, 'Invalid username'],
+		unique: true
 	},
-	basePrice: Number,
-	baseProduction: Number,
-	baseConsume: Number,
+	basePrice: {
+		type: Number,
+		required: true,
+		min: 0.0
+	},
+	baseProduction: {
+		type: Number,
+		required: true,
+		min: 0.0
+	},
+	baseConsume: {
+		type: Number,
+		required: true,
+		min: 0.0
+	},
 });
 
 // create the model for product and expose it to our app

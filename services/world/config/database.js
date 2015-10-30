@@ -8,5 +8,6 @@ module.exports = {
 	}
 	regexp: { //regular expressions to use in database
 		username: /^[a-z0-9_-]{4,25}$/,
+		product: /^[A-Z][a-z\ -]*$/
 	}
 }
