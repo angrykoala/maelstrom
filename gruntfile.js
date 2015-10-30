@@ -35,6 +35,9 @@ module.exports = function(grunt) {
 			},
 			proxy: {
 				src: ["services/proxy/test/*.js"]
+			},
+			world: {
+				src: ["services/world/test/*.js"]
 			}
 		}
 	});

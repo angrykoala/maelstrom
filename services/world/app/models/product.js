@@ -6,13 +6,13 @@ Description: Product mongoose schema
 */
 
 var mongoose = require('mongoose');
-
+var dbConfig = require('../../config/database.js'); //database configuration
 
 var productSchema = mongoose.Schema({
 	name: {
 		type: String,
-		required: true
-		match: [dbConfig.regexp.product, 'Invalid username'],
+		required: true,
+		match: [dbConfig.regexp.productName, 'Invalid product name'],
 		unique: true
 	},
 	basePrice: {
