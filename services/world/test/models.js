@@ -5,19 +5,26 @@ Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Unit test for world models
 */
 
-//var City=require('../app/models/city.js');
-//var Product=require('../app/models/product.js');
-
+var City=require('../app/models/city.js');
+var Product=require('../app/models/product.js');
+var User=require('../app/models/user.js');
+var Ship=require('../app/models/ship.js');
 
 describe('Models',function(){
     this.timeout(4000);
-    it.skip('city model',function(done){
+    it.skip('City model',function(done){
         done();
     });
-    it.skip('product model',function(done){
+    it.skip('Ship model',function(done){
+        done();
+    });
+    it.skip('Product model',function(done){
         done();        
     });
-    it.skip('user model',function(done){
+    it.skip('User ship schema',function(done){
+        done();
+    });
+    it.skip('User model',function(done){
         done();
     });    
 });
