@@ -12,27 +12,27 @@ var dbConfig = require('../../config/database.js'); //database configuration
 
 
 var shipSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        match: [dbConfig.regexp.shipTypeName, 'Invalid ship model name'],
-        unique: true
-    },
-    life: {
-        type: Number,
-        required: true,
-        min: 0.0
-    },
-    speed:{
-        type: Number,
-        required: true,
-        min: 0.0
-    },
-    price:{
-        type: Number,
-        required: true,
-        min: 0.0
-    }
+	name: {
+		type: String,
+		required: true,
+		match: [dbConfig.regexp.shipTypeName, 'Invalid ship model name'],
+		unique: true
+	},
+	life: {
+		type: Number,
+		required: true,
+		min: 0.0
+	},
+	speed: {
+		type: Number,
+		required: true,
+		min: 0.0
+	},
+	price: {
+		type: Number,
+		required: true,
+		min: 0.0
+	}
 });
 
 
