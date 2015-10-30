@@ -36,8 +36,10 @@ describe('User Model', function() {
 	it('Document creation', function(done) {
 		var userTest;
 		userTest = new User(testUsers.arthur);
+		assert.ok(userTest);
 		userTest.save();
 		User.find({}, function(err, res) {
+			assert.notOk(err);
 			assert.strictEqual(res.length, 1);
 			userTest = new User(testUsers.ford);
 			userTest.save();
@@ -60,6 +62,7 @@ describe('User Model', function() {
 			if (testUsers.hasOwnProperty(key)) {
 				if (testUsers[key].correct === true) correctUsers++;
 				var newuser = new User(testUsers[key]);
+				assert.ok(newuser);
 				newuser.save();
 			}
 		}

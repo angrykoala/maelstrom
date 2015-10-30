@@ -50,22 +50,22 @@ module.exports = {
 		password: "ilovecoasts",
 		correct: false
 	},
-	whale:{
+	whale: {
 		username: "flyingwhale",
 		password: "hello_ground",
 		correct: false
 	},
-	eddie:{
+	eddie: {
 		username: "eddie_goldenheart",
 		email: "eddie@golden.gal",
 		password: "C*mpl3x_(p~ss&$#wrd)?¿%{}",
-		correct: true		
+		correct: true
 	},
-	funnyDoor:{
+	funnyDoor: {
 		username: "thedoor",
 		email: "door@golden.gal",
 		pasword: "uuuu aaaaah",
 		correct: false
 	}
-	
+
 };

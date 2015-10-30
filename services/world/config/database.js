@@ -12,7 +12,7 @@ module.exports = {
 		username: /^[a-z0-9_-]{4,25}$/,
 		productName: /^[A-Z][a-z\ -]*$/,
 		cityName: /^[A-Z][a-z\ -]*$/,
-		shipTypeName: /^[A-Z][a-z0-9\ -]*$/,
+		shipTypeName: /^[A-Z][a-z0-9\ -]*[a-z0-9-]$/,
 		shipName: /^[\w][\w-\ ]{2,23}[\w]$/,
 	}
 }

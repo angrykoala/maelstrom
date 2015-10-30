@@ -53,7 +53,7 @@ module.exports = mongoose.Schema({
 			type: mongoose.Schema.ObjectId, //required true?
 			required: true
 		},
-		remaining:{
+		remaining: {
 			type: Number,
 			required: true,
 			min: 0.0

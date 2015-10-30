@@ -32,7 +32,13 @@ var shipSchema = mongoose.Schema({
 		type: Number,
 		required: true,
 		min: 0.0
+	},
+	cargo: {
+		type: Number,
+		required: true,
+		min: 0.0
 	}
+	//ADD crew sometime
 });
 
 

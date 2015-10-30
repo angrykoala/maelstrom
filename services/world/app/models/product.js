@@ -30,6 +30,11 @@ var productSchema = mongoose.Schema({
 		required: true,
 		min: 0.0
 	},
+	weight: {
+		type: Number,
+		required: true,
+		min: 0.0
+	}
 });
 
 // create the model for product and expose it to our app
