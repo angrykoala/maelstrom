@@ -41,10 +41,13 @@ describe('Models', function() {
 	it('Ship model', function(done) {
 		var testShip = new Ship(testData.ships.galleon);
 		assert.ok(testShip);
+		assert.equal(testShip.name,testData.ships.galleon.name);
 		testShip.save();
 		Ship.find({}, function(err, res) {
 			assert.notOk(err);
 			assert.strictEqual(res.length, 1);
+			assert.equal(res[0].name,testData.ships.galleon.name);
+			
 			var correctElements = 0;
 			for (var key in testData.ships) {
 				if (testData.ships.hasOwnProperty(key)) {
@@ -61,10 +64,35 @@ describe('Models', function() {
 			});
 		});
 	});
-	it.skip('City model', function(done) {
-		done();
+	it('Product model', function(done) {
+		var testProduct= new Product(testData.products.bread);
+		assert.ok(testProduct);
+		assert.equal(testProduct.name,testData.products.bread.name);
+		testProduct.save();
+		Product.find({},function(err,res){
+			assert.notOk(err);
+			assert.strictEqual(res.length,1);
+			assert.equal(res[0].name,testData.products.bread.name);
+			
+			var correctElements = 0;
+			for (var key in testData.products) {
+				if (testData.products.hasOwnProperty(key)) {
+					if (testData.products[key].correct === true) correctElements++;
+					var newproduct = new Product(testData.products[key]);
+					assert.ok(newproduct);
+					newproduct.save();
+				}
+			}
+			Product.find({}, function(err, res) {
+				assert.notOk(err);
+				assert.strictEqual(res.length, correctElements);
+				done();
+			});
+			
+			
+		});
 	});
-	it.skip('Product model', function(done) {
+	it.skip('City model', function(done) {
 		done();
 	});
 	it.skip('User ship schema', function(done) {
