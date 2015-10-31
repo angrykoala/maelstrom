@@ -27,8 +27,10 @@ describe('User Database Handler', function() {
 			if (err) done(err);
 			else {
 				var myuser = new User(testUsers.arthur);
-				myuser.save();
-				done();
+				myuser.save(function(err) {
+					assert.notOk(err);
+					done();
+				});
 			}
 		});
 	});

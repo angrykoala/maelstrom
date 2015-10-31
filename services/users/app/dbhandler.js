@@ -55,8 +55,8 @@ var Handler = {
 					email: userInfo.email,
 					password: userInfo.password
 				});
-				newUser.save(function(err) {
-					done(err, newUser);
+				newUser.save(function(err, res) {
+					done(err, res);
 				});
 			}
 		});

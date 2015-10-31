@@ -37,27 +37,36 @@ describe('User Model', function() {
 		var userTest;
 		userTest = new User(testUsers.arthur);
 		assert.ok(userTest);
-		userTest.save();
-		User.find({}, function(err, res) {
+		userTest.save(function(err, res) {
 			assert.notOk(err);
-			assert.strictEqual(res.length, 1);
-			userTest = new User(testUsers.ford);
-			userTest.save();
+			assert.ok(res);
 			User.find({}, function(err, res) {
-				assert.notOk(err, "Error:User.find");
-				assert.strictEqual(res.length, 2);
-				userTest = new User(testUsers.arthur); //inserting same user twice
-				userTest.save();
-				User.find({}, function(err, res) {
-					assert.notOk(err, "Error:User.find");
-					assert.strictEqual(res.length, 2);
-					done();
+				assert.notOk(err);
+				assert.strictEqual(res.length, 1);
+				userTest = new User(testUsers.ford);
+				userTest.save(function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					User.find({}, function(err, res) {
+						assert.notOk(err);
+						assert.strictEqual(res.length, 2);
+						userTest = new User(testUsers.arthur); //inserting same user twice
+						userTest.save(function(err, res) {
+							assert.ok(err);
+							User.find({}, function(err, res) {
+								assert.notOk(err);
+								assert.strictEqual(res.length, 2);
+								done();
+							});
+						});
+					});
 				});
 			});
 		});
 	});
 	it('Document creation rules', function(done) {
 		var correctUsers = 0;
+
 		for (var key in testUsers) {
 			if (testUsers.hasOwnProperty(key)) {
 				if (testUsers[key].correct === true) correctUsers++;
@@ -74,41 +83,43 @@ describe('User Model', function() {
 	});
 	it('Document update', function(done) {
 		var newUser = new User(testUsers.arthur);
-		newUser.save();
-		User.update({
-			_id: newUser._id
-		}, {
-			$set: {
-				username: "newusername"
-			}
-		}, function(err) {
+		newUser.save(function(err, res) {
 			assert.notOk(err);
-			User.find({
+			User.update({
 				_id: newUser._id
-			}, function(err, res) {
+			}, {
+				$set: {
+					username: "newusername"
+				}
+			}, function(err) {
 				assert.notOk(err);
-				assert.strictEqual(res.length, 1);
-				assert.strictEqual(res[0].username, "newusername");
-				assert.strictEqual(auxFunc.checkPassword(testUsers.arthur.password, res[0].password), true);
-				User.update({
+				User.find({
 					_id: newUser._id
-				}, {
-					$set: {
-						password: "newpassword",
-						email: "mynewmail@hotmail.com"
-					}
-				}, function(err) {
+				}, function(err, res) {
 					assert.notOk(err);
-					User.find({
+					assert.strictEqual(res.length, 1);
+					assert.strictEqual(res[0].username, "newusername");
+					assert.strictEqual(auxFunc.checkPassword(testUsers.arthur.password, res[0].password), true);
+					User.update({
 						_id: newUser._id
-					}, function(err, res) {
+					}, {
+						$set: {
+							password: "newpassword",
+							email: "mynewmail@hotmail.com"
+						}
+					}, function(err) {
 						assert.notOk(err);
-						assert.strictEqual(res.length, 1);
-						assert.strictEqual(res[0].email, "mynewmail@hotmail.com");
-						res[0].validPassword("newpassword", function(err, res) {
+						User.find({
+							_id: newUser._id
+						}, function(err, res) {
 							assert.notOk(err);
-							assert.ok(res);
-							done();
+							assert.strictEqual(res.length, 1);
+							assert.strictEqual(res[0].email, "mynewmail@hotmail.com");
+							res[0].validPassword("newpassword", function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								done();
+							});
 						});
 					});
 				});
@@ -118,22 +129,24 @@ describe('User Model', function() {
 
 	it('Password Validation', function(done) {
 		var newUser = new User(testUsers.arthur);
-		newUser.save();
-		User.find({
-			_id: newUser.id
-		}, function(err, usr) {
+		newUser.save(function(err) {
 			assert.notOk(err);
-			assert.strictEqual(usr.length, 1);
-			usr[0].validPassword(testUsers.arthur.password, function(err, res) {
+			User.find({
+				_id: newUser.id
+			}, function(err, usr) {
 				assert.notOk(err);
-				assert.ok(res);
-				usr[0].validPassword("dontpanic43@#&/", function(err, res) {
-					assert.notOk(err, "Error: Password validation");
-					assert.strictEqual(res, false);
-					usr[0].validPassword("dontñpanic42@/&}", function(err, res) {
-						assert.ok(err);
+				assert.strictEqual(usr.length, 1);
+				usr[0].validPassword(testUsers.arthur.password, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					usr[0].validPassword("dontpanic43@#&/", function(err, res) {
+						assert.notOk(err, "Error: Password validation");
 						assert.strictEqual(res, false);
-						done();
+						usr[0].validPassword("dontñpanic42@/&}", function(err, res) {
+							assert.ok(err);
+							assert.strictEqual(res, false);
+							done();
+						});
 					});
 				});
 			});
