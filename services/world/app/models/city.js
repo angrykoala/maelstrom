@@ -16,9 +16,24 @@ var citySchema = mongoose.Schema({
 		match: [dbConfig.regexp.cityName, 'Invalid city name'],
 		unique: true
 	},
-	distance: {
-		type: [mongoose.Schema.Types.ObjectId],
-		required: false,
+	/*distance: [{
+		id:{
+			type: [mongoose.Schema.Types.ObjectId],
+			required: true,
+		},
+		value:{
+			type: Number,
+			required: true,
+			min: 0.0
+		}
+	}],*/
+	position_x:{
+		type: Number,
+		required: true
+	},
+	position_y:{
+		type: Number,
+		required: true		
 	},
 	products: [{
 		product_id: mongoose.Schema.Types.ObjectId,
