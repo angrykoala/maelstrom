@@ -27,7 +27,7 @@ module.exports = {
 			cargo: 0,
 			correct: true
 		},
-		sloop:{
+		sloop: {
 			name: "Sloop",
 			life: -5,
 			price: 20,
@@ -36,8 +36,8 @@ module.exports = {
 			correct: false
 		}
 	},
-	products:{
-		bread:{
+	products: {
+		bread: {
 			name: "Bread",
 			basePrice: 50,
 			baseProduction: 25.3,
@@ -45,7 +45,7 @@ module.exports = {
 			weight: 1,
 			correct: true
 		},
-		bricks:{
+		bricks: {
 			name: "Bricks",
 			basePrice: 20,
 			baseProduction: 5.3,
@@ -53,7 +53,7 @@ module.exports = {
 			weight: 2,
 			correct: false
 		},
-		redmeat:{
+		redmeat: {
 			name: "Red meat",
 			basePrice: 50.2,
 			baseProduction: 24.3,
@@ -61,13 +61,64 @@ module.exports = {
 			weight: 2.2,
 			correct: true
 		},
-		salt:{
+		salt: {
 			name: "salt",
 			basePrice: 100,
 			baseProduction: 2.3,
 			baseConsume: 3,
 			weight: 1,
 			correct: false
-		}	
+		}
+	},
+	cities: {
+		minasTirith: {
+			name: "Minas Tirith",
+			position_x: 10,
+			position_y: 40,
+			products: [{
+				name: "Bread",
+				production: 60,
+				consume: 120,
+				quantity: 589
+			}, {
+				name: "Red meat",
+				production: 40,
+				consume: 20,
+				quantity: 80
+			}],
+			correct: true
+		},
+		isengard: {
+			name: "Isengard",
+			position_x: -5,
+			position_y: -259.5,
+			products: [],
+			correct: true
+		},
+		rivendel: {
+			name: "rivendel",
+			position_x: -5,
+			position_y: -259.5,
+			products: [],
+			correct: false
+		},
+		vale: {
+			name: "Vale",
+			position_x: -5,
+			position_y: -259.5,
+			products: [{
+				name: "Bread",
+				production: 60,
+				consume: 120,
+				quantity: 589
+			}, {
+				name: "Bread",
+				production: 40,
+				consume: 10,
+				quantity: 20
+			}],
+			correct: false
+		},
+
 	}
 }

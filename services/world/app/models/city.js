@@ -27,13 +27,13 @@ var citySchema = mongoose.Schema({
 			min: 0.0
 		}
 	}],*/
-	position_x:{
+	position_x: {
 		type: Number,
 		required: true
 	},
-	position_y:{
+	position_y: {
 		type: Number,
-		required: true		
+		required: true
 	},
 	products: [{
 		product_id: mongoose.Schema.Types.ObjectId,

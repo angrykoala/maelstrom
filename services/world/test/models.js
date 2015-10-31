@@ -41,13 +41,13 @@ describe('Models', function() {
 	it('Ship model', function(done) {
 		var testShip = new Ship(testData.ships.galleon);
 		assert.ok(testShip);
-		assert.equal(testShip.name,testData.ships.galleon.name);
+		assert.equal(testShip.name, testData.ships.galleon.name);
 		testShip.save();
 		Ship.find({}, function(err, res) {
 			assert.notOk(err);
 			assert.strictEqual(res.length, 1);
-			assert.equal(res[0].name,testData.ships.galleon.name);
-			
+			assert.equal(res[0].name, testData.ships.galleon.name);
+
 			var correctElements = 0;
 			for (var key in testData.ships) {
 				if (testData.ships.hasOwnProperty(key)) {
@@ -65,15 +65,15 @@ describe('Models', function() {
 		});
 	});
 	it('Product model', function(done) {
-		var testProduct= new Product(testData.products.bread);
+		var testProduct = new Product(testData.products.bread);
 		assert.ok(testProduct);
-		assert.equal(testProduct.name,testData.products.bread.name);
+		assert.equal(testProduct.name, testData.products.bread.name);
 		testProduct.save();
-		Product.find({},function(err,res){
+		Product.find({}, function(err, res) {
 			assert.notOk(err);
-			assert.strictEqual(res.length,1);
-			assert.equal(res[0].name,testData.products.bread.name);
-			
+			assert.strictEqual(res.length, 1);
+			assert.equal(res[0].name, testData.products.bread.name);
+
 			var correctElements = 0;
 			for (var key in testData.products) {
 				if (testData.products.hasOwnProperty(key)) {
@@ -88,12 +88,51 @@ describe('Models', function() {
 				assert.strictEqual(res.length, correctElements);
 				done();
 			});
-			
-			
 		});
 	});
-	it.skip('City model', function(done) {
-		done();
+	it('City model', function(done) {
+		var testProduct = new Product(testData.products.bread);
+		assert.ok(testProduct);
+		testProduct.save(function(err, res) {
+			assert.notOk(err);
+			testProduct = new Product(testData.products.redmeat);
+			assert.ok(testProduct);
+			testProduct.save(function(err, res) {
+				assert.notOk(err);
+				auxFunc.setCityProducts(function() {
+
+					var testCity = new City(testData.cities.minasTirith);
+					assert.ok(testCity);
+					testCity.save(function(err, res) {
+						assert.notOk(err);
+						assert.strictEqual(res.name, testData.cities.minasTirith.name);
+						assert.strictEqual(res.products.length, 2);
+
+						var correctElements = 0;
+						for (var key in testData.cities) {
+							if (testData.cities.hasOwnProperty(key)) {
+								if (testData.cities[key].correct === true) correctElements++;
+								var newcity = new City(testData.cities[key]);
+								assert.ok(newcity);
+								newcity.save();
+							}
+						}
+						City.find({}, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res.length, correctElements);
+							done();
+						});
+
+
+
+
+					});
+
+
+
+				});
+			});
+		});
 	});
 	it.skip('User ship schema', function(done) {
 		done();
