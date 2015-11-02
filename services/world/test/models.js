@@ -6,6 +6,7 @@ Description: Unit test for world models
 */
 
 var assert = require('chai').assert;
+var async = require('async');
 var mongoose = require('mongoose');
 
 var auxFunc = require('./config/functions.js');
@@ -51,19 +52,24 @@ describe('Models', function() {
 				assert.equal(res[0].name, testData.ships.galleon.name);
 
 				var correctElements = 0;
-				for (var key in testData.ships) {
-					if (testData.ships.hasOwnProperty(key)) {
-						if (testData.ships[key].correct === true) correctElements++;
-						var newship = new Ship(testData.ships[key]);
-						assert.ok(newship);
-						newship.save();
-					}
-				}
-				Ship.find({}, function(err, res) {
-					assert.notOk(err);
-					assert.strictEqual(res.length, correctElements);
-					done();
-				});
+				async.each(Object.keys(testData.ships), function(key, callback) {
+						if (testData.ships.hasOwnProperty(key)) {
+							if (testData.ships[key].correct === true) correctElements++;
+							var newship = new Ship(testData.ships[key]);
+							assert.ok(newship);
+							newship.save(function() {
+								callback();
+							});
+						}
+					},
+					function(err) {
+						assert.notOk(err);
+						Ship.find({}, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res.length, correctElements);
+							done();
+						});
+					});
 			});
 		});
 	});
@@ -80,18 +86,22 @@ describe('Models', function() {
 				assert.equal(res[0].name, testData.products.bread.name);
 
 				var correctElements = 0;
-				for (var key in testData.products) {
+				async.each(Object.keys(testData.products), function(key, callback) {
 					if (testData.products.hasOwnProperty(key)) {
 						if (testData.products[key].correct === true) correctElements++;
 						var newproduct = new Product(testData.products[key]);
 						assert.ok(newproduct);
-						newproduct.save();
+						newproduct.save(function() {
+							callback();
+						});
 					}
-				}
-				Product.find({}, function(err, res) {
+				}, function(err) {
 					assert.notOk(err);
-					assert.strictEqual(res.length, correctElements);
-					done();
+					Product.find({}, function(err, res) {
+						assert.notOk(err);
+						assert.strictEqual(res.length, correctElements);
+						done();
+					});
 				});
 			});
 		});
@@ -105,18 +115,22 @@ describe('Models', function() {
 			assert.strictEqual(res.products.length, 2);
 
 			var correctElements = 0;
-			for (var key in testData.cities) {
+			async.each(Object.keys(testData.cities), function(key, callback) {
 				if (testData.cities.hasOwnProperty(key)) {
 					if (testData.cities[key].correct === true) correctElements++;
 					var newcity = new City(testData.cities[key]);
 					assert.ok(newcity);
-					newcity.save();
+					newcity.save(function(err) {
+						callback();
+					});
 				}
-			}
-			City.find({}, function(err, res) {
+			}, function(err) {
 				assert.notOk(err);
-				assert.strictEqual(res.length, correctElements);
-				done();
+				City.find({}, function(err, res) {
+					assert.notOk(err);
+					assert.strictEqual(res.length, correctElements);
+					done();
+				});
 			});
 		});
 	});
@@ -134,22 +148,23 @@ describe('Models', function() {
 				assert.equal(res[0].name, testData.userShips.blackPearl.name);
 
 				var correctElements = 0;
-				for (var key in testData.userShips) {
+				async.each(Object.keys(testData.userShips), function(key, callback) {
 					if (testData.userShips.hasOwnProperty(key)) {
 						if (testData.userShips[key].correct === true) correctElements++;
 						var newUserShip = new UserShip(testData.userShips[key]);
 						assert.ok(newUserShip);
-						newUserShip.save(function(err, res) {});
+						newUserShip.save(function(err, res) {
+							callback();
+						});
 					}
-				}
-				//change this timeout with async
-				setTimeout(function() {
+				}, function(err) {
+					assert.notOk(err);
 					UserShip.find({}, function(err, res) {
 						assert.notOk(err);
 						assert.strictEqual(res.length, correctElements);
 						done();
 					});
-				}, 500);
+				});
 			});
 		});
 	});
@@ -170,22 +185,23 @@ describe('Models', function() {
 
 
 				var correctElements = 0;
-				for (var key in testData.users) {
+				async.each(Object.keys(testData.users), function(key, callback) {
 					if (testData.users.hasOwnProperty(key)) {
 						if (testData.users[key].correct === true) correctElements++;
 						var newUser = new User(testData.users[key]);
 						assert.ok(newUser);
-						newUser.save(function(err, res) {});
+						newUser.save(function(err, res) {
+							callback();
+						});
 					}
-				}
-				//change this timeout with async
-				setTimeout(function() {
+				}, function(err) {
+					assert.notOk(err);
 					User.find({}, function(err, res) {
 						assert.notOk(err);
 						assert.strictEqual(res.length, correctElements);
 						done();
 					});
-				}, 500);
+				});
 			});
 		});
 	});

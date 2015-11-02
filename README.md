@@ -24,8 +24,8 @@ Maelström is composed of several [_microservices_](https://github.com/demiurgos
 
 |**Service** |**Status** |**Version**|**Description**                  			|
 |:----------:|:---------:|:---------:|:-----------------------------------------|
-|Users		 |Working	 |0.1.2  	 |Users login/signup and sessions  			|
+|Users		 |Working	 |0.1.3  	 |Users login/signup and sessions  			|
 |Proxy		 |Not Working|0.0.3		 |Client conection with system with sockets	|
-|World       |Not Working|0.0.4      |World server and game logic               |
+|World       |Not Working|0.0.5      |World server and game logic               |
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3

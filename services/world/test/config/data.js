@@ -36,6 +36,14 @@ module.exports = {
 			speed: 22,
 			cargo: 2,
 			correct: false
+		},
+		space: {
+			name: "Space Ship ",
+			life: 100,
+			price: 200,
+			speed: 4.5,
+			cargo: 200,
+			correct: false
 		}
 	},
 	products: {
@@ -105,7 +113,7 @@ module.exports = {
 			correct: false
 		},
 		vale: {
-			name: "Vale",
+			name: "Vale ",
 			position_x: -5,
 			position_y: -259.5,
 			products: [{
@@ -113,11 +121,6 @@ module.exports = {
 				production: 60,
 				consume: 120,
 				quantity: 589
-			}, {
-				id: commonId,
-				production: 40,
-				consume: 10,
-				quantity: 20
 			}],
 			correct: false
 		}
@@ -229,7 +232,7 @@ module.exports = {
 			money: 20,
 			correct: false
 		},
-		thecaptain:{
+		thecaptain: {
 			_id: mongoose.Types.ObjectId(),
 			money: 1000,
 			ships: [{
@@ -239,7 +242,7 @@ module.exports = {
 				products: [],
 				city: mongoose.Types.ObjectId(),
 			}],
-			correct:false
+			correct: false
 		}
 	}
 }

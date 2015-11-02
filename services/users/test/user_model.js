@@ -7,6 +7,7 @@ Description: Unit test for user model
 
 var assert = require('chai').assert;
 var mongoose = require('mongoose');
+var async=require('async');
 
 var User = require('../app/models/user.js'); //user schema
 var testUsers = require('./config/users.js'); //users data for testing
@@ -63,20 +64,23 @@ describe('User Model', function() {
 	});
 	it('Document creation rules', function(done) {
 		var correctUsers = 0;
-
-		for (var key in testUsers) {
+		async.each(Object.keys(testUsers), function(key, callback) {
 			if (testUsers.hasOwnProperty(key)) {
 				if (testUsers[key].correct === true) correctUsers++;
 				var newuser = new User(testUsers[key]);
 				assert.ok(newuser);
-				newuser.save();
+				newuser.save(function(){
+					callback();
+				});
 			}
-		}
+		},function(err){
+			assert.notOk(err);
 		User.find({}, function(err, res) {
 			assert.notOk(err, "Error: User find");
 			assert.strictEqual(res.length, correctUsers);
 			done();
 		});
+	});
 	});
 	it('Document update', function(done) {
 		var newUser = new User(testUsers.arthur);
