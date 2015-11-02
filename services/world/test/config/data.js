@@ -1,5 +1,6 @@
 //Data for testing
 //correct value indicates if data is correct
+var mongoose = require('mongoose');
 
 module.exports = {
 	ships: {
@@ -118,7 +119,71 @@ module.exports = {
 				quantity: 20
 			}],
 			correct: false
+		}
+	},
+	userShips: {
+		blackPearl: {
+			name: "Black Pearl",
+			model: mongoose.Types.ObjectId(),
+			life: 110,
+			speed: 35,
+			products: [],
+			city: mongoose.Types.ObjectId(),
+			correct: true
 		},
-
+		flyingdutchman: {
+			name: "flying_dutchman",
+			model: mongoose.Types.ObjectId(),
+			life: 100,
+			speed: 25,
+			products: [{
+				id: mongoose.Types.ObjectId(),
+				quantity: 10
+			}],
+			status: "traveling",
+			travelStatus: {
+				origin: mongoose.Types.ObjectId(),
+				destiny: mongoose.Types.ObjectId(),
+				remaining: 10
+			},
+			correct: true
+		},
+		goingMerry: {
+			name: "goingmerry",
+			model: mongoose.Types.ObjectId(),
+			life: 100,
+			speed: 25,
+			products: [{
+				id: mongoose.Types.ObjectId(),
+				quantity: 0
+			}],
+			status: "flying",
+			travelStatus: {
+				origin: mongoose.Types.ObjectId(),
+				destiny: mongoose.Types.ObjectId(),
+				remaining: 10
+			},
+			correct: false
+		},
+		olimpic: {
+			name: "Olimpic ",
+			model: mongoose.Types.ObjectId(),
+			life: 110,
+			speed: 35,
+			products: [],
+			city: mongoose.Types.ObjectId(),
+			correct: false
+		},
+		roger: {
+			name: "Roger",
+			model: mongoose.Types.ObjectId(),
+			life: 110,
+			speed: 35,
+			products: [{
+				id: mongoose.Types.ObjectId()
+			}],
+			city: mongoose.Types.ObjectId(),
+			correct: false
+		}
 	}
 }

@@ -29,33 +29,39 @@ module.exports = mongoose.Schema({
 		required: true,
 		min: 0.0
 	},
-	products: [{
-		id: {
-			type: mongoose.Schema.ObjectId,
-			required: true
-		},
-		quantity: {
-			type: Number,
-			required: true,
-			min: 0.0
-		}
-	}], //TODO
+	products: {
+		type: [{
+			id: {
+				type: mongoose.Schema.ObjectId,
+				required: true
+			},
+			quantity: {
+				type: Number,
+				required: true,
+				min: 0.0
+			}
+		}],
+		//required: true,
+		default: []
+	},
 	status: {
-		type: String
-			//"traveling,returning,docked,repairing",
+		type: String,
+		//required: true,
+		enum: ["traveling", "returning", "docked", "repairing"],
+		default: "docked"
 	},
 	travelStatus: {
 		origin: {
-			type: mongoose.Schema.ObjectId, //required true?
-			required: true
+			type: mongoose.Schema.ObjectId,
+		//	required: true
 		},
 		destiny: {
-			type: mongoose.Schema.ObjectId, //required true?
-			required: true
+			type: mongoose.Schema.ObjectId,
+		//	required: true
 		},
 		remaining: {
 			type: Number,
-			required: true,
+		//	required: true,
 			min: 0.0
 		}
 	},

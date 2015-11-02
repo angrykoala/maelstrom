@@ -14,6 +14,7 @@ var City = require('../app/models/city.js');
 var Product = require('../app/models/product.js');
 var User = require('../app/models/user.js');
 var Ship = require('../app/models/ship.js');
+var UserShip = mongoose.model('user_ship_test', require('../app/models/user_ship.js'));
 
 var testData = require('./config/data.js');
 
@@ -25,17 +26,17 @@ describe('Models', function() {
 	});
 	beforeEach(function(done) {
 		auxFunc.clearDB(function(err) {
-			if (err) done(err);
-			else done();
+			assert.notOk(err);
+			done();
 		});
 	});
 	after(function(done) {
 		auxFunc.clearDB(function(err) {
-			if (err) done(err);
-			else {
-				db.close();
-				done();
-			}
+			assert.notOk(err);
+				UserShip.remove({}, function(err) {
+				assert.notOk(err);
+				db.close(done);
+			});
 		});
 	});
 	it('Ship model', function(done) {
@@ -96,6 +97,7 @@ describe('Models', function() {
 		});
 	});
 	it('City model', function(done) {
+		//var id = mongoose.Types.ObjectId();
 		var testProduct = new Product(testData.products.bread);
 		assert.ok(testProduct);
 		testProduct.save(function(err, res) {
@@ -127,20 +129,45 @@ describe('Models', function() {
 							assert.strictEqual(res.length, correctElements);
 							done();
 						});
-
-
-
-
 					});
-
-
-
 				});
 			});
 		});
 	});
-	it.skip('User ship schema', function(done) {
-		done();
+	it('User ship schema', function(done) {
+		var testUserShip = new UserShip(testData.userShips.blackPearl);
+		assert.ok(testUserShip);
+		assert.equal(testUserShip.name, testData.userShips.blackPearl.name);
+		testUserShip.save(function(err, res) {
+			assert.notOk(err);
+			assert.ok(res.id);
+			assert.equal(res.name, testData.userShips.blackPearl.name);
+			UserShip.find({}, function(err, res) {
+				assert.notOk(err);
+				assert.strictEqual(res.length, 1);
+				assert.equal(res[0].name, testData.userShips.blackPearl.name);
+
+				var correctElements = 0;
+				for (var key in testData.userShips) {
+					if (testData.userShips.hasOwnProperty(key)) {
+						if (testData.userShips[key].correct === true) correctElements++;
+						var newUserShip = new UserShip(testData.userShips[key]);
+						assert.ok(newUserShip);
+						newUserShip.save(function(err,res){
+						});
+					}
+				}
+				//change this timeout with async
+				setTimeout(function() {
+					assert.notOk(err);
+				UserShip.find({}, function(err, res) {
+					assert.notOk(err);
+					assert.strictEqual(res.length, correctElements);
+					done();
+				});
+			}, 500);
+			});
+		});
 	});
 	it.skip('User model', function(done) {
 		done();
