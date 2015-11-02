@@ -53,15 +53,15 @@ module.exports = mongoose.Schema({
 	travelStatus: {
 		origin: {
 			type: mongoose.Schema.ObjectId,
-		//	required: true
+			//	required: true
 		},
 		destiny: {
 			type: mongoose.Schema.ObjectId,
-		//	required: true
+			//	required: true
 		},
 		remaining: {
 			type: Number,
-		//	required: true,
+			//	required: true,
 			min: 0.0
 		}
 	},

@@ -33,7 +33,7 @@ describe('Models', function() {
 	after(function(done) {
 		auxFunc.clearDB(function(err) {
 			assert.notOk(err);
-				UserShip.remove({}, function(err) {
+			UserShip.remove({}, function(err) {
 				assert.notOk(err);
 				db.close(done);
 			});
@@ -97,40 +97,27 @@ describe('Models', function() {
 		});
 	});
 	it('City model', function(done) {
-		//var id = mongoose.Types.ObjectId();
-		var testProduct = new Product(testData.products.bread);
-		assert.ok(testProduct);
-		testProduct.save(function(err, res) {
+
+		var testCity = new City(testData.cities.minasTirith);
+		assert.ok(testCity);
+		testCity.save(function(err, res) {
 			assert.notOk(err);
-			testProduct = new Product(testData.products.redmeat);
-			assert.ok(testProduct);
-			testProduct.save(function(err, res) {
+			assert.strictEqual(res.name, testData.cities.minasTirith.name);
+			assert.strictEqual(res.products.length, 2);
+
+			var correctElements = 0;
+			for (var key in testData.cities) {
+				if (testData.cities.hasOwnProperty(key)) {
+					if (testData.cities[key].correct === true) correctElements++;
+					var newcity = new City(testData.cities[key]);
+					assert.ok(newcity);
+					newcity.save();
+				}
+			}
+			City.find({}, function(err, res) {
 				assert.notOk(err);
-				auxFunc.setCityProducts(function() {
-
-					var testCity = new City(testData.cities.minasTirith);
-					assert.ok(testCity);
-					testCity.save(function(err, res) {
-						assert.notOk(err);
-						assert.strictEqual(res.name, testData.cities.minasTirith.name);
-						assert.strictEqual(res.products.length, 2);
-
-						var correctElements = 0;
-						for (var key in testData.cities) {
-							if (testData.cities.hasOwnProperty(key)) {
-								if (testData.cities[key].correct === true) correctElements++;
-								var newcity = new City(testData.cities[key]);
-								assert.ok(newcity);
-								newcity.save();
-							}
-						}
-						City.find({}, function(err, res) {
-							assert.notOk(err);
-							assert.strictEqual(res.length, correctElements);
-							done();
-						});
-					});
-				});
+				assert.strictEqual(res.length, correctElements);
+				done();
 			});
 		});
 	});
@@ -153,19 +140,18 @@ describe('Models', function() {
 						if (testData.userShips[key].correct === true) correctElements++;
 						var newUserShip = new UserShip(testData.userShips[key]);
 						assert.ok(newUserShip);
-						newUserShip.save(function(err,res){
-						});
+						newUserShip.save(function(err, res) {});
 					}
 				}
 				//change this timeout with async
 				setTimeout(function() {
 					assert.notOk(err);
-				UserShip.find({}, function(err, res) {
-					assert.notOk(err);
-					assert.strictEqual(res.length, correctElements);
-					done();
-				});
-			}, 500);
+					UserShip.find({}, function(err, res) {
+						assert.notOk(err);
+						assert.strictEqual(res.length, correctElements);
+						done();
+					});
+				}, 500);
 			});
 		});
 	});

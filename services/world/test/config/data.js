@@ -1,6 +1,7 @@
 //Data for testing
 //correct value indicates if data is correct
 var mongoose = require('mongoose');
+var commonId=mongoose.Types.ObjectId();
 
 module.exports = {
 	ships: {
@@ -77,12 +78,12 @@ module.exports = {
 			position_x: 10,
 			position_y: 40,
 			products: [{
-				name: "Bread",
+				id: mongoose.Types.ObjectId(),
 				production: 60,
 				consume: 120,
 				quantity: 589
 			}, {
-				name: "Red meat",
+				id: mongoose.Types.ObjectId(),
 				production: 40,
 				consume: 20,
 				quantity: 80
@@ -108,12 +109,12 @@ module.exports = {
 			position_x: -5,
 			position_y: -259.5,
 			products: [{
-				name: "Bread",
+				id: commonId,
 				production: 60,
 				consume: 120,
 				quantity: 589
 			}, {
-				name: "Bread",
+				id: commonId,
 				production: 40,
 				consume: 10,
 				quantity: 20
