@@ -13,6 +13,6 @@ module.exports = {
 		productName: /^[A-Z][a-z\ -]*$/,
 		cityName: /^[A-Z][A-Za-z -]*$/,
 		shipTypeName: /^[A-Z][a-z0-9\ -]*[a-z0-9-]$/,
-		shipName: /^[\w][\w-\ ]{2,23}[\w]$/,
+		shipName: /^[a-zA-Z][\w-\ ]{2,23}[\w]$/,
 	}
 }

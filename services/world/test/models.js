@@ -97,7 +97,6 @@ describe('Models', function() {
 		});
 	});
 	it('City model', function(done) {
-
 		var testCity = new City(testData.cities.minasTirith);
 		assert.ok(testCity);
 		testCity.save(function(err, res) {
@@ -145,7 +144,6 @@ describe('Models', function() {
 				}
 				//change this timeout with async
 				setTimeout(function() {
-					assert.notOk(err);
 					UserShip.find({}, function(err, res) {
 						assert.notOk(err);
 						assert.strictEqual(res.length, correctElements);
@@ -155,7 +153,40 @@ describe('Models', function() {
 			});
 		});
 	});
-	it.skip('User model', function(done) {
-		done();
+	it('User model', function(done) {
+		var testUser = new User(testData.users.arthur);
+		var testUser2 = new User(testData.users.ford);
+
+		assert.ok(testUser);
+		assert.equal(testUser._id, testData.users.arthur._id);
+		testUser.save(function(err, res) {
+			assert.notOk(err);
+			assert.equal(res.id, testData.users.arthur._id);
+			assert.strictEqual(res.ships.length, 1);
+			User.find({}, function(err, res) {
+				assert.notOk(err);
+				assert.strictEqual(res.length, 1);
+				assert.equal(res[0].id, testData.users.arthur._id);
+
+
+				var correctElements = 0;
+				for (var key in testData.users) {
+					if (testData.users.hasOwnProperty(key)) {
+						if (testData.users[key].correct === true) correctElements++;
+						var newUser = new User(testData.users[key]);
+						assert.ok(newUser);
+						newUser.save(function(err, res) {});
+					}
+				}
+				//change this timeout with async
+				setTimeout(function() {
+					User.find({}, function(err, res) {
+						assert.notOk(err);
+						assert.strictEqual(res.length, correctElements);
+						done();
+					});
+				}, 500);
+			});
+		});
 	});
 });

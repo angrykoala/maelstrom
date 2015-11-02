@@ -1,10 +1,10 @@
 {
 	"name": "maelstrom-world",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Game server to handle maelstrom dynamic world",
 	"main": "server.js",
 	"scripts": {
-		"test": "istanbul cover --report none mocha",
+		"test": "istanbul cover --report none _mocha",
 		"start": "node server.js",
 		"astyle": "js-beautify --indent-with-tabs --brace-style collapse -r *.js app/*.js app/*/*.js config/*.js test/*.js test/*/*.js package.json"
 	},

@@ -1,7 +1,7 @@
 //Data for testing
 //correct value indicates if data is correct
 var mongoose = require('mongoose');
-var commonId=mongoose.Types.ObjectId();
+var commonId = mongoose.Types.ObjectId();
 
 module.exports = {
 	ships: {
@@ -185,51 +185,61 @@ module.exports = {
 			}],
 			city: mongoose.Types.ObjectId(),
 			correct: false
+		},
+		davy: {
+			name: "Davy Jones",
+			life: 110,
+			speed: 35,
+			city: mongoose.Types.ObjectId(),
+			correct: false
 		}
 	},
-	users:{
-		arthur:{
-			_id:mongoose.Types.ObjectId(),
-			money:100,
-			ships:[
-				{
-					name: "Black Pearl",
-					model: mongoose.Types.ObjectId(),
-					life: 110,
-					speed: 35,
-					products: [],
-					city: mongoose.Types.ObjectId(),
-					correct: true
-				}],
-				correct:true
-			
+	users: {
+		arthur: {
+			_id: mongoose.Types.ObjectId(),
+			money: 100,
+			ships: [{
+				name: "Black Pearl",
+				model: mongoose.Types.ObjectId(),
+				life: 110,
+				speed: 35,
+				products: [],
+				city: mongoose.Types.ObjectId(),
+				correct: true
+			}],
+			correct: true
+
 		},
-		ford:{
-			_id:commonId,
-			money:100,	
-			correct:true
+		ford: {
+			_id: mongoose.Types.ObjectId(),
+			money: 100,
+			correct: true
 		},
-		captainCrunch:{
-			id:mongoose.Types.ObjectId(),
-			money:100,	
-			correct:true
+		captainCrunch: {
+			id: mongoose.Types.ObjectId(),
+			money: 100,
+			correct: false
 		},
-		jackSparrow:{
-			_id:commonId,
-			money:20,
-			correct:false			
+		blackBeard: {
+			_id: mongoose.Types.ObjectId(),
+			money: -20,
+			correct: false
 		},
-		blackBeard:{
-			_id:mongoose.Types.ObjectId(),
-			money:-20,
-			correct:false			
+		strawHat: {
+			money: 20,
+			correct: false
 		},
-		strawHat:{
-			money:20,
-			correct:false			
+		thecaptain:{
+			_id: mongoose.Types.ObjectId(),
+			money: 1000,
+			ships: [{
+				name: "My Boat", //no life (required)
+				model: mongoose.Types.ObjectId(),
+				speed: 35,
+				products: [],
+				city: mongoose.Types.ObjectId(),
+			}],
+			correct:false
 		}
-		
-		
-		
 	}
 }
