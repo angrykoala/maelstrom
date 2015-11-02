@@ -10,14 +10,20 @@ var dbConfig = require('../../config/database.js'); //database configuration
 var Ship = require('./user_ship.js');
 
 var userSchema = mongoose.Schema({
-	//IMPORTANT: set id manually
+	_id:{
+		type: mongoose.Schema.ObjectId,
+		required: true,
+		unique:true
+	},
 	money: {
 		type: Number,
 		required: true,
 		min: 0.0
 	},
-	ships: [Ship]
-
+	ships: {
+		type:[Ship],
+		default: []
+}
 });
 
 

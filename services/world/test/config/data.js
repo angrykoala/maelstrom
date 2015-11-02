@@ -186,5 +186,50 @@ module.exports = {
 			city: mongoose.Types.ObjectId(),
 			correct: false
 		}
+	},
+	users:{
+		arthur:{
+			_id:mongoose.Types.ObjectId(),
+			money:100,
+			ships:[
+				{
+					name: "Black Pearl",
+					model: mongoose.Types.ObjectId(),
+					life: 110,
+					speed: 35,
+					products: [],
+					city: mongoose.Types.ObjectId(),
+					correct: true
+				}],
+				correct:true
+			
+		},
+		ford:{
+			_id:commonId,
+			money:100,	
+			correct:true
+		},
+		captainCrunch:{
+			id:mongoose.Types.ObjectId(),
+			money:100,	
+			correct:true
+		},
+		jackSparrow:{
+			_id:commonId,
+			money:20,
+			correct:false			
+		},
+		blackBeard:{
+			_id:mongoose.Types.ObjectId(),
+			money:-20,
+			correct:false			
+		},
+		strawHat:{
+			money:20,
+			correct:false			
+		}
+		
+		
+		
 	}
 }
