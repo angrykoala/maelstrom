@@ -20,17 +20,14 @@ describe('User Model', function() {
 	});
 	beforeEach(function(done) {
 		auxFunc.clearUsers(function(err) {
-			if (err) done(err);
-			else done();
+			assert.notOk(err);
+			done();
 		});
 	});
 	after(function(done) {
 		auxFunc.clearUsers(function(err) {
-			if (err) done(err);
-			else {
-				db.close();
-				done();
-			}
+			assert.notOk(err);
+			db.close(done);
 		});
 	});
 	it('Document creation', function(done) {

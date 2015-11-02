@@ -24,23 +24,18 @@ describe('User Database Handler', function() {
 	});
 	beforeEach(function(done) {
 		auxFunc.clearUsers(function(err) {
-			if (err) done(err);
-			else {
-				var myuser = new User(testUsers.arthur);
-				myuser.save(function(err) {
-					assert.notOk(err);
-					done();
-				});
-			}
+			assert.notOk(err);
+			var myuser = new User(testUsers.arthur);
+			myuser.save(function(err) {
+				assert.notOk(err);
+				done();
+			});
 		});
 	});
 	after(function(done) {
 		auxFunc.clearUsers(function(err) {
-			if (err) done(err);
-			else {
-				db.close();
-				done();
-			}
+			assert.notOk(err);
+			db.close(done);
 		});
 	});
 

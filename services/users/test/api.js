@@ -27,22 +27,19 @@ describe('User API', function() {
 	});
 	beforeEach(function(done) {
 		auxFunc.clearUsers(function(err) {
-			if (err) done(err);
-			else {
-				var myuser = new User(testUsers.arthur);
-				myuser.save();
+			assert.notOk(err);
+			var myuser = new User(testUsers.arthur);
+			myuser.save(function(err, res) {
+				assert.notOk(err);
 				done();
-			}
+			});
 		});
 	});
 	after(function(done) {
 		auxFunc.clearUsers(function(err) {
-			if (err) done(err);
-			else {
-				db.close();
-				auxFunc.closeServer();
-				done();
-			}
+			assert.notOk(err);
+			auxFunc.closeServer();
+			db.close(done);
 		});
 	});
 	it('/signup', function(done) {
