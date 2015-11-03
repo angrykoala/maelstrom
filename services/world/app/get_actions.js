@@ -15,32 +15,36 @@ module.exports = {
 	},
 	//returns full imformation of certain city
 	cityDetails: function(cityId, done) {
-		Models.City.find({
+		Models.City.findOne({
 			_id: cityId
 		}, function(err, res) {
-			done(err, res[0]);
+			done(err, res);
 		});
 	},
 	//returns all user data (money)
 	userData: function(userId, done) {
-		Models.User.find({
+		Models.User.findOne({
 			_id: userId
 		}, 'money', function(err, res) {
-			done(err, res[0]);
+			done(err, res);
 		});
 	},
 	//returns all userId ships basic info 
 	ships: function(userId, done) {
-		Models.User.find({
+		Models.User.findOne({
 			_id: userId
-		}, 'ships.name ships.model ships.status ships.travelStatus ships.life', done);
+		}, 'ships._id ships.name ships.model ships.status ships.travelStatus ships.life', function(err, res) {
+			done(err, res["ships"]);
+		});
 	},
 	//returns details of a certain ship
-	shipDetails: function(userID, shipID, done) {
-		Models.User.find({
+	shipDetails: function(userId, shipId, done) {
+		Models.User.findOne({
 			_id: userId,
 			'ships._id': shipId //check with ships: shipId
-		}, 'ships.*', done); //maybe ships.* doesnt work
+		}, 'ships', function(err,res){
+            done(err,res["ships"][0]);
+        }); //maybe ships.* doesnt work
 	},
 	//return all ships models
 	shipModels: function(done) {

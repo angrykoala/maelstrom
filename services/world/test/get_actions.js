@@ -98,7 +98,7 @@ describe('Get Actions', function() {
 				assert.notOk(err);
 				assert.ok(res);
 				assert.isNumber(res.money);
-				assert.ok(res.id);
+				//assert.ok(res.id); //maybe will remove id from result
 				callback();
 			});
 		}, function(err, res) {
@@ -106,7 +106,45 @@ describe('Get Actions', function() {
 			done();
 		});
 	});
-	it.skip('Get User Ships', function() {});
+	it('Get User Ships', function(done) {
+		var correctData = auxFunc.getCorrectData(data.users);
+		async.each(correctData, function(usr, callback) {
+			Get.ships(usr._id, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				async.each(res, function(ship, callback2) {
+					assert.ok(ship._id);
+					assert.match(ship.name, regexp.shipName);
+					assert.isNumber(ship.life);
+					assert.ok(ship.status);
+					assert.ok(ship.model);
+                    assert.ok(ship.travelStatus);
+					Get.shipDetails(usr._id, ship._id, function(err, res) {
+						assert.notOk(err);
+                        assert.ok(res._id);
+    					assert.match(res.name, regexp.shipName);
+    					assert.isNumber(res.life);
+    					assert.ok(res.status);
+    					assert.ok(res.model);
+                        assert.ok(res.travelStatus);
+                        assert.ok(res.products);
+                        for(var i=0;i<res.products.length;i++){
+                            assert.ok(res.products[i].id);
+                            assert.isNumber(res.products[i].quantity);                            
+                        }                        
+						callback2();
+					});
+				}, function(err) {
+					assert.notOk(err);
+					callback();
+				});
+			});
+		}, function(err, res) {
+			assert.notOk(err);
+			done();
+		});
+
+	});
 	it.skip('Get Ship Details', function() {});
 	it.skip('Get Ship Models', function() {});
 	it.skip('Get products', function() {});

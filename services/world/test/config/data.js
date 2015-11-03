@@ -206,7 +206,10 @@ module.exports = {
 				model: mongoose.Types.ObjectId(),
 				life: 110,
 				speed: 35,
-				products: [],
+				products: [{
+					id: mongoose.Types.ObjectId(),
+					quantity: 10
+				}],
 				city: mongoose.Types.ObjectId(),
 			}],
 			correct: true

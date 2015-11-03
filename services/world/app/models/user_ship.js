@@ -31,6 +31,7 @@ module.exports = mongoose.Schema({
 	},
 	products: {
 		type: [{
+			_id: false,
 			id: {
 				type: mongoose.Schema.ObjectId,
 				required: true
