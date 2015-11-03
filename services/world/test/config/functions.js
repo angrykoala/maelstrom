@@ -44,6 +44,18 @@ module.exports = {
 		});
 		return db;
 	},
+	getCorrectData: function(dataObject) {
+		var res = [];
+		var keys = Object.keys(dataObject);
+		for (var i = 0; i < keys.length; i++) {
+			if (dataObject.hasOwnProperty(keys[i])) {
+				if (dataObject[keys[i]]["correct"]) {
+					res.push(dataObject[keys[i]]);
+				}
+			}
+		}
+		return res;
+	},
 	insertAllData: function(done) {
 		async.series([
 			function(callback) {
@@ -53,7 +65,7 @@ module.exports = {
 				insertAll(Product, data.products, callback);
 			},
 			function(callback) {
-				insertAll(Ship, data.ShipModels, callback);
+				insertAll(Ship, data.ships, callback);
 			},
 			function(callback) {
 				insertAll(City, data.cities, callback);
@@ -66,11 +78,11 @@ module.exports = {
 }
 
 function insertAll(Model, dataObject, done) {
-	async.each(Object.keys(dataArray), function(key, callback) {
+	async.each(Object.keys(dataObject), function(key, callback) {
 		if (dataObject.hasOwnProperty(key)) {
 			if (dataObject[key]["correct"]) {
 				var newData = new Model(dataObject[key]);
-				assety.ok(newData);
+				assert.ok(newData);
 				newData.save(function(err, res) {
 					assert.notOk(err);
 					callback();

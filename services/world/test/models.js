@@ -23,12 +23,18 @@ describe('Models', function() {
 	this.timeout(2000);
 	var db;
 	before(function(done) {
-		db = auxFunc.connectDB(done);
-	});
-	beforeEach(function(done) {
-		auxFunc.clearDB(function(err) {
+		db = auxFunc.connectDB(function(err) {
 			assert.notOk(err);
-			done();
+			auxFunc.clearDB(function(err) {
+				assert.notOk(err);
+				done();
+			});
+		});
+		beforeEach(function(done) {
+			auxFunc.clearDB(function(err) {
+				assert.notOk(err);
+				done();
+			});
 		});
 	});
 	after(function(done) {
