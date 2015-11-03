@@ -13,7 +13,7 @@ module.exports = mongoose.Schema({
 		type: String,
 		required: true,
 		match: [dbConfig.regexp.shipName, 'Invalid ship name'],
-		unique: true //not sure if this works
+		//	unique: true
 	},
 	model: {
 		type: mongoose.Schema.ObjectId,
@@ -41,7 +41,6 @@ module.exports = mongoose.Schema({
 				min: 0.0
 			}
 		}],
-		//required: true,
 		default: []
 	},
 	status: {

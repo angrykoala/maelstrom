@@ -147,7 +147,7 @@ describe('Models', function() {
 				assert.strictEqual(res.length, 1);
 				assert.equal(res[0].name, testData.userShips.blackPearl.name);
 
-				var correctElements = 0;
+				var correctElements = 1;
 				async.each(Object.keys(testData.userShips), function(key, callback) {
 					if (testData.userShips.hasOwnProperty(key)) {
 						if (testData.userShips[key].correct === true) correctElements++;
@@ -184,7 +184,7 @@ describe('Models', function() {
 				assert.equal(res[0].id, testData.users.arthur._id);
 
 
-				var correctElements = 0;
+				var correctElements = 0; //2 black pearls
 				async.each(Object.keys(testData.users), function(key, callback) {
 					if (testData.users.hasOwnProperty(key)) {
 						if (testData.users[key].correct === true) correctElements++;

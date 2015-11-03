@@ -208,24 +208,35 @@ module.exports = {
 				speed: 35,
 				products: [],
 				city: mongoose.Types.ObjectId(),
-				correct: true
 			}],
 			correct: true
-
 		},
 		ford: {
 			_id: mongoose.Types.ObjectId(),
 			money: 100,
+			ships: [{
+				name: "Black Pearl",
+				model: mongoose.Types.ObjectId(),
+				life: 110,
+				speed: 35,
+				products: [],
+				city: mongoose.Types.ObjectId(),
+			}],
 			correct: true
 		},
 		captainCrunch: {
-			id: mongoose.Types.ObjectId(),
+			_id: mongoose.Types.ObjectId(),
 			money: 100,
-			correct: false
+			correct: true
 		},
 		blackBeard: {
 			_id: mongoose.Types.ObjectId(),
 			money: -20,
+			correct: false
+		},
+		whiteBeard: {
+			id: mongoose.Types.ObjectId(),
+			money: 20,
 			correct: false
 		},
 		strawHat: {
