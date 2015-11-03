@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var async = require('async');
 
 var City = require('../../app/models/city.js');
 var Product = require('../../app/models/product.js');
@@ -42,5 +43,42 @@ module.exports = {
 			done();
 		});
 		return db;
+	},
+	insertAllData: function(done) {
+		async.series([
+			function(callback) {
+				insertAll(User, data.users, callback);
+			},
+			function(callback) {
+				insertAll(Product, data.products, callback);
+			},
+			function(callback) {
+				insertAll(Ship, data.ShipModels, callback);
+			},
+			function(callback) {
+				insertAll(City, data.cities, callback);
+			}
+		], function(err, res) {
+			assert.notOk(err);
+			done();
+		});
 	}
+}
+
+function insertAll(Model, dataObject, done) {
+	async.each(Object.keys(dataArray), function(key, callback) {
+		if (dataObject.hasOwnProperty(key)) {
+			if (dataObject[key]["correct"]) {
+				var newData = new Model(dataObject[key]);
+				assety.ok(newData);
+				newData.save(function(err, res) {
+					assert.notOk(err);
+					callback();
+				});
+			} else callback();
+		}
+	}, function(err) {
+		assert.notOk(err);
+		done();
+	});
 }
