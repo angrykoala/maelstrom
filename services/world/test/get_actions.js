@@ -13,6 +13,7 @@ var data = require('./config/data.js');
 var Get = require('../app/get_actions.js');
 var regexp = require('../config/database.js').regexp;
 
+var mongoose = require('mongoose');
 
 describe('Get Actions', function() {
 	this.timeout(2000);
@@ -87,7 +88,11 @@ describe('Get Actions', function() {
 				});
 			}, function(err) {
 				assert.notOk(err);
-				done();
+                Get.cityDetails(mongoose.Types.ObjectId(), function(err, res) {
+                    assert.notOk(err);
+                    assert.notOk(res);
+                done();
+            });
 			});
 		});
 	});
@@ -103,7 +108,11 @@ describe('Get Actions', function() {
 			});
 		}, function(err, res) {
 			assert.notOk(err);
+            Get.userData(mongoose.Types.ObjectId(), function(err, res) {
+                assert.notOk(err);
+                assert.notOk(res);
 			done();
+        });
 		});
 	});
 	it('Get User Ships', function(done) {
@@ -118,20 +127,20 @@ describe('Get Actions', function() {
 					assert.isNumber(ship.life);
 					assert.ok(ship.status);
 					assert.ok(ship.model);
-                    assert.ok(ship.travelStatus);
+					assert.ok(ship.travelStatus);
 					Get.shipDetails(usr._id, ship._id, function(err, res) {
 						assert.notOk(err);
-                        assert.ok(res._id);
-    					assert.match(res.name, regexp.shipName);
-    					assert.isNumber(res.life);
-    					assert.ok(res.status);
-    					assert.ok(res.model);
-                        assert.ok(res.travelStatus);
-                        assert.ok(res.products);
-                        for(var i=0;i<res.products.length;i++){
-                            assert.ok(res.products[i].id);
-                            assert.isNumber(res.products[i].quantity);                            
-                        }                        
+						assert.ok(res._id);
+						assert.match(res.name, regexp.shipName);
+						assert.isNumber(res.life);
+						assert.ok(res.status);
+						assert.ok(res.model);
+						assert.ok(res.travelStatus);
+						assert.ok(res.products);
+						for (var i = 0; i < res.products.length; i++) {
+							assert.ok(res.products[i].id);
+							assert.isNumber(res.products[i].quantity);
+						}
 						callback2();
 					});
 				}, function(err) {
@@ -141,12 +150,60 @@ describe('Get Actions', function() {
 			});
 		}, function(err, res) {
 			assert.notOk(err);
-			done();
+			Get.ships(mongoose.Types.ObjectId(), function(err, res) {
+				assert.notOk(err),
+					assert.notOk(res);
+				Get.shipDetails(mongoose.Types.ObjectId(), mongoose.Types.ObjectId(), function(err, res) {
+					assert.notOk(err),
+						assert.notOk(res);
+					done();
+				});
+			});
 		});
 
 	});
-	it.skip('Get Ship Details', function() {});
-	it.skip('Get Ship Models', function() {});
-	it.skip('Get products', function() {});
+	it('Get Ship Models', function(done) {
+		var correctData = auxFunc.getCorrectData(data.ships);
+		Get.shipModels(function(err, res) {
+			assert.notOk(err);
+			assert.strictEqual(res.length, correctData.length);
+			for (var i = 0; i < res.length; i++) {
+				assert.ok(res[i].id);
+				assert.match(res[i].name, regexp.shipTypeName);
+				assert.isNumber(res[i].cargo);
+				assert.isNumber(res[i].life);
+				assert.isNumber(res[i].speed);
+				assert.isNumber(res[i].price);
+			}
+			done();
+		});
+	});
+	it('Get products', function(done) {
+		var correctData = auxFunc.getCorrectData(data.products);
+		Get.productList(function(err, res) {
+			assert.notOk(err);
+			assert.strictEqual(res.length, correctData.length);
+			async.each(res, function(product, callback) {
+				assert.ok(product);
+				assert.ok(product.id);
+				assert.match(product.name, regexp.productName);
+				assert.isNumber(product.weight);
+				Get.productDetails(product.id, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.strictEqual(res.id, product.id);
+					assert.strictEqual(res.name, product.name);
+					callback();
+				});
+			}, function(err) {
+				assert.notOk(err);
+				Get.productDetails(mongoose.Types.ObjectId(), function(err, res) {
+					assert.notOk(err);
+					assert.notOk(res);
+					done();
+				});
+			});
+		});
+	});
 
 });

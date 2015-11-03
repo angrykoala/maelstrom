@@ -13,7 +13,7 @@ module.exports = {
 	map: function(done) {
 		Models.City.find({}, 'id name position_x position_y', done);
 	},
-	//returns full imformation of certain city
+	//returns full information of certain city
 	cityDetails: function(cityId, done) {
 		Models.City.findOne({
 			_id: cityId
@@ -34,7 +34,9 @@ module.exports = {
 		Models.User.findOne({
 			_id: userId
 		}, 'ships._id ships.name ships.model ships.status ships.travelStatus ships.life', function(err, res) {
-			done(err, res["ships"]);
+			var result = res;
+			if (res) result = res["ships"];
+			done(err, result);
 		});
 	},
 	//returns details of a certain ship
@@ -42,15 +44,26 @@ module.exports = {
 		Models.User.findOne({
 			_id: userId,
 			'ships._id': shipId //check with ships: shipId
-		}, 'ships', function(err,res){
-            done(err,res["ships"][0]);
-        }); //maybe ships.* doesnt work
+		}, 'ships', function(err, res) {
+			var result = res;
+			if (res)
+				if (res["ships"])
+					result = res["ships"][0];
+			done(err, result);
+		});
 	},
 	//return all ships models
 	shipModels: function(done) {
 		Models.Ship.find({}, done);
 	},
-	products: function(cityId, done) {
-
+	productList: function(done) {
+		Models.Product.find({}, 'name weight', done);
+	},
+	productDetails: function(productId, done) {
+		Models.Product.find({
+			_id: productId
+		}, 'name weight', function(err, res) {
+			done(err, res[0]);
+		});
 	}
 }

@@ -1,7 +1,6 @@
 //Data for testing
 //correct value indicates if data is correct
 var mongoose = require('mongoose');
-var commonId = mongoose.Types.ObjectId();
 
 module.exports = {
 	ships: {
@@ -117,7 +116,7 @@ module.exports = {
 			position_x: -5,
 			position_y: -259.5,
 			products: [{
-				id: commonId,
+				id: mongoose.Types.ObjectId(),
 				production: 60,
 				consume: 120,
 				quantity: 589
