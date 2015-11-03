@@ -17,13 +17,17 @@ module.exports = {
 	cityDetails: function(cityId, done) {
 		Models.City.find({
 			_id: cityId
-		}, done);
+		}, function(err, res) {
+			done(err, res[0]);
+		});
 	},
 	//returns all user data (money)
 	userData: function(userId, done) {
 		Models.User.find({
 			_id: userId
-		}, 'money', done);
+		}, 'money', function(err, res) {
+			done(err, res[0]);
+		});
 	},
 	//returns all userId ships basic info 
 	ships: function(userId, done) {

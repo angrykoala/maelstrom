@@ -213,7 +213,7 @@ module.exports = {
 		},
 		ford: {
 			_id: mongoose.Types.ObjectId(),
-			money: 100,
+			money: 120,
 			ships: [{
 				name: "Black Pearl",
 				model: mongoose.Types.ObjectId(),
@@ -226,7 +226,7 @@ module.exports = {
 		},
 		captainCrunch: {
 			_id: mongoose.Types.ObjectId(),
-			money: 100,
+			money: 0,
 			correct: true
 		},
 		blackBeard: {
