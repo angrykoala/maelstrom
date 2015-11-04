@@ -7,13 +7,13 @@ Description: Unit test for get actions
 
 var assert = require('chai').assert;
 var async = require('async');
+var mongoose = require('mongoose');
 
 var auxFunc = require('./config/functions.js');
 var data = require('./config/data.js');
-var Get = require('../app/get_actions.js');
 var regexp = require('../config/database.js').regexp;
 
-var mongoose = require('mongoose');
+var Get = require('../app/get_actions.js');
 
 describe('Get Actions', function() {
 	this.timeout(2000);
@@ -30,17 +30,6 @@ describe('Get Actions', function() {
 			});
 		});
 	});
-	//if data is changed
-	/*	beforeEach(function(done) {
-			auxFunc.clearDB(function(err) {
-                assert.notOk(err);
-                auxFunc.insertAllData(function(err){
-                    assert.notOk(err);
-                    done();    
-                });
-			});
-		});
-	});*/
 	after(function(done) {
 		auxFunc.clearDB(function(err) {
 			assert.notOk(err);
