@@ -58,8 +58,8 @@ describe('Get Actions', function() {
 				assert.ok(res[i]._id);
 				assert.ok(res[i].name);
 				assert.match(res[i].name, regexp.cityName);
-				assert.isNumber(res[i]["position_x"]);
-				assert.isNumber(res[i]["position_y"]);
+				assert.isNumber(res[i].position_x);
+				assert.isNumber(res[i].position_y);
 			}
 			done();
 		});
@@ -151,12 +151,16 @@ describe('Get Actions', function() {
 		}, function(err, res) {
 			assert.notOk(err);
 			Get.ships(mongoose.Types.ObjectId(), function(err, res) {
-				assert.notOk(err),
-					assert.notOk(res);
+				assert.notOk(err);
+				assert.notOk(res);
 				Get.shipDetails(mongoose.Types.ObjectId(), mongoose.Types.ObjectId(), function(err, res) {
-					assert.notOk(err),
+					assert.notOk(err);
+					assert.notOk(res);
+					Get.shipDetails(correctData[0], mongoose.Types.ObjectId(), function(err, res) {
+						assert.notOk(err);
 						assert.notOk(res);
-					done();
+						done();
+					});
 				});
 			});
 		});

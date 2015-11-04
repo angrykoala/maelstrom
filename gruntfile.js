@@ -41,9 +41,4 @@ module.exports = function(grunt) {
 			}
 		}
 	});
-
-
-
-
-
-}
+};

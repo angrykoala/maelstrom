@@ -49,7 +49,7 @@ module.exports = {
 		var keys = Object.keys(dataObject);
 		for (var i = 0; i < keys.length; i++) {
 			if (dataObject.hasOwnProperty(keys[i])) {
-				if (dataObject[keys[i]]["correct"]) {
+				if (dataObject[keys[i]].correct) {
 					res.push(dataObject[keys[i]]);
 				}
 			}
@@ -75,12 +75,12 @@ module.exports = {
 			done();
 		});
 	}
-}
+};
 
 function insertAll(Model, dataObject, done) {
 	async.each(Object.keys(dataObject), function(key, callback) {
 		if (dataObject.hasOwnProperty(key)) {
-			if (dataObject[key]["correct"]) {
+			if (dataObject[key].correct) {
 				var newData = new Model(dataObject[key]);
 				assert.ok(newData);
 				newData.save(function(err, res) {

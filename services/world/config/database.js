@@ -15,4 +15,4 @@ module.exports = {
 		shipTypeName: /^[A-Z][a-z0-9\ -]*[a-z0-9]$/,
 		shipName: /^[a-zA-Z][\w-\ ]{2,23}[\w]$/
 	}
-}
+};

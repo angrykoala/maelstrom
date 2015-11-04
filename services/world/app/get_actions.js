@@ -46,9 +46,8 @@ module.exports = {
 			'ships._id': shipId //check with ships: shipId
 		}, 'ships', function(err, res) {
 			var result = res;
-			if (res)
-				if (res.ships)
-					result = res.ships[0];
+			if (res && res.ships)
+				result = res.ships[0];
 			done(err, result);
 		});
 	},
