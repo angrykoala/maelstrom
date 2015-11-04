@@ -15,7 +15,7 @@ var expressjwt = require('express-jwt');
 //remove with ejs
 var rootPath = {
 	root: path.join(__dirname, '../views')
-}
+};
 
 module.exports = function(app) {
 	config.setup(app); //setup server
@@ -65,9 +65,9 @@ module.exports = function(app) {
 		});
 		else {
 			var info = {
-				username: req.body["username"],
-				password: req.body["password"],
-				email: req.body["email"]
+				username: req.body.username,
+				password: req.body.password,
+				email: req.body.email
 			};
 			if (!info.username || !info.password || !info.email) res.status(400).json({
 				error: "empty forms"
@@ -84,9 +84,6 @@ module.exports = function(app) {
 			});
 		}
 	});
-	/*	app.post('/logout', function(req, res) {
-
-		});*/
 
 	//all urls under restricted can only be accesed having a jwt in the header
 	//auth header must be: Bearer (jwt token)

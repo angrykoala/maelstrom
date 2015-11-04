@@ -52,7 +52,7 @@ module.exports = {
 		var decoded = jwt.decode(token);
 		assert.property(decoded, "id");
 		assert.property(decoded, "username");
-		if (usr["id"]) assert.strictEqual(decoded.id, usr.id);
+		if (usr.id) assert.strictEqual(decoded.id, usr.id);
 		assert.strictEqual(decoded.username, usr.username);
 	}
-}
+};

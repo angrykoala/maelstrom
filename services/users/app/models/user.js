@@ -48,9 +48,9 @@ userSchema.pre('save', function(next) {
 //will fire before updating, checking password and hashing it
 userSchema.pre('update', function() {
 	var query = this._update.$set;
-	if (query["password"]) {
+	if (query.password) {
 		if (!dbConfig.regexp.password.test(query.password)) {
-			delete(query["password"]);
+			delete(query.password);
 			//return next(new Error("Save: Password not valid"),this);
 		} else query.password = bcrypt.hashSync(query.password);
 	}

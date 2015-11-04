@@ -51,11 +51,15 @@ describe('User Database Handler', function() {
 				assert.ok(isValid);
 				dbHandler.saveUser(testUsers.ford, function(err, usr) {
 					assert.ok(err);
+					assert.notOk(usr);
+					dbHandler.saveUser({username:"notexist",email:testUsers.ford.email,password:"mycoolpass"},function(err,usr){
+						assert.ok(err);
+						assert.notOk(usr);
+						done();	
+					});
 				});
-				done();
 			});
 		});
-
 	});
 	it('Find User', function(done) {
 		dbHandler.findUser("Arthur", function(err, usr) {

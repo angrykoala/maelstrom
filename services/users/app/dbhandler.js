@@ -76,7 +76,7 @@ var Handler = {
 	updateUser: function(userId, changes, done) {
 		if (!userId) done(new Error("No id provided"));
 		else {
-			isUser(changes["username"], changes["email"], function(err, res) {
+			isUser(changes.username, changes.email, function(err, res) {
 				if (!res) {
 					User.update({
 						_id: userId

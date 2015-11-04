@@ -187,7 +187,7 @@ describe('User API', function() {
 						}, function(err, res) {
 							assert.notOk(err);
 							assert.ok(res);
-							assert.strictEqual(res["email"], myUser.email);
+							assert.strictEqual(res.email, myUser.email);
 							done();
 						});
 					});
