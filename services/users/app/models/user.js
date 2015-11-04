@@ -26,7 +26,7 @@ var userSchema = mongoose.Schema({
 	},
 	password: { //password must be a string (hash)
 		type: String,
-		required: true,
+		required: true
 	}
 });
 

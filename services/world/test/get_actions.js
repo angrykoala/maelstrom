@@ -88,11 +88,11 @@ describe('Get Actions', function() {
 				});
 			}, function(err) {
 				assert.notOk(err);
-                Get.cityDetails(mongoose.Types.ObjectId(), function(err, res) {
-                    assert.notOk(err);
-                    assert.notOk(res);
-                done();
-            });
+				Get.cityDetails(mongoose.Types.ObjectId(), function(err, res) {
+					assert.notOk(err);
+					assert.notOk(res);
+					done();
+				});
 			});
 		});
 	});
@@ -108,11 +108,11 @@ describe('Get Actions', function() {
 			});
 		}, function(err, res) {
 			assert.notOk(err);
-            Get.userData(mongoose.Types.ObjectId(), function(err, res) {
-                assert.notOk(err);
-                assert.notOk(res);
-			done();
-        });
+			Get.userData(mongoose.Types.ObjectId(), function(err, res) {
+				assert.notOk(err);
+				assert.notOk(res);
+				done();
+			});
 		});
 	});
 	it('Get User Ships', function(done) {

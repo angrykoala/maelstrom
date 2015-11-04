@@ -52,12 +52,12 @@ module.exports = mongoose.Schema({
 	},
 	travelStatus: {
 		origin: {
-			type: mongoose.Schema.ObjectId,
-			//	required: true
+			type: mongoose.Schema.ObjectId
+				//	required: true
 		},
 		destiny: {
-			type: mongoose.Schema.ObjectId,
-			//	required: true
+			type: mongoose.Schema.ObjectId
+				//	required: true
 		},
 		remaining: {
 			type: Number,
