@@ -1,6 +1,6 @@
 {
 	"name": "maelstrom-proxy",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Front-End proxy to connect clients and Back-End using Sockets.io",
 	"main": "server.js",
 	"scripts": {

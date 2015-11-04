@@ -9,4 +9,4 @@ module.exports = function(socket) {
 	/*socket.on('echo',function(msg){
 	    socket.emit('echo',msg);
 	});*/
-}
+};

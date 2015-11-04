@@ -36,4 +36,4 @@ module.exports = {
 			expiresIn: 3600
 		});
 	}
-}
+};
