@@ -13,4 +13,4 @@ module.exports = {
 		User: require('./models/user.js'),
 		Ship: require('./models/ship.js')
 	}
-}
+};

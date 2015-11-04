@@ -35,7 +35,7 @@ module.exports = {
 			_id: userId
 		}, 'ships._id ships.name ships.model ships.status ships.travelStatus ships.life', function(err, res) {
 			var result = res;
-			if (res) result = res["ships"];
+			if (res) result = res.ships;
 			done(err, result);
 		});
 	},
@@ -47,8 +47,8 @@ module.exports = {
 		}, 'ships', function(err, res) {
 			var result = res;
 			if (res)
-				if (res["ships"])
-					result = res["ships"][0];
+				if (res.ships)
+					result = res.ships[0];
 			done(err, result);
 		});
 	},
@@ -66,4 +66,4 @@ module.exports = {
 			done(err, res[0]);
 		});
 	}
-}
+};

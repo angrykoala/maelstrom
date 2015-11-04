@@ -209,7 +209,7 @@ module.exports = {
 					id: mongoose.Types.ObjectId(),
 					quantity: 10
 				}],
-				city: mongoose.Types.ObjectId(),
+				city: mongoose.Types.ObjectId()
 			}],
 			correct: true
 		},
@@ -222,7 +222,7 @@ module.exports = {
 				life: 110,
 				speed: 35,
 				products: [],
-				city: mongoose.Types.ObjectId(),
+				city: mongoose.Types.ObjectId()
 			}],
 			correct: true
 		},
@@ -253,9 +253,9 @@ module.exports = {
 				model: mongoose.Types.ObjectId(),
 				speed: 35,
 				products: [],
-				city: mongoose.Types.ObjectId(),
+				city: mongoose.Types.ObjectId()
 			}],
 			correct: false
 		}
 	}
-}
+};

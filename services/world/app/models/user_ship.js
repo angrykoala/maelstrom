@@ -12,7 +12,7 @@ module.exports = mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
-		match: [dbConfig.regexp.shipName, 'Invalid ship name'],
+		match: [dbConfig.regexp.shipName, 'Invalid ship name']
 		//	unique: true
 	},
 	model: {
@@ -53,11 +53,11 @@ module.exports = mongoose.Schema({
 	travelStatus: {
 		origin: {
 			type: mongoose.Schema.ObjectId
-				//	required: true
+			//	required: true
 		},
 		destiny: {
 			type: mongoose.Schema.ObjectId
-				//	required: true
+			//	required: true
 		},
 		remaining: {
 			type: Number,
