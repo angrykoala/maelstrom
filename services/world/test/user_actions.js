@@ -12,7 +12,7 @@ var mongoose = require('mongoose');
 var auxFunc = require('./config/functions.js');
 var data = require('./config/data.js');
 //var regexp = require('../config/database.js').regexp;
-var Models = require('./dbhandler.js').models;
+var Models = require('../app/dbhandler.js').models;
 
 var Actions = require('../app/user_actions.js');
 
