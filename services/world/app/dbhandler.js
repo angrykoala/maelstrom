@@ -12,5 +12,17 @@ module.exports = {
 		Product: require('./models/product.js'),
 		User: require('./models/user.js'),
 		Ship: require('./models/ship.js')
+	},
+	getShip: function(userId, shipId, done) {
+		//TODO
+		done(new Error('Not implemented'));
+	},
+	updateShip: function(userId, shipId, data, done) {
+		//TODO
+		done(new Error('Not implemented'));
+	},
+	addShip: function(userId, ship, done) {
+		//TODO
+		done(new Error('Not implemented'));
 	}
 };

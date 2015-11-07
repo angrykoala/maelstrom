@@ -64,5 +64,10 @@ module.exports = {
 		}, 'name weight', function(err, res) {
 			done(err, res[0]);
 		});
+	},
+	travelingTime: function(from, to, speed, done) {
+		done(new Error('Not implemented'));
+		//TODO
+
 	}
 };

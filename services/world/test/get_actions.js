@@ -198,5 +198,9 @@ describe('Get Actions', function() {
 			});
 		});
 	});
+	it.skip('Get traveling time', function(done) {
+		done(new Error('Not implemented'));
+		//TODO
+	});
 
 });

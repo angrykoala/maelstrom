@@ -19,7 +19,7 @@ var Actions = require('../app/user_actions.js');
 
 describe('User Actions', function() {
 	this.timeout(2000);
-	
+
 	before(function(done) {
 		db = auxFunc.connectDB(function(err) {
 			assert.notOk(err);
@@ -49,11 +49,32 @@ describe('User Actions', function() {
 		});
 	});
 
-	it.skip("Move Ship", function() {});
-	it.skip("Buy Product", function() {});
-	it.skip("Sell Product", function() {});
-	it.skip("Build Ship", function() {});
-	it.skip("Sell Ship", function() {});
-	it.skip("Repair Ship", function() {});
-	it.skip("Return Ship", function() {});
+	it.skip("Move Ship", function() {
+		done(new Error('Not implemented'));
+		//TODO
+	});
+	it.skip("Buy Product", function() {
+		done(new Error('Not implemented'));
+		//TODO
+	});
+	it.skip("Sell Product", function() {
+		done(new Error('Not implemented'));
+		//TODO
+	});
+	it.skip("Build Ship", function() {
+		done(new Error('Not implemented'));
+		//TODO
+	});
+	it.skip("Sell Ship", function() {
+		done(new Error('Not implemented'));
+		//TODO
+	});
+	it.skip("Repair Ship", function() {
+		done(new Error('Not implemented'));
+		//TODO
+	});
+	it.skip("Return Ship", function() {
+		done(new Error('Not implemented'));
+		//TODO
+	});
 });
