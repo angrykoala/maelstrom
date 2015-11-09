@@ -14,8 +14,9 @@ module.exports = {
 		Ship: require('./models/ship.js')
 	},
 	getShip: function(userId, shipId, done) {
-		//TODO
-		done(new Error('Not implemented'));
+		this.models.User.findOne({_id:userId},{ships:{$elemMatch:{_id:shipId}}},function(err,res){
+			done(err,res.ships[0]);
+		});
 	},
 	updateShip: function(userId, shipId, data, done) {
 		//TODO
