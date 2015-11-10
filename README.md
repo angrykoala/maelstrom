@@ -7,6 +7,7 @@ _Version: 0.1.1_
 [![Build Status](https://travis-ci.org/demiurgosoft/maelstrom.svg)](https://travis-ci.org/demiurgosoft/maelstrom)
 [![Coverage Status](https://coveralls.io/repos/demiurgosoft/maelstrom/badge.svg?branch=master&service=github)](https://coveralls.io/github/demiurgosoft/maelstrom?branch=master)
 [![Dependency Status](https://gemnasium.com/demiurgosoft/maelstrom.svg)](https://gemnasium.com/demiurgosoft/maelstrom)
+[![Code Climate](https://codeclimate.com/github/demiurgosoft/maelstrom/badges/gpa.svg)](https://codeclimate.com/github/demiurgosoft/maelstrom)
 
 Economy and trading **MMO-RTS**(_Massively Multiplayer Online - Real Time Strategy_) simulation videogame framework under Node.js. 
 
