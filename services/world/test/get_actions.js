@@ -236,8 +236,35 @@ describe('Get Actions', function() {
 			});
 		});
 	});
-	it.skip('Get Distance', function(done) {
-		done(new Error('Not implemented'));
-		//TODO
+	it('Get Distance', function(done) {
+		Models.City.find({}, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			assert(res.length >= 2);
+			cityId1 = res[0]._id;
+			cityId2 = res[1]._id;
+			Get.distance(cityId1, cityId2, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.closeTo(res, 299.8753, 0.0001); //values (10,40) and (-5,-259.5)
+				Get.distance(cityId1, cityId1, function(err, res) {
+					assert.notOk(err);
+					assert.strictEqual(res, 0.0);
+					Get.distance(mongoose.Types.ObjectId(), cityId1, function(err, res) {
+						assert.ok(err);
+						assert.notOk(res);
+						Get.distance(cityId1, mongoose.Types.ObjectId(), function(err, res) {
+							assert.ok(err);
+							assert.notOk(res);
+							Get.distance(mongoose.Types.ObjectId(), mongoose.Types.ObjectId(), function(err, res) {
+								assert.ok(err);
+								assert.notOk(res);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 });

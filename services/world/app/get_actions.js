@@ -67,7 +67,6 @@ module.exports = {
 		});
 	},
 	distance: function(from, to, done) {
-		if (!speed || speed < 0) done(new Error("Traveling Time, speed not valid"));
 		Models.City.findOne({
 			_id: from
 		}, function(err, res) {
@@ -84,9 +83,9 @@ module.exports = {
 					else {
 						var x2 = res.position_x;
 						var y2 = res.position_y;
-						var x = abs(x2 - x1);
-						var y = abs(y2 - y1);
-						var distance = sqrt(x * x + y * y);
+						var x = x2 - x1;
+						var y = y2 - y1;
+						var distance = Math.sqrt(x * x + y * y);
 						done(null, distance);
 					}
 				});

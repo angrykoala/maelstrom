@@ -15,13 +15,14 @@ module.exports = {
 			if (err || !res) done(err, false);
 			else if (res.status === "docked") {
 				res.status = "traveling";
-				Get.travelingTime(res.city, toCityId, res.speed, function(err, remaining) {
+				Get.distance(res.city, toCityId, res.speed, function(err, dist) {
 					if (err || !remaining) done(err, false);
 					else {
+						var time = dist / speed;
 						res.travelStatus = {
 							origin: res.city,
 							destiny: toCityId,
-							remaining: remaining
+							remaining: time
 						};
 						dbHandler.updateShip(userId, shipId, res, function(err, res) {
 							done(err, true);
