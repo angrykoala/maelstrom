@@ -14,6 +14,7 @@ var data = require('./config/data.js');
 var regexp = require('../config/database.js').regexp;
 
 var Get = require('../app/get_actions.js');
+var Models = require('../app/dbhandler.js').models;
 
 describe('Get Actions', function() {
 	this.timeout(2000);
@@ -171,7 +172,7 @@ describe('Get Actions', function() {
 			done();
 		});
 	});
-	it('Get products', function(done) {
+	it('Get Products', function(done) {
 		var correctData = auxFunc.getCorrectData(data.products);
 		Get.productList(function(err, res) {
 			assert.notOk(err);
@@ -198,9 +199,45 @@ describe('Get Actions', function() {
 			});
 		});
 	});
-	it.skip('Get traveling time', function(done) {
+	it.only('Get Traveling Time', function(done) {
+		var userId = data.users.travelingCaptain._id;
+		Models.User.findOne({
+			_id: userId
+		}, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var shipId = res.ships[0];
+			Get.remainingTime(userId, shipId, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.strictEqual(res, 10);
+				Get.remainingTime(mongoose.Types.ObjectId(), shipId, function(err, res) {
+					assert.ok(err);
+					assert.notOk(res);
+					Get.remainingTime(userId, mongoose.Types.ObjectId(), function(err, res) {
+						assert.ok(err);
+						assert.notOk(res);
+						userId = data.users.arthur._id;
+						Models.User.findOne({
+							_id: userId
+						}, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							var shipId = res.ships[0];
+							//A docked ship
+							Get.remainingTime(userId, shipId, function(err, res) {
+								assert.ok(err);
+								assert.notOk(res);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+	it.skip('Get Remaining Time', function(done) {
 		done(new Error('Not implemented'));
 		//TODO
 	});
-
 });

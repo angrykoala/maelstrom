@@ -254,6 +254,25 @@ module.exports = {
 			money: 0,
 			correct: true
 		},
+		travelingCaptain: {
+			_id: mongoose.Types.ObjectId(),
+			money: 120,
+			ships: [{
+				name: "Black Pearl",
+				model: mongoose.Types.ObjectId(),
+				life: 110,
+				speed: 35,
+				products: [],
+				status: "traveling",
+				travelStatus: {
+					origin: mongoose.Types.ObjectId(),
+					destiny: mongoose.Types.ObjectId(),
+					remaining: 10
+				},
+				city: mongoose.Types.ObjectId()
+			}],
+			correct: true
+		},
 		blackBeard: {
 			_id: mongoose.Types.ObjectId(),
 			money: -20,

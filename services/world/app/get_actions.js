@@ -6,6 +6,7 @@ Description: Actions in  world (API) to get info
 */
 
 var Models = require('./dbhandler.js').models;
+var dbHandler = require('./dbhandler.js');
 
 //Maybe use some enum to handle the level of info to get
 module.exports = {
@@ -68,6 +69,17 @@ module.exports = {
 	travelingTime: function(from, to, speed, done) {
 		done(new Error('Not implemented'));
 		//TODO
+	},
+	remainingTime: function(userId, shipId, done) {
+		dbHandler.getShip(userId, shipId, function(err, res) {
+			if (err) done(err, null);
+			else if (!res) done(new Error("Not ship found"), null);
+			else if (res.status != "traveling" && res.status != "returning") done(new Error("Ship not traveling"), null);
+			else if (!res.travelStatus) done(new Error("Not travel status in ship"), null);
+			else {
+				done(null, res.travelStatus.remaining);
+			}
+		});
 
 	}
 };

@@ -23,7 +23,9 @@ module.exports = {
 				}
 			}
 		}, function(err, res) {
-			done(err, res.ships[0]);
+			if (!res) done(err, null);
+			else if (!res.ships) done(err, null);
+			else done(err, res.ships[0]);
 		});
 	},
 	/*updateShip: function(userId, shipId, changes, done) {

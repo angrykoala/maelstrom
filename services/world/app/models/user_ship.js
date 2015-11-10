@@ -59,6 +59,7 @@ module.exports = mongoose.Schema({
 			type: mongoose.Schema.ObjectId
 				//	required: true
 		},
+		//remining time
 		remaining: {
 			type: Number,
 			//	required: true,
