@@ -199,7 +199,7 @@ describe('Get Actions', function() {
 			});
 		});
 	});
-	it.only('Get Remaining Time', function(done) {
+	it('Get Remaining Time', function(done) {
 		var userId = data.users.travelingCaptain._id;
 		Models.User.findOne({
 			_id: userId
