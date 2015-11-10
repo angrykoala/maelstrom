@@ -26,10 +26,12 @@ module.exports = {
 			done(err, res.ships[0]);
 		});
 	},
-	updateShip: function(userId, shipId, data, done) {
-		//TODO
-		done(new Error('Not implemented'));
-	},
+	/*updateShip: function(userId, shipId, changes, done) {
+		this.models.User.update({_id: userId,'ships._id':shipId},{$set:{'ships.$.'+key:value}},function(err,res){
+			if(res.nModified===1) done(err,true);
+			else done(err,false);	
+		});
+	},*/
 	addShip: function(userId, ship, done) {
 		this.models.User.findOne(userId, function(err, res) {
 			if (err || !res) done(err, false);
@@ -41,17 +43,5 @@ module.exports = {
 				});
 			}
 		});
-
-		/*this.models.User.update({
-			_id: userId
-		}, {
-			$push: {
-				ships: ship
-			}
-		}, function(err, res) {
-			if (res.n === 1)
-				done(err, true);
-			else done(err, false);
-		});*/
 	}
 };

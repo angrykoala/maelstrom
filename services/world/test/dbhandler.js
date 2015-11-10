@@ -74,9 +74,51 @@ describe('Database Handler', function() {
 			});
 		});
 	});
+	//wont be implemented
 	it.skip('Update Ship', function(done) {
-		done(new Error('Not implemented'));
-		//TODO
+		var newShip = {
+			name: "Happy Ship"
+		};
+		var userId = data.users.arthur._id;
+		Models.User.find({
+			_id: userId
+		}, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			assert.ok(res[0]);
+			assert.ok(res[0].ships[0]);
+			assert.strictEqual(res[0].ships.length, 1);
+			assert.strictEqual(res[0].ships[0].name, data.users.arthur.ships[0].name);
+			shipId = res[0].ships[0]._id;
+			dbHandler.updateShip(userId, shipId, newShip, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.strictEqual(res, true);
+				Models.User.find({
+					_id: userId
+				}, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.ok(res[0].ships[0]);
+					assert.strictEqual(res[0].ships.length, 1);
+					assert.equal(res[0].ships[0]._id, shipId);
+					assert.strictEqual(res[0].ships[0].name, newShip.name);
+					dbHandler.updateShip(mongoose.Types.ObjectId(), shipId, newShip, function(err, res) {
+						assert.ok(err);
+						assert.notOk(res);
+						assert.strictEqual(res, false);
+						dbHandler.updateShip(userId, mongoose.Types.ObjectId(), newShip, function(err, res) {
+							assert.ok(err);
+							assert.notOk(res);
+							assert.strictEqual(res, false);
+							//TODO: test invalid updates (id, products...)
+							done(new Error("Not in use"));
+						});
+					});
+
+				});
+			});
+		});
 	});
 	it('Add Ship', function(done) {
 		var userId = data.users.arthur._id;
