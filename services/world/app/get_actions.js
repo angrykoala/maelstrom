@@ -42,15 +42,7 @@ module.exports = {
 	},
 	//returns details of a certain ship
 	shipDetails: function(userId, shipId, done) {
-		Models.User.findOne({
-			_id: userId,
-			'ships._id': shipId //check with ships: shipId
-		}, 'ships', function(err, res) {
-			var result = res;
-			if (res && res.ships)
-				result = res.ships[0];
-			done(err, result);
-		});
+		dbHandler.getShip(userId, shipId, done);
 	},
 	//return all ships models
 	shipModels: function(done) {

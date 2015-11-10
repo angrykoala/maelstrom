@@ -52,17 +52,20 @@ module.exports = mongoose.Schema({
 	},
 	travelStatus: {
 		origin: {
-			type: mongoose.Schema.ObjectId
+			type: mongoose.Schema.ObjectId,
+			default: null
 				//	required: true
 		},
 		destiny: {
-			type: mongoose.Schema.ObjectId
+			type: mongoose.Schema.ObjectId,
+			default: null
 				//	required: true
 		},
 		//remining time
 		remaining: {
 			type: Number,
 			//	required: true,
+			default: 0.0,
 			min: 0.0
 		}
 	},

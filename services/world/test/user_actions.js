@@ -15,6 +15,7 @@ var data = require('./config/data.js');
 var Models = require('../app/dbhandler.js').models;
 
 var Actions = require('../app/user_actions.js');
+var dbHandler = require('../app/dbhandler.js');
 
 
 describe('User Actions', function() {
@@ -49,31 +50,93 @@ describe('User Actions', function() {
 		});
 	});
 
-	it.skip("Move Ship", function() {
+	it("Move Ship", function(done) {
+		var userId = data.users.arthur._id;
+		cityName1 = data.cities.isengard.name;
+		cityName2 = data.cities.minasTirith.name;
+		Models.City.find([{
+			name: cityName1
+		}, {
+			name: cityName2
+		}], function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			assert.strictEqual(res.length, 2);
+
+			var cityId1 = res[0].id;
+			var cityId2 = res[1].id;
+			var newShip = {
+				name: "Flying Dutchman",
+				model: mongoose.Types.ObjectId(),
+				life: 310,
+				speed: 15,
+				products: [],
+				city: cityId1
+			};
+			dbHandler.addShip(userId, newShip, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				Models.User.findOne({
+					_id: userId
+				}, {
+					ships: {
+						$elemMatch: {
+							name: newShip.name
+						}
+					}
+				}, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					var shipId = res.ships[0].id;
+					assert.ok(shipId);
+
+					var newTravelStatus = {
+						origin: mongoose.Types.ObjectId(),
+						destiny: mongoose.Types.ObjectId(),
+						remaining: 5.5
+					};
+
+					Actions.moveShip(userId, shipId, cityId2, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res);
+						assert.strictEqual(res, true);
+						dbHandler.getShip(userId, shipId, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.equal(res.id, shipId);
+							assert.ok(res.travelStatus);
+							assert.equal(res.travelStatus.origin, cityId1);
+							assert.equal(res.travelStatus.destiny, cityId2);
+							assert.strictEqual(res.status, "traveling");
+							assert.closeTo(res.travelStatus.remaining, 299.8753 / res.speed, 0.0001); //values (10,40) and (-5,-259.5)
+							done();
+						});
+					});
+				});
+			});
+		});
+	});
+	it.skip("Buy Product", function(done) {
 		done(new Error('Not implemented'));
 		//TODO
 	});
-	it.skip("Buy Product", function() {
+	it.skip("Sell Product", function(done) {
 		done(new Error('Not implemented'));
 		//TODO
 	});
-	it.skip("Sell Product", function() {
+	it.skip("Build Ship", function(done) {
 		done(new Error('Not implemented'));
 		//TODO
 	});
-	it.skip("Build Ship", function() {
+	it.skip("Sell Ship", function(done) {
 		done(new Error('Not implemented'));
 		//TODO
 	});
-	it.skip("Sell Ship", function() {
+	it.skip("Repair Ship", function(done) {
 		done(new Error('Not implemented'));
 		//TODO
 	});
-	it.skip("Repair Ship", function() {
-		done(new Error('Not implemented'));
-		//TODO
-	});
-	it.skip("Return Ship", function() {
+	it.skip("Return Ship", function(done) {
 		done(new Error('Not implemented'));
 		//TODO
 	});
