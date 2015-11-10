@@ -5,9 +5,7 @@ Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Mongoose database handler
 */
 
-
 var User = require('./models/user');
-
 
 //Calls done with boolean value if user with username or email exists
 function isUser(username, email, done) {

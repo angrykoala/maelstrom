@@ -226,7 +226,7 @@ module.exports = {
 			}],
 			correct: true
 		},
-		ohCaptainMyCaptain:{
+		ohCaptainMyCaptain: {
 			_id: mongoose.Types.ObjectId(),
 			money: 1300,
 			ships: [{
@@ -239,8 +239,7 @@ module.exports = {
 					quantity: 10
 				}],
 				city: mongoose.Types.ObjectId()
-			},
-			{
+			}, {
 				name: "Flying Dutchman",
 				model: mongoose.Types.ObjectId(),
 				life: 310,
@@ -248,7 +247,7 @@ module.exports = {
 				products: [],
 				city: mongoose.Types.ObjectId()
 			}],
-			correct: true			
+			correct: true
 		},
 		captainCrunch: {
 			_id: mongoose.Types.ObjectId(),
@@ -274,6 +273,18 @@ module.exports = {
 			money: 1000,
 			ships: [{
 				name: "My Boat", //no life (required)
+				model: mongoose.Types.ObjectId(),
+				speed: 35,
+				products: [],
+				city: mongoose.Types.ObjectId()
+			}],
+			correct: false
+		},
+		han: {
+			_id: mongoose.Types.ObjectId(),
+			money: 1000,
+			ships: [{
+				life: 100, //no name (required)
 				model: mongoose.Types.ObjectId(),
 				speed: 35,
 				products: [],

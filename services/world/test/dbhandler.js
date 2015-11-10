@@ -12,8 +12,8 @@ var mongoose = require('mongoose');
 var auxFunc = require('./config/functions.js');
 
 var dbHandler = require('../app/dbhandler.js');
-var data=require('./config/data.js');
-var Models=dbHandler.models;
+var data = require('./config/data.js');
+var Models = dbHandler.models;
 
 
 describe('Database Handler', function() {
@@ -25,7 +25,7 @@ describe('Database Handler', function() {
 			done();
 		});
 	});
-	beforeEach(function(done){
+	beforeEach(function(done) {
 		auxFunc.clearDB(function(err) {
 			assert.notOk(err);
 			auxFunc.insertAllData(function(err) {
@@ -49,22 +49,24 @@ describe('Database Handler', function() {
 	});
 	it('Get Ship', function(done) {
 		var shipId;
-		var userId=data.users.ohCaptainMyCaptain._id;
+		var userId = data.users.ohCaptainMyCaptain._id;
 		assert.ok(userId);
-		Models.User.find({_id:userId},function(err,res){
+		Models.User.find({
+			_id: userId
+		}, function(err, res) {
 			assert.notOk(err);
 			assert.ok(res);
 			assert.ok(res[0]);
 			assert.ok(res[0].ships[0]);
-			shipId=res[0].ships[0]._id;
+			shipId = res[0].ships[0]._id;
 			assert.ok(shipId);
-			dbHandler.getShip(userId,shipId,function(err,res){
+			dbHandler.getShip(userId, shipId, function(err, res) {
 				assert.notOk(err);
 				assert.ok(res);
-				assert.equal(res.id,shipId);
+				assert.equal(res.id, shipId);
 				assert.ok(res.name);
 				assert.ok(res.model);
-				dbHandler.getShip(userId,mongoose.Types.ObjectId(),function(err,res){
+				dbHandler.getShip(userId, mongoose.Types.ObjectId(), function(err, res) {
 					assert.notOk(err);
 					assert.notOk(res);
 					done();
@@ -76,8 +78,49 @@ describe('Database Handler', function() {
 		done(new Error('Not implemented'));
 		//TODO
 	});
-	it.skip('Add Ship', function(done) {
-		done(new Error('Not implemented'));
-		//TODO
+	it('Add Ship', function(done) {
+		var userId = data.users.arthur._id;
+		var ship = {
+			name: "Flying Dutchman",
+			model: mongoose.Types.ObjectId(),
+			life: 310,
+			speed: 15,
+			products: [],
+			city: mongoose.Types.ObjectId()
+		};
+		assert.ok(userId);
+		dbHandler.addShip(userId, ship, function(err, res) {
+			assert.notOk(err);
+			assert.strictEqual(res, true);
+			Models.User.findOne({
+				_id: userId
+			}, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.strictEqual(res.ships.length, 2);
+				assert.ok(res.ships[1]);
+				assert.ok(res.ships[1]._id);
+				assert.strictEqual(res.ships[1].name, "Flying Dutchman");
+				assert.ok(res.ships[1].products);
+				assert.strictEqual(res.ships[1].products.length, 0);
+				assert.equal(res.ships[1].model, ship.model.toString());
+				dbHandler.addShip(mongoose.Types.ObjectId(), ship, function(err, res) {
+					assert.notOk(err);
+					assert.notOk(res);
+					assert.strictEqual(res, false);
+					dbHandler.addShip(userId, {}, function(err, res) {
+						assert.ok(err);
+						assert.strictEqual(res, false);
+						Models.User.findOne({
+							_id: userId
+						}, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res.ships.length, 2);
+							done();
+						});
+					});
+				});
+			});
+		});
 	});
 });
