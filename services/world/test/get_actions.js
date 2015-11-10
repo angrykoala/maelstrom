@@ -199,7 +199,7 @@ describe('Get Actions', function() {
 			});
 		});
 	});
-	it.only('Get Traveling Time', function(done) {
+	it.only('Get Remaining Time', function(done) {
 		var userId = data.users.travelingCaptain._id;
 		Models.User.findOne({
 			_id: userId
@@ -236,7 +236,7 @@ describe('Get Actions', function() {
 			});
 		});
 	});
-	it.skip('Get Remaining Time', function(done) {
+	it.skip('Get Distance', function(done) {
 		done(new Error('Not implemented'));
 		//TODO
 	});

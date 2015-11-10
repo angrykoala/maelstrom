@@ -66,9 +66,32 @@ module.exports = {
 			done(err, res[0]);
 		});
 	},
-	travelingTime: function(from, to, speed, done) {
-		done(new Error('Not implemented'));
-		//TODO
+	distance: function(from, to, done) {
+		if (!speed || speed < 0) done(new Error("Traveling Time, speed not valid"));
+		Models.City.findOne({
+			_id: from
+		}, function(err, res) {
+			if (err) done(err);
+			else if (!res) done(new Error("From not found"));
+			else {
+				var x1 = res.position_x;
+				var y1 = res.position_y;
+				Models.City.findOne({
+					_id: to
+				}, function(err, res) {
+					if (err) done(err);
+					else if (!res) done(new Error("From not found"));
+					else {
+						var x2 = res.position_x;
+						var y2 = res.position_y;
+						var x = abs(x2 - x1);
+						var y = abs(y2 - y1);
+						var distance = sqrt(x * x + y * y);
+						done(null, distance);
+					}
+				});
+			}
+		});
 	},
 	remainingTime: function(userId, shipId, done) {
 		dbHandler.getShip(userId, shipId, function(err, res) {
