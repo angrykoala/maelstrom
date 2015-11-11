@@ -12,12 +12,9 @@ var Get = require('./get_actions.js');
 module.exports = {
 	moveShip: function(userId, shipId, toCityId, done) {
 		dbHandler.getShip(userId, shipId, function(err, res) {
-			console.log(res);
 			if (err || !res) done(err, false);
 			else if (res.status === "docked") {
 				Get.distance(res.city, toCityId, function(err, dist) {
-					console.log("Distance err:"+err);
-					console.log("distance:"+dist);
 					if (err || !dist) done(err, false);
 					else {
 						var time = dist / res.speed;
@@ -35,8 +32,7 @@ module.exports = {
 								'ships.$.status': "traveling"
 							}
 						}, function(err, res) {
-							console.log(res);
-							if (res.nModified === 1) done(err, true);
+							if (res.n === 1) done(err, true);
 							else done(err, false);
 						});
 					}
