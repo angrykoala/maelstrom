@@ -12,6 +12,7 @@ var Get = require('./get_actions.js');
 module.exports = {
 	moveShip: function(userId, shipId, toCityId, done) {
 		dbHandler.getShip(userId, shipId, function(err, res) {
+			console.log(res);
 			if (err || !res) done(err, false);
 			else if (res.status === "docked") {
 				Get.distance(res.city, toCityId, function(err, dist) {

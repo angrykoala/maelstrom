@@ -50,7 +50,7 @@ describe('User Actions', function() {
 		});
 	});
 
-	it("Move Ship", function(done) {
+	it.only("Move Ship", function(done) {
 		var userId = data.users.arthur._id;
 		cityName1 = data.cities.isengard.name;
 		cityName2 = data.cities.minasTirith.name;
