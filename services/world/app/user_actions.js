@@ -51,9 +51,42 @@ module.exports = {
 
 	},
 	buildShip: function(userId, shipModelId, cityId, shipName, done) {
-		done(new Error('Not implemented'));
-		//TODO
-
+		dbHandler.isCity(cityId, function(err, res) {
+			if (err) done(err, false);
+			else if (!res) done(new Error("Not valid city id"), false);
+			else {
+				Models.Ship.findOne({
+					id: shipModelId
+				}, function(err, res) {
+					if (err) done(err, false);
+					else if (!res) done(new Error("Not valid ship model"), false);
+					else {
+						var shipModel = res;
+						dbHandler.removeMoney(userId, shipModel.price, function(err, res) {
+							if (err || !res) done(err, false);
+							else {
+								var newShip = {
+									name: shipName,
+									life: shipModel.life,
+									speed: shipModel.speed,
+									products: [],
+									status: "docked",
+									city: cityId,
+									travelStatus: {
+										origin: null,
+										destiny: null,
+										remaining: 0.0
+									}
+								};
+								dbHandler.addShip(userId, newShip, function(err, res) {
+									done(err, res);
+								});
+							}
+						});
+					}
+				});
+			}
+		});
 	},
 	sellShip: function(userId, shipId, done) {
 		done(new Error('Not implemented'));
