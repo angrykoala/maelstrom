@@ -107,6 +107,31 @@ module.exports = {
 				done(null, res.travelStatus.remaining);
 			}
 		});
-
+	},
+	getSellingPrice: function(cityId, productId, quantity, done) {
+		//TODO: improve
+		dbHandler.getCityProduct(cityId, productId, function(err, res) {
+			if (err) return done(err);
+			if (!res) return done(new Error("Not city-product found"));
+			this.productDetails(productId, function(err, res) {
+				if (err) return done(err);
+				if (!res) return done(new Error("Not product found"));
+				var price = res.basePrice * quantity;
+				return done(null, price);
+			});
+		});
+	},
+	getBuyingPrice: function(CityId, productId, quantity, done) {
+		//TODO: improve
+		dbHandler.getCityProduct(cityId, productId, function(err, res) {
+			if (err) return done(err);
+			if (!res) return done(new Error("Not city-product found"));
+			this.productDetails(productId, function(err, res) {
+				if (err) return done(err);
+				if (!res) return done(new Error("Not product found"));
+				var price = res.basePrice * quantity;
+				return done(null, price);
+			});
+		});
 	}
 };
