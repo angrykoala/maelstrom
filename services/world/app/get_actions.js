@@ -42,7 +42,20 @@ module.exports = {
 	},
 	//returns details of a certain ship
 	shipDetails: function(userId, shipId, done) {
-		dbHandler.getShip(userId, shipId, done);
+		Models.User.findOne({
+			_id: userId
+		}, {
+			ships: {
+				$elemMatch: {
+					_id: shipId
+				}
+			}
+		}, function(err, res) {
+			if (!res) done(err, null);
+			else if (!res.ships) done(err, null);
+			else done(err, res.ships[0]);
+		});
+		//Add populate
 	},
 	//return all ships models
 	shipModels: function(done) {
