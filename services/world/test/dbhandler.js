@@ -189,7 +189,7 @@ describe('Database Handler', function() {
 	it('Add Ship', function(done) {
 		var userId = data.users.arthur._id;
 		var ship = {
-			name: "Flying Dutchman",
+			name: "Flying Dutchman2",
 			model: mongoose.Types.ObjectId(),
 			life: 310,
 			speed: 15,
@@ -208,7 +208,7 @@ describe('Database Handler', function() {
 				assert.strictEqual(res.ships.length, 2);
 				assert.ok(res.ships[1]);
 				assert.ok(res.ships[1]._id);
-				assert.strictEqual(res.ships[1].name, "Flying Dutchman");
+				assert.strictEqual(res.ships[1].name, "Flying Dutchman2");
 				assert.ok(res.ships[1].products);
 				assert.strictEqual(res.ships[1].products.length, 0);
 				assert.equal(res.ships[1].model, ship.model.toString());

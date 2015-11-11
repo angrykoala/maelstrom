@@ -56,7 +56,7 @@ module.exports = {
 			else if (!res) done(new Error("Not valid city id"), false);
 			else {
 				Models.Ship.findOne({
-					id: shipModelId
+					_id: shipModelId
 				}, function(err, res) {
 					if (err) done(err, false);
 					else if (!res) done(new Error("Not valid ship model"), false);
@@ -72,6 +72,7 @@ module.exports = {
 									products: [],
 									status: "docked",
 									city: cityId,
+									model: shipModel,
 									travelStatus: {
 										origin: null,
 										destiny: null,

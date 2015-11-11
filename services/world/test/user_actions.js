@@ -124,9 +124,61 @@ describe('User Actions', function() {
 		done(new Error('Not implemented'));
 		//TODO
 	});
-	it.skip("Build Ship", function(done) {
-		done(new Error('Not implemented'));
-		//TODO
+	it("Build Ship", function(done) {
+		var userOrig = data.users.ohCaptainMyCaptain;
+		var userId = userOrig._id;
+		Models.City.find({}, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var cityId = res[0].id;
+			assert.ok(cityId);
+			Models.Ship.findOne({
+				name: data.ships.galleon.name
+			}, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				var shipModelId = res.id;
+				var shipModel = res;
+				assert.ok(shipModelId);
+				Actions.buildShip(userId, shipModelId, cityId, "My new ship", function(err, res) {
+					assert.notOk(err);
+					assert.strictEqual(res, true);
+					Models.User.findOne({
+						_id: userId
+					}, function(err, res) {
+						assert.notOk(err);
+						assert.strictEqual(res.money, userOrig.money - shipModel.price);
+						assert.strictEqual(res.ships.length, userOrig.ships.length + 1);
+						var newShip = res.ships[res.ships.length - 1];
+						assert.ok(newShip._id);
+						assert.strictEqual(newShip.name, "My new ship");
+						assert.equal(newShip.model, shipModelId);
+						assert.strictEqual(newShip.status, "docked");
+						assert.ok(newShip.travelStatus);
+						assert.strictEqual(newShip.life, shipModel.life);
+						assert.strictEqual(newShip.speed, shipModel.speed);
+						assert.equal(newShip.city, cityId);
+						Actions.buildShip(userId, shipModelId, cityId, "My new ship2", function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res, false);
+							Actions.buildShip(mongoose.Types.ObjectId(), shipModelId, cityId, "My new ship2", function(err, res) {
+								assert.ok(err);
+								assert.strictEqual(res, false);
+								Actions.buildShip(userId, mongoose.Types.ObjectId(), cityId, "My new ship2", function(err, res) {
+									assert.ok(err);
+									assert.strictEqual(res, false);
+									Actions.buildShip(userId, shipModelId, mongoose.Types.ObjectId(), "My new ship2", function(err, res) {
+										assert.ok(err);
+										assert.strictEqual(res, false);
+										done();
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 	it.skip("Sell Ship", function(done) {
 		done(new Error('Not implemented'));

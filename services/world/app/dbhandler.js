@@ -14,9 +14,7 @@ module.exports = {
 		Ship: require('./models/ship.js')
 	},
 	getShip: function(userId, shipId, done) {
-		this.models.User.findOne({
-			_id: userId
-		}, {
+		this.models.User.findOne(userId, {
 			ships: {
 				$elemMatch: {
 					_id: shipId
@@ -35,16 +33,20 @@ module.exports = {
 		});
 	},*/
 	addShip: function(userId, ship, done) {
-		this.models.User.findOne(userId, function(err, res) {
-			if (err || !res) done(err, false);
-			else {
-				res.ships.push(ship);
-				res.save(function(err, res) {
-					if (res) done(err, true);
-					else done(err, false);
-				});
-			}
-		});
+		if (!ship || !ship.name) done(new Error("Not valid ship data"), false);
+		else {
+			//Check if ship with same name already exists
+			this.models.User.findOne(userId, function(err, res) {
+				if (err || !res) done(err, false);
+				else {
+					res.ships.push(ship);
+					res.save(function(err, res) {
+						if (res) done(err, true);
+						else done(err, false);
+					});
+				}
+			});
+		}
 	},
 	getCityProduct: function(cityId, productId, done) {
 		this.models.City.findOne({
