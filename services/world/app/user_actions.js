@@ -35,6 +35,7 @@ module.exports = {
 								'ships.$.status': "traveling"
 							}
 						}, function(err, res) {
+							console.log(res);
 							if (res.nModified === 1) done(err, true);
 							else done(err, false);
 						});

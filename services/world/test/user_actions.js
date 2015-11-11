@@ -99,8 +99,8 @@ describe('User Actions', function() {
 					Actions.moveShip(userId, shipId, cityId2, function(err, res) {
 						assert.notOk(err);
 						console.log(err);
-						console.log(res);
-						assert.ok(res);
+						console.log("should be true:"+res);
+						//assert.ok(res);
 						console.log("Good");
 						assert.strictEqual(res, true);
 						dbHandler.getShip(userId, shipId, function(err, res) {
