@@ -68,6 +68,5 @@ module.exports = {
 	returnShip: function(userId, shipId, done) {
 		done(new Error('Not implemented'));
 		//TODO
-
 	}
 };

@@ -46,7 +46,7 @@ module.exports = {
 			}
 		});
 	},
-	getCityProduct: function(cityId,productId,done){
+	getCityProduct: function(cityId, productId, done) {
 		this.models.City.findOne({
 			_id: cityId
 		}, {
@@ -60,6 +60,40 @@ module.exports = {
 			else if (!res.products) done(err, null);
 			else done(err, res.products[0]);
 		});
-		
+	},
+	removeMoney: function(userId, quantity, done) {
+		if (quantity < 0.0) done(new Error("Negative Quantity"), false);
+		else {
+			Models.User.findById(userId, function(err, user) {
+				if (err) done(err, false);
+				else if (!res) done(new Error("User not found"), false);
+				else {
+					if (user.money < quantity) done(null, false);
+					else {
+						user.money -= quantity;
+						user.save(function(err) {
+							if (err) done(err, false);
+							else done(null, true);
+						});
+					}
+				}
+			});
+		}
+	},
+	addMoney: function(userId, quantity, done) {
+		if (quantity < 0.0) done(new Error("Negative Quantity"), false);
+		else {
+			Models.User.findById(userId, function(err, user) {
+				if (err) done(err, false);
+				else if (!res) done(new Error("User not found"), false);
+				else {
+					user.money += quantity;
+					user.save(function(err) {
+						if (err) done(err, false);
+						else done(null, true);
+					});
+				}
+			});
+		}
 	}
 };

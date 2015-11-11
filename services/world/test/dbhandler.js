@@ -74,6 +74,9 @@ describe('Database Handler', function() {
 			});
 		});
 	});
+	it.skip('User Money',function(done){
+		done(new Error("Not implemented"));		
+	});
 	//wont be implemented
 	it.skip('Update Ship', function(done) {
 		var newShip = {
