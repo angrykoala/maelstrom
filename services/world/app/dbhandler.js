@@ -95,5 +95,37 @@ module.exports = {
 				}
 			});
 		}
+	},
+	isCity: function(cityId, done) {
+		this.models.City.count({
+			_id: cityId
+		}, function(err, count) {
+			if (count > 0) done(err, true);
+			else done(err, false);
+		});
+	},
+	isProduct: function(productId, done) {
+		this.models.Product.count({
+			_id: productId
+		}, function(err, count) {
+			if (count > 0) done(err, true);
+			else done(err, false);
+		});
+	},
+	isShipModel: function(shipId, done) {
+		this.models.Ship.count({
+			_id: shipId
+		}, function(err, count) {
+			if (count > 0) done(err, true);
+			else done(err, false);
+		});
+	},
+	isUser: function(userId, done) {
+		this.models.User.count({
+			_id: userId
+		}, function(err, count) {
+			if (count > 0) done(err, true);
+			else done(err, false);
+		});
 	}
 };

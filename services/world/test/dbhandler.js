@@ -270,8 +270,99 @@ describe('Database Handler', function() {
 						});
 					});
 				});
-
 			});
+		});
+	});
+	it('Exists Id', function(done) {
+		var randId = mongoose.Types.ObjectId();
+		async.parallel([
+			function(callback) {
+				Models.User.find({}, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					async.each(res, function(user, callback) {
+						assert.ok(user);
+						dbHandler.isUser(user.id, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res, true);
+							callback();
+						});
+					}, function(err) {
+						assert.notOk(err);
+						dbHandler.isUser(randId, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res, false);
+							callback();
+						});
+					});
+				});
+			},
+			function(callback) {
+				Models.Ship.find({}, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					async.each(res, function(ship, callback) {
+						assert.ok(ship);
+						dbHandler.isShipModel(ship.id, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res, true);
+							callback();
+						});
+					}, function(err) {
+						assert.notOk(err);
+						dbHandler.isShipModel(randId, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res, false);
+							callback();
+						});
+					});
+				});
+			},
+			function(callback) {
+				Models.Product.find({}, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					async.each(res, function(product, callback) {
+						assert.ok(product);
+						dbHandler.isProduct(product.id, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res, true);
+							callback();
+						});
+					}, function(err) {
+						assert.notOk(err);
+						dbHandler.isProduct(randId, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res, false);
+							callback();
+						});
+					});
+				});
+			},
+			function(callback) {
+				Models.City.find({}, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					async.each(res, function(city, callback) {
+						assert.ok(city);
+						dbHandler.isCity(city.id, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res, true);
+							callback();
+						});
+					}, function(err) {
+						assert.notOk(err);
+						dbHandler.isCity(randId, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res, false);
+							callback();
+						});
+					});
+				});
+			}
+		], function(err) {
+			assert.notOk(err);
+			done();
 		});
 	});
 });
