@@ -16,6 +16,8 @@ module.exports = {
 			if (err || !res) done(err, false);
 			else if (res.status === "docked") {
 				Get.distance(res.city, toCityId, function(err, dist) {
+					console.log("Distance err:"+err);
+					console.log("distance:"+dist);
 					if (err || !dist) done(err, false);
 					else {
 						var time = dist / res.speed;
