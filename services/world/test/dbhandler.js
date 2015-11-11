@@ -6,7 +6,7 @@ Description: Unit test for db Handler
 */
 
 var assert = require('chai').assert;
-//var async = require('async');
+var async = require('async');
 var mongoose = require('mongoose');
 
 var auxFunc = require('./config/functions.js');
@@ -74,8 +74,71 @@ describe('Database Handler', function() {
 			});
 		});
 	});
-	it.skip('User Money',function(done){
-		done(new Error("Not implemented"));		
+	it('User Money', function(done) {
+		var userId;
+		Models.User.find({}, function(err, res) {
+			var quantity = 140;
+			userId = res[0].id;
+			async.each(res, function(user, callback) {
+				assert.ok(user);
+				var userMoney = user.money;
+				dbHandler.removeMoney(user.id, quantity, function(err, res) {
+					assert.notOk(err);
+					if (userMoney < quantity) {
+						assert.notOk(res);
+						assert.strictEqual(res, false);
+					} else {
+						assert.ok(res);
+						assert.strictEqual(res, true);
+					}
+					Models.User.find({
+						_id: user.id
+					}, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res);
+						if (userMoney < quantity) assert.strictEqual(res[0].money, userMoney);
+						else assert.strictEqual(res[0].money, userMoney - quantity);
+
+						dbHandler.addMoney(user.id, quantity, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.strictEqual(res, true);
+							Models.User.find({
+								_id: user.id
+							}, function(err, res) {
+								if (userMoney < quantity) assert.strictEqual(res[0].money, userMoney + quantity);
+								else assert.strictEqual(res[0].money, userMoney);
+								callback();
+							});
+						});
+					});
+
+				});
+			}, function(err) {
+				assert.notOk(err);
+				dbHandler.removeMoney(userId, -10, function(err, res) {
+					assert.ok(err);
+					assert.notOk(res);
+					assert.strictEqual(res, false);
+					dbHandler.removeMoney(mongoose.Types.ObjectId(), 10, function(err, res) {
+						assert.ok(err);
+						assert.notOk(res);
+						assert.strictEqual(res, false);
+						dbHandler.addMoney(userId, -10, function(err, res) {
+							assert.ok(err);
+							assert.notOk(res);
+							assert.strictEqual(res, false);
+							dbHandler.addMoney(mongoose.Types.ObjectId(), 10, function(err, res) {
+								assert.ok(err);
+								assert.notOk(res);
+								assert.strictEqual(res, false);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 	//wont be implemented
 	it.skip('Update Ship', function(done) {

@@ -64,9 +64,9 @@ module.exports = {
 	removeMoney: function(userId, quantity, done) {
 		if (quantity < 0.0) done(new Error("Negative Quantity"), false);
 		else {
-			Models.User.findById(userId, function(err, user) {
+			this.models.User.findById(userId, function(err, user) {
 				if (err) done(err, false);
-				else if (!res) done(new Error("User not found"), false);
+				else if (!user) done(new Error("User not found"), false);
 				else {
 					if (user.money < quantity) done(null, false);
 					else {
@@ -83,9 +83,9 @@ module.exports = {
 	addMoney: function(userId, quantity, done) {
 		if (quantity < 0.0) done(new Error("Negative Quantity"), false);
 		else {
-			Models.User.findById(userId, function(err, user) {
+			this.models.User.findById(userId, function(err, user) {
 				if (err) done(err, false);
-				else if (!res) done(new Error("User not found"), false);
+				else if (!user) done(new Error("User not found"), false);
 				else {
 					user.money += quantity;
 					user.save(function(err) {
