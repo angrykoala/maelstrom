@@ -32,7 +32,7 @@ module.exports = {
 								'ships.$.status': "traveling"
 							}
 						}, function(err, res) {
-							if (res.n === 1) done(err, true);
+							if (res.n === 1) done(err, true); //using n instead of nModified due to travis error
 							else done(err, false);
 						});
 					}
