@@ -45,5 +45,21 @@ module.exports = {
 				});
 			}
 		});
+	},
+	getCityProduct: function(cityId,productId,done){
+		this.models.City.findOne({
+			_id: cityId
+		}, {
+			products: {
+				$elemMatch: {
+					_id: productId
+				}
+			}
+		}, function(err, res) {
+			if (!res) done(err, null);
+			else if (!res.products) done(err, null);
+			else done(err, res.products[0]);
+		});
+		
 	}
 };

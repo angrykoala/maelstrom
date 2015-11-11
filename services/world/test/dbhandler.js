@@ -165,4 +165,47 @@ describe('Database Handler', function() {
 			});
 		});
 	});
+	it('Get City Product', function(done) {
+		Models.City.findOne({
+			name: data.cities.minasTirith.name
+		}, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var cityInfo = res;
+			var cityId = res.id;
+			var product0 = res.products[0].id;
+			var product1 = res.products[1].id;
+
+			dbHandler.getCityProduct(cityId, product0, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.equal(res.id, product0);
+				assert.equal(res.quantity, cityInfo.products[0].quantity);
+				assert.equal(res.production, cityInfo.products[0].production);
+				assert.equal(res.consume, cityInfo.products[0].consume);
+				dbHandler.getCityProduct(cityId, product1, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.equal(res.id, product1);
+					assert.equal(res.quantity, cityInfo.products[1].quantity);
+					assert.equal(res.production, cityInfo.products[1].production);
+					assert.equal(res.consume, cityInfo.products[1].consume);
+					dbHandler.getCityProduct(cityId, mongoose.Types.ObjectId(), function(err, res) {
+						assert.notOk(err);
+						assert.notOk(res);
+						dbHandler.getCityProduct(mongoose.Types.ObjectId(), product1, function(err, res) {
+							assert.notOk(err);
+							assert.notOk(res);
+							dbHandler.getCityProduct(mongoose.Types.ObjectId(), mongoose.Types.ObjectId(), function(err, res) {
+								assert.notOk(err);
+								assert.notOk(res);
+								done();
+							});
+						});
+					});
+				});
+
+			});
+		});
+	});
 });

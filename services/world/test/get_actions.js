@@ -54,7 +54,7 @@ describe('Get Actions', function() {
 			done();
 		});
 	});
-	it('Get City details', function(done) {
+	it('Get City Details', function(done) {
 		var correctData = auxFunc.getCorrectData(data.cities);
 		Get.map(function(err, res) {
 			assert.notOk(err);
