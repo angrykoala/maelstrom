@@ -237,6 +237,9 @@ module.exports = {
 				products: [{
 					id: mongoose.Types.ObjectId(),
 					quantity: 10
+				}, {
+					id: mongoose.Types.ObjectId(),
+					quantity: 100
 				}],
 				city: mongoose.Types.ObjectId()
 			}, {

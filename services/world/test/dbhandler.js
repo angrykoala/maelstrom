@@ -365,4 +365,38 @@ describe('Database Handler', function() {
 			done();
 		});
 	});
+	it('Get Ship Product', function(done) {
+		var userId = data.users.ohCaptainMyCaptain._id;
+		Models.User.findOne({
+			_id: userId
+		}, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var shipId = res.ships[0].id;
+			var product = res.ships[0].products[0];
+			var productId = product.id;
+			assert.ok(shipId);
+			assert.ok(product);
+			assert.ok(productId);
+			dbHandler.getShipProduct(userId, shipId, productId, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.equal(res.id.toString(), productId.toString());
+				assert.strictEqual(res.quantity, product.quantity);
+				dbHandler.getShipProduct(mongoose.Types.ObjectId(), shipId, productId, function(err, res) {
+					assert.notOk(err);
+					assert.notOk(res);
+					dbHandler.getShipProduct(userId, mongoose.Types.ObjectId(), productId, function(err, res) {
+						assert.notOk(err);
+						assert.notOk(res);
+						dbHandler.getShipProduct(userId, shipId, mongoose.Types.ObjectId(), function(err, res) {
+							assert.notOk(err);
+							assert.notOk(res);
+							done();
+						});
+					});
+				});
+			});
+		});
+	});
 });

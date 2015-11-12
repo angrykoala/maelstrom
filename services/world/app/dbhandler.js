@@ -5,6 +5,8 @@ Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Handler for world database
 */
 
+var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
 
 module.exports = {
 	models: {
@@ -61,6 +63,35 @@ module.exports = {
 			if (!res) done(err, null);
 			else if (!res.products) done(err, null);
 			else done(err, res.products[0]);
+		});
+	},
+	getShipProduct: function(userId, shipId, productId, done) {
+		this.models.User.aggregate([{
+				$match: {
+					_id: ObjectId(userId)
+				}
+			}, {
+				$unwind: "$ships"
+			}, {
+				$match: {
+					'ships._id': ObjectId(shipId)
+				}
+			}, {
+				$unwind: "$ships.products"
+			}, {
+				$match: {
+					"ships.products.id": ObjectId(productId)
+				}
+			}, {
+				$project: {
+					'ships.products': 1
+				}
+			}
+
+		], function(err, res) {
+			if (err || !res) return done(err, res);
+			if (!res[0] || !res[0].ships || !res[0].ships.products) return done(null, null);
+			done(null, res[0].ships.products);
 		});
 	},
 	removeMoney: function(userId, quantity, done) {
