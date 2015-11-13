@@ -409,10 +409,10 @@ describe('Database Handler', function() {
 			var productId = res.ships[0].products[0].id;
 			dbHandler.removeShipProduct(userId, shipId, productId, function(err, res) {
 				assert.notOk(err);
-				assert.ok(res);
+				//			assert.ok(res);
 				Models.User.findOne(userId, function(err, res) {
 					assert.notOk(err);
-					//assert.ok(res);
+					assert.ok(res);
 					assert.strictEqual(res.ships[0].products.length, productLength - 1);
 					dbHandler.removeShipProduct(userId, shipId, productId, function(err, res) {
 						assert.notOk(err);
@@ -455,9 +455,43 @@ describe('Database Handler', function() {
 							});
 						});
 					});
-
 				});
 			});
 		});
+	});
+	it('Add City Product Quantity', function(done) {
+		Models.City.findOne({
+			name: data.cities.minasTirith.name
+		}, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var cityId = res.id;
+			var productId = res.products[0].id;
+			var productQuantity = res.products[0].quantity;
+			dbHandler.addCityProductQuantity(cityId, productId, 50, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				Models.City.findOne({
+					name: data.cities.minasTirith.name
+				}, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.strictEqual(res.products[0].quantity, productQuantity + 50);
+					dbHandler.addCityProductQuantity(cityId, productId, -50, function(err, res) {
+						assert.ok(err);
+						assert.notOk(res);
+						dbHandler.addCityProductQuantity(cityId, mongoose.Types.ObjectId(), 50, function(err, res) {
+							assert.notOk(err);
+							assert.notOk(res);
+							done();
+						});
+					});
+				});
+			});
+		});
+	});
+	it.skip('Remove City Product Quantity', function(done) {
+
+
 	});
 });
