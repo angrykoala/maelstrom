@@ -164,23 +164,20 @@ module.exports = {
 	addShipProduct: function(userId, shipId, product, done) {
 		if (!product || !product.quantity || !product.id) done(new Error("Not valid product"), 0);
 		//TODO: test with products with extra values
-		Models.User.update({
+		this.models.User.update({
 			_id: userId,
 			'ships._id': shipId
 		}, {
 			$addToSet: {
 				'ships.$.products': product
-					/*{
-						id: productId,
-						quantity: quantity
-					}*/
 			}
 		}, function(err, res) {
-			done(err, res.n);
+			if (res.nModified >= 1) return done(err, true);
+			else return done(err, false);
 		});
 	},
 	removeShipProduct: function(userId, shipId, productId, done) {
-		Models.User.update({
+		this.models.User.update({
 			_id: userId,
 			'ships._id': shipId
 		}, {
@@ -190,7 +187,8 @@ module.exports = {
 				}
 			}
 		}, function(err, res) {
-			done(err,res.n);
+			if (res.nModified >= 1) return done(err, true);
+			else return done(err, false);
 
 		});
 	}

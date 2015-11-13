@@ -399,7 +399,65 @@ describe('Database Handler', function() {
 			});
 		});
 	});
-	it.skip("Add/Remove Ship Products",function(done){
-		done(new Error("Not implemented"));
+	it("Add/Remove Ship Products", function(done) {
+		var userId = data.users.ohCaptainMyCaptain._id;
+		Models.User.findOne(userId, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var productLength = res.ships[0].products.length;
+			var shipId = res.ships[0]._id;
+			var productId = res.ships[0].products[0].id;
+			dbHandler.removeShipProduct(userId, shipId, productId, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				Models.User.findOne(userId, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.strictEqual(res.ships[0].products.length, productLength - 1);
+					dbHandler.removeShipProduct(userId, shipId, productId, function(err, res) {
+						assert.notOk(err);
+						assert.notOk(res);
+						Models.User.findOne(userId, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.strictEqual(res.ships[0].products.length, productLength - 1);
+							dbHandler.addShipProduct(userId, shipId, {
+								id: productId,
+								quantity: 250,
+								crap: "invalid message"
+							}, function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								Models.User.findOne(userId, function(err, res) {
+									assert.notOk(err);
+									assert.ok(res);
+									assert.strictEqual(res.ships[0].products.length, productLength);
+									var prod = res.ships[0].products[productLength - 1];
+									assert.equal(prod.id.toString(), productId.toString());
+									assert.strictEqual(prod.quantity, 250);
+									assert.notOk(prod.crap);
+									dbHandler.addShipProduct(userId, shipId, {
+										id: productId,
+									}, function(err, res) {
+										assert.ok(err);
+										assert.notOk(res);
+										Models.User.findOne(userId, function(err, res) {
+											assert.notOk(err);
+											assert.ok(res);
+											assert.strictEqual(res.ships[0].products.length, productLength);
+											var prod = res.ships[0].products[productLength - 1];
+											assert.equal(prod.id.toString(), productId.toString());
+											assert.strictEqual(prod.quantity, 250);
+											done();
+										});
+									});
+								});
+							});
+						});
+					});
+
+				});
+			});
+		});
 	});
 });
