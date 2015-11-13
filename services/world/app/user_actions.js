@@ -45,9 +45,10 @@ module.exports = {
 		//TODO
 
 	},
-	sellProduct: function(userId, shipId, cityId, productId, quantityId, done) {
+	sellProduct: function(userId, shipId, cityId, productId, quantity, done) {
 		done(new Error('Not implemented'));
 		//TODO
+
 
 	},
 	buildShip: function(userId, shipModelId, cityId, shipName, done) {

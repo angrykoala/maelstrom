@@ -399,4 +399,7 @@ describe('Database Handler', function() {
 			});
 		});
 	});
+	it.skip("Add/Remove Ship Products",function(done){
+		done(new Error("Not implemented"));
+	});
 });

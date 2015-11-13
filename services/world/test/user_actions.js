@@ -121,8 +121,29 @@ describe('User Actions', function() {
 		//TODO
 	});
 	it.skip("Sell Product", function(done) {
-		done(new Error('Not implemented'));
-		//TODO
+		userId = data.users.ohCaptainMyCaptain._id;
+		Models.User.findById(userId, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var shipId = res.ships[0].id;
+			var product = res.ships[0].products[0];
+			var productId = product.id;
+			assert.ok(shipId);
+			assert.ok(product);
+			assert.ok(productId);
+			console.log(product);
+			Actions.sellProduct(userId, shipId, mongoose.Types.ObjectId(), productId, 5, function(err, res) {
+				console.log(err);
+				console.log(res);
+				Models.User.findById(userId, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					var product = res.ships[0].products;
+					console.log(product);
+					done();
+				});
+			});
+		});
 	});
 	it("Build Ship", function(done) {
 		var userOrig = data.users.ohCaptainMyCaptain;

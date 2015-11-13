@@ -160,5 +160,38 @@ module.exports = {
 			if (count > 0) done(err, true);
 			else done(err, false);
 		});
+	},
+	addShipProduct: function(userId, shipId, product, done) {
+		if (!product || !product.quantity || !product.id) done(new Error("Not valid product"), 0);
+		//TODO: test with products with extra values
+		Models.User.update({
+			_id: userId,
+			'ships._id': shipId
+		}, {
+			$addToSet: {
+				'ships.$.products': product
+					/*{
+						id: productId,
+						quantity: quantity
+					}*/
+			}
+		}, function(err, res) {
+			done(err, res.n);
+		});
+	},
+	removeShipProduct: function(userId, shipId, productId, done) {
+		Models.User.update({
+			_id: userId,
+			'ships._id': shipId
+		}, {
+			$pull: {
+				'ships.$.products': {
+					id: productId
+				}
+			}
+		}, function(err, res) {
+			done(err,res.n);
+
+		});
 	}
 };
