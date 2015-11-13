@@ -189,7 +189,20 @@ module.exports = {
 		}, function(err, res) {
 			if (res.nModified >= 1) return done(err, true);
 			else return done(err, false);
-
 		});
+	},
+	addCityProductQuantity: function(cityId,productId,quantity,done){
+		if(quantity<0) return done(new Error("Quantity not valid"),false);
+		this.models.City.update({
+			_id:cityId,
+			'products._id':productId			
+		},{$inc:{'products.$.quantity':quantity}},function(err,res){
+			if(res.n>0) return done(err,false);
+			else return done(err,true) 
+		});
+	},
+	removeCityProductQuantity: function(cityId,productId,quantity,done){
+		
+		
 	}
 };

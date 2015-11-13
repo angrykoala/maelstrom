@@ -267,4 +267,8 @@ describe('Get Actions', function() {
 			});
 		});
 	});
+	it.skip('Get Price',function(done){
+		done(new Error("Not implemented"));
+		
+	});
 });
