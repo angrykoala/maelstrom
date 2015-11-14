@@ -20,6 +20,12 @@ module.exports = {
 		password: "**goldenheart**",
 		correct: true
 	},
+	student:{
+		username: "drunkstudent",
+		email: "student@mail.un.com",
+		password: "averageepassword",
+		correct: true		
+	},
 	marvin: {
 		username: "marvin",
 		email: "sadrobot",
