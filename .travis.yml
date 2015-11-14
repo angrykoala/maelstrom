@@ -5,10 +5,16 @@ node_js:
     - "0.12"
     - "0.10"
 services:
-    - mongodb
+#    - mongodb
     - rabbitmq
-before_script:
-    - sleep 10
+before_install: #install monfodb 2.6
+    - wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.4.deb && sudo dpkg -i --force-confnew elasticsearch-1.2.4.deb
+before_script: #mongodb 2.6
+    - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+    - echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+    - sudo apt-get update
+    - sudo apt-get install -y mongodb-org=2.6.6 mongodb-org-server=2.6.6 mongodb-org-shell=2.6.6 mongodb-org-mongos=2.6.6 mongodb-org-tools=2.6.6
+    - sleep 15
 script:
     - npm test
 after_success:

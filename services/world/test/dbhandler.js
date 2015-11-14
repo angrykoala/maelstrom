@@ -409,14 +409,14 @@ describe('Database Handler', function() {
 			var productId = res.ships[0].products[0].id;
 			dbHandler.removeShipProduct(userId, shipId, productId, function(err, res) {
 				assert.notOk(err);
-				//			assert.ok(res);
+				assert.ok(res);
 				Models.User.findOne(userId, function(err, res) {
 					assert.notOk(err);
 					assert.ok(res);
 					assert.strictEqual(res.ships[0].products.length, productLength - 1);
 					dbHandler.removeShipProduct(userId, shipId, productId, function(err, res) {
 						assert.notOk(err);
-						//assert.notOk(res);
+						assert.notOk(res);
 						Models.User.findOne(userId, function(err, res) {
 							assert.notOk(err);
 							assert.ok(res);
@@ -427,7 +427,7 @@ describe('Database Handler', function() {
 								crap: "invalid message"
 							}, function(err, res) {
 								assert.notOk(err);
-								//assert.ok(res); //travis error
+								assert.ok(res);
 								Models.User.findOne(userId, function(err, res) {
 									assert.notOk(err);
 									assert.ok(res);

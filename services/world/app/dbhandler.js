@@ -201,7 +201,7 @@ module.exports = {
 				'products.$.quantity': quantity
 			}
 		}, function(err, res) {
-			if (res.n > 0) return done(err, true);
+			if (res.nModified > 0) return done(err, true);
 			else return done(err, false);
 		});
 	},
@@ -219,7 +219,7 @@ module.exports = {
 					'products.$.quantity': -quantity
 				}
 			}, function(err, res) {
-				if (res.n > 0) return done(err, true);
+				if (res.nModified > 0) return done(err, true);
 				else return done(err, false);
 			});
 		});
