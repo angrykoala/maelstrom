@@ -207,16 +207,21 @@ module.exports = {
 	},
 	removeCityProductQuantity: function(cityId, productId, quantity, done) {
 		if (quantity < 0) return done(new Error("Quantity not valid"), false);
-		this.models.City.update({
-			_id: cityId,
-			'products._id': productId
-		}, {
-			$inc: {
-				'products.$.quantity': -quantity
-			}
-		}, function(err, res) {
-			if (res.n > 0) return done(err, true);
-			else return done(err, false);
+		var City=this.models.City;
+		this.getCityProduct(cityId, productId, function(err, res) {
+			if (err || !res) return done(err, false);
+			if (res.quantity < quantity) return done(null, false);
+			City.update({
+				_id: cityId,
+				'products._id': productId
+			}, {
+				$inc: {
+					'products.$.quantity': -quantity
+				}
+			}, function(err, res) {
+				if (res.n > 0) return done(err, true);
+				else return done(err, false);
+			});
 		});
 	}
 };

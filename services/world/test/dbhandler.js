@@ -490,8 +490,39 @@ describe('Database Handler', function() {
 			});
 		});
 	});
-	it.skip('Remove City Product Quantity', function(done) {
-
-
+	it('Remove City Product Quantity', function(done) {
+		Models.City.findOne({
+			name: data.cities.minasTirith.name
+		}, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var cityId = res.id;
+			var productId = res.products[0].id;
+			var productQuantity = res.products[0].quantity;
+			dbHandler.removeCityProductQuantity(cityId, productId, 50, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				Models.City.findOne({
+					name: data.cities.minasTirith.name
+				}, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.strictEqual(res.products[0].quantity, productQuantity - 50);
+					dbHandler.removeCityProductQuantity(cityId, productId, 5000, function(err, res) {
+						assert.notOk(err);
+						assert.notOk(res);
+						dbHandler.removeCityProductQuantity(cityId, productId, -50, function(err, res) {
+							assert.ok(err);
+							assert.notOk(res);
+							dbHandler.removeCityProductQuantity(cityId, mongoose.Types.ObjectId(), 50, function(err, res) {
+								assert.notOk(err);
+								assert.notOk(res);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 });
