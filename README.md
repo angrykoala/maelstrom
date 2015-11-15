@@ -11,6 +11,15 @@ _Version: 0.1.1_
 
 Economy and trading **MMO-RTS**(_Massively Multiplayer Online - Real Time Strategy_) simulation videogame framework under Node.js. 
 
+## Requirements
+Maelström will need the following software installed to work (may vary for each service)
+* **Node.js** 0.10 or newer
+* **MongoDB** 2.6.3 or newer
+* **Npm**
+* **RabbitMQ**
+
+
+
 ## Getting started
 Each service can be deployed and tested separately, however, you can simple run the following commands on top folder, which will affect to all services:
 * `npm install` will install all the dependencies for each service
@@ -27,6 +36,6 @@ Maelström is composed of several [_microservices_](https://github.com/demiurgos
 |:----------:|:---------:|:---------:|:-----------------------------------------|
 |Users		 |Working	 |0.1.4  	 |Users login/signup and sessions  			|
 |Proxy		 |In progress|0.0.4		 |Client conection with system with sockets	|
-|World       |In progress|0.0.15      |World server and game logic              |
+|World       |In progress|0.0.16      |World server and game logic              |
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3

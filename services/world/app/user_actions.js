@@ -46,10 +46,31 @@ module.exports = {
 
 	},
 	sellProduct: function(userId, shipId, cityId, productId, quantity, done) {
-		done(new Error('Not implemented'));
-		//TODO
-
-
+		Get.getSellingPrice(cityId, productId, quantity, function(err, res) {
+			if (err) return done(err, false);
+			var totalPrice = res;
+			dbHandler.getShipProduct(userId, shipId, productId, function(err, res) {
+				if (err || !res) return done(err, false);
+				if (res.quantity < quantity) return done(null, false);
+				dbHandler.removeShipProduct(userId, shipId, productId, function(err, res) {
+					if (err || !res) return done(err, false);
+					res.quantity = res.quantity - quantity;
+					dbHandler.addShipProduct(userId, shipId, res, function(err, res) {
+						if (err) return done(err, false);
+						if (!res) return done(new Error("Error in sell product"), false);
+						dbHandler.addCityProductQuantity(cityId, productId, quantity, function(err, res) {
+							if (err) return done(err, false);
+							if (!res) return done(new Error("Error in sell product"), false);
+							dbHandler.addMoney(userId, totalPrice, function(err, res) {
+								if (err) return done(err, false);
+								if (!res) return done(new Error("Error in sell product"), false);
+								else return done(null, true);
+							});
+						});
+					});
+				});
+			});
+		});
 	},
 	buildShip: function(userId, shipModelId, cityId, shipName, done) {
 		dbHandler.isCity(cityId, function(err, res) {

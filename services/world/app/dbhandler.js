@@ -162,8 +162,8 @@ module.exports = {
 		});
 	},
 	addShipProduct: function(userId, shipId, product, done) {
-		if (!product || !product.quantity || !product.id) done(new Error("Not valid product"), 0);
-		//TODO: test with products with extra values
+		if (!product || !product.id) done(new Error("Not valid product"), false);
+		if (product.quantity === 0) done(null, true);
 		this.models.User.update({
 			_id: userId,
 			'ships._id': shipId
@@ -207,7 +207,7 @@ module.exports = {
 	},
 	removeCityProductQuantity: function(cityId, productId, quantity, done) {
 		if (quantity < 0) return done(new Error("Quantity not valid"), false);
-		var City=this.models.City;
+		var City = this.models.City;
 		this.getCityProduct(cityId, productId, function(err, res) {
 			if (err || !res) return done(err, false);
 			if (res.quantity < quantity) return done(null, false);

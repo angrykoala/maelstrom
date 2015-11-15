@@ -116,7 +116,7 @@ module.exports = {
 			this.productDetails(productId, function(err, res) {
 				if (err) return done(err);
 				if (!res) return done(new Error("Not product found"));
-				var price = res.basePrice * quantity;
+				var price = res.basePrice * quantity * 0.8;
 				return done(null, price);
 			});
 		});
