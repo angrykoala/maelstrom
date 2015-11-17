@@ -5,72 +5,48 @@ Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Actions in  world (API) to get info
 */
 
-var Models = require('./dbhandler.js').models;
 var dbHandler = require('./dbhandler.js');
+var tables=require('../config/database.js');
 
 //Maybe use some enum to handle the level of info to get
 module.exports = {
 	//returns all the map basic information
 	map: function(done) {
-		Models.City.find({}, 'id name position_x position_y', done);
+		dbHandler.getAll(tables.cities,done);
 	},
 	//returns full information of certain city
 	cityDetails: function(cityId, done) {
-		Models.City.findOne({
-			_id: cityId
-		}, function(err, res) {
-			done(err, res);
-		});
+		dbHandler.getById(tables.cities,cityId,done);
 	},
 	//returns all user data (money)
 	userData: function(userId, done) {
-		Models.User.findOne({
-			_id: userId
-		}, 'money', function(err, res) {
-			done(err, res);
-		});
+		dbHandler.getById(tables.users,userId,done);
 	},
 	//returns all userId ships basic info 
 	ships: function(userId, done) {
-		Models.User.findOne({
-			_id: userId
-		}, 'ships._id ships.name ships.model ships.status ships.travelStatus ships.life', function(err, res) {
-			var result = res;
-			if (res) result = res.ships;
-			done(err, result);
-		});
+		dbHandler.getUserShips(userId,done);
 	},
 	//returns details of a certain ship
-	shipDetails: function(userId, shipId, done) {
-		Models.User.findOne({
-			_id: userId
-		}, {
-			ships: {
-				$elemMatch: {
-					_id: shipId
-				}
-			}
-		}, function(err, res) {
-			if (!res) done(err, null);
-			else if (!res.ships) done(err, null);
-			else done(err, res.ships[0]);
+	shipDetails: function(shipId, done) {
+		dbHandler.getShipDetails(shipId,function(err,res){
+			if(err || !res) return done(err,res);
+			dbHandler.getShipProduct(shipId,function(err,res){
+				//return all data in one object
+				
+			});
 		});
-		//Add populate
 	},
 	//return all ships models
 	shipModels: function(done) {
-		Models.Ship.find({}, done);
+		dbHandler.getAll(tables.shipModels,done);
 	},
 	productList: function(done) {
-		Models.Product.find({}, 'name weight', done);
+		dbHandler.getAll(tables.products,done);
 	},
 	productDetails: function(productId, done) {
-		Models.Product.find({
-			_id: productId
-		}, 'name weight', function(err, res) {
-			done(err, res[0]);
-		});
+		dbHandler.getById(tables.products,productId,done);
 	},
+	/*
 	distance: function(from, to, done) {
 		Models.City.findOne({
 			_id: from
@@ -133,5 +109,5 @@ module.exports = {
 				return done(null, price);
 			});
 		});
-	}
+	}*/
 };

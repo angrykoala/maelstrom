@@ -7,7 +7,7 @@
 -- Nicely dropped
 DROP TABLE IF EXISTS ship_products, city_products;
 DROP TABLE IF EXISTS user_ships;
-DROP TABLE IF EXISTS users,cities,products,ship_model;
+DROP TABLE IF EXISTS users,cities,products,ship_models;
 
 
 -- Users, id is a mongodb ObjectID (same as in Users service database)
@@ -34,7 +34,7 @@ weigth INT UNSIGNED NOT NULL
 );
 
 -- Ship model, each user ship has a model
-CREATE TABLE IF NOT EXISTS ship_model(
+CREATE TABLE IF NOT EXISTS ship_models(
 id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 name VARCHAR(64) NOT NULL UNIQUE,
 life INT UNSIGNED NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS user_ships(
 id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 user_id BINARY(12) NOT NULL,
 name VARCHAR(64) NOT NULL,
-model INT UNSIGNED NOT NULL REFERENCES ship_model(id),
+model INT UNSIGNED NOT NULL REFERENCES ship_models(id),
 life INT UNSIGNED NOT NULL,
 FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
 CONSTRAINT UNIQUE(user_id,name)

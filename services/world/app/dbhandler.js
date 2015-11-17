@@ -5,16 +5,68 @@ Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Handler for world database
 */
 
-var mongoose = require('mongoose');
-var ObjectId = mongoose.Types.ObjectId;
+var mysql = require('mysql');
+var config=require('../config/database.js');
+var tables=config.tables;
+var pool=mysql.createPool({
+	host:config.host,
+	user:config.user,
+	password:config.password,
+	database:config.database,
+	connectionLimit:config.connection_limit	
+});
+
+
+function runQuery(query,done){
+	pool.getConnection(function(err,connection){
+        if (err) {
+          connection.release();
+          return done(new Error("Error connection database"));
+        }
+        connection.query(mysql,query,function(err,res){
+            connection.release();
+            if(err) return done(new Error("Error in query"));
+            else return done(null,res);
+		});
+        });	
+}
 
 module.exports = {
-	models: {
-		City: require('./models/city.js'),
-		Product: require('./models/product.js'),
-		User: require('./models/user.js'),
-		Ship: require('./models/ship.js')
+	connect: function(done){
+		connection.connect(done);	
 	},
+	close: function(done){
+		connection.end(done);		
+	},
+	escapeString: function(string){
+    return mysql.escape(string);
+	},
+	getAll: function(table,done){
+		var query="SELECT * FROM "+escapeString(table);
+		runQuery(query,done);		
+	},
+	getById:function(table,id,done){
+		var query="SELECT * FROM "+escapeString(table)+" WHERE id="+escapeString(id);
+		runQuery(query,done);		
+	},
+	getUserShips:function(userId,done){
+			var query="SELECT * FROM "+tables.userShips+ "WHERE user_id="+escapeString(userId);
+			runQuery(query,done);
+	},
+	getShipDetails:function(userId,shipId,done){
+			var query="SELECT * FROM "+tables.userShips+ "WHERE ship_id="+escapeString(shipId);
+			runQuery(query,done);
+	},
+	getShipProducts:function(shipId,done){
+		var query="SELECT * FROM "+tables.shipProduct+ "WHERE ship_id="+escapeString(shipId);
+		runQuery(query,done);		
+	},
+	
+/*	
+	
+	
+	
+	
 	getShip: function(userId, shipId, done) {
 		this.models.User.findOne(userId, {
 			ships: {
@@ -23,7 +75,10 @@ module.exports = {
 				}
 			}
 		}, function(err, res) {
-			if (!res) done(err, null);
+	function(err){
+			done(err);
+			
+		});		if (!res) done(err, null);
 			else if (!res.ships) done(err, null);
 			else done(err, res.ships[0]);
 		});
@@ -33,7 +88,7 @@ module.exports = {
 			if(res.nModified===1) done(err,true);
 			else done(err,false);	
 		});
-	},*/
+	},
 	addShip: function(userId, ship, done) {
 		if (!ship || !ship.name) done(new Error("Not valid ship data"), false);
 		else {
@@ -223,5 +278,5 @@ module.exports = {
 				else return done(err, false);
 			});
 		});
-	}
+	}*/
 };
