@@ -5,10 +5,7 @@
 -- CREATE DATABASE IF NOT EXISTS maelstrom_world
 
 -- Nicely dropped
-DROP TABLE IF EXISTS ship_products, city_products;
-DROP TABLE IF EXISTS user_ships;
-DROP TABLE IF EXISTS users,cities,products,ship_models;
-
+DROP TABLE IF EXISTS ship_products,city_products,user_ships,users,cities,products,ship_models;
 
 -- Users, id is a mongodb ObjectID (same as in Users service database)
 CREATE TABLE IF NOT EXISTS users(
