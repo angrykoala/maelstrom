@@ -45,10 +45,10 @@ module.exports = {
 		//var query="DROP TABLE IF EXISTS ship_products,city_products,user_ships,users,cities,products,ship_models;";
 		runQuery(query, done);
 	},
-	clearTables: function(done){
-		
+	clearTables: function(done) {
+
 		async.each(Object.keys(tables), function(table, callback) {
-				runQuery("TRUNCATE "+table,callback);
+				runQuery("TRUNCATE " + table, callback);
 			},
 			function(err) {
 				done(err);
@@ -120,10 +120,39 @@ module.exports = {
 			runQuery(query, done);
 		},
 		shipProducts: function(shipId, done) {
-			var query = "SELECT * FROM " + tables.shipProduct + "WHERE ship_id=" + escapeString(shipId);
+			var query = "SELECT * FROM " + tables.shipProducts + "WHERE ship_id=" + escapeString(shipId);
 			runQuery(query, done);
 		}
 	},
+	insert: {
+		user: function(userId, userData, done) {
+			if (!userID || !userData || !userData.money) return done(new Error("Not user data"), false);
+			var query = "INSERT INTO " + tables.users + " (id,money) VALUES (" + escapeString(userId) + "," + escapeString(userData.money) + ")";
+			runQuery(query, function(err, res) {
+				if (err || !res) return done(err, false);
+				else return done(null, true);
+			});
+		},
+		city: function(cityData, done) {
+			if (!cityData || cityData.name || !cityData.position_x || !cityData.position_y) return done(new Error("Not city data"), false);
+			var query = "INSERT INTO " + tables.cities + " (name,position_x,position_y) VALUES(" + escapeString(cityData.name) + "," + escapeString(cityData.position_x) + "," + escapeString(cityData.position_y) + ")";
+			runQuery(query, function(err, res) {
+				if (err || !res) return done(err, false);
+				else return done(null, true);
+			});
+		},
+		product: function(productData, done) {
+			if (!productData || !name || !base_price || !base_consumption || !weigth) return done(new Error("Not product data"), false);
+			runQuery(query, function(err, res) {
+				if (err || !res) return done(err, false);
+				else return done(null, true);
+			});
+		}
+
+
+
+
+	}
 	/*	
 		
 		

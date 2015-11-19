@@ -2,10 +2,10 @@
 
 module.exports = {
 	connection: {
-		connectionLimit : 10,
- 		host: '127.0.0.1',
- 		user: 'andrew',
- 		password: '',
+		connectionLimit: 10,
+		host: '127.0.0.1',
+		user: 'andrew',
+		password: '',
 		database: 'maelstrom_world'
 	},
 	regexp: { //regular expressions to use in database

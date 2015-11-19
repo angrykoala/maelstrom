@@ -22,32 +22,32 @@ var Models = dbHandler.models;*/
 describe('Database Handler', function() {
 	this.timeout(2000);
 	before(function(done) {
-		dbHandler.dropTables(function(err,res){
+		dbHandler.dropTables(function(err, res) {
 			assert.notOk(err);
-			dbHandler.createTables(function(err,res){
+			dbHandler.createTables(function(err, res) {
 				assert.notOk(err);
-				done();				
-			});			
+				done();
+			});
 		});
 	});
 	beforeEach(function(done) {
-		dbHandler.clearTables(function(err){
+		dbHandler.clearTables(function(err) {
 			assert.notOk(err);
 			done();
 			//insert data
 		});
 	});
 	after(function(done) {
-		dbHandler.clearTables(function(err){
+		dbHandler.clearTables(function(err) {
 			assert.notOk(err);
 			done();
 			//insert data
 		});
 	});
-	it('First Test',function(done){
-		
+	it('First Test', function(done) {
+
 		done();
-		
+
 	});
 	it('Get Ship', function(done) {
 		var shipId;
