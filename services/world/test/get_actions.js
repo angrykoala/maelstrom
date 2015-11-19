@@ -7,14 +7,13 @@ Description: Unit test for get actions
 
 var assert = require('chai').assert;
 var async = require('async');
-var mongoose = require('mongoose');
 
-var auxFunc = require('./config/functions.js');
+/*var auxFunc = require('./config/functions.js');
 var data = require('./config/data.js');
 var regexp = require('../config/database.js').regexp;
 
 var Get = require('../app/get_actions.js');
-var Models = require('../app/dbhandler.js').models;
+var Models = require('../app/dbhandler.js').models;*/
 
 describe('Get Actions', function() {
 	this.timeout(2000);

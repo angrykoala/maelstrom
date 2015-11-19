@@ -8,14 +8,14 @@ Description: Unit test for actions
 var assert = require('chai').assert;
 var mongoose = require('mongoose');
 //var async = require('async');
-
+/*
 var auxFunc = require('./config/functions.js');
 var data = require('./config/data.js');
 //var regexp = require('../config/database.js').regexp;
 var Models = require('../app/dbhandler.js').models;
 
 var Actions = require('../app/user_actions.js');
-var dbHandler = require('../app/dbhandler.js');
+var dbHandler = require('../app/dbhandler.js');*/
 
 
 describe('User Actions', function() {

@@ -2,17 +2,11 @@
 
 module.exports = {
 	connection: {
-		client: 'mysql',
-		connection: {
-			host: '127.0.0.1',
-			user: '',
-			password: '',
-			database: 'maelstrom_world'
-		},
-		pool: {
-			min: 2,
-			max: 10
-		}
+		connectionLimit : 10,
+ 		host: '127.0.0.1',
+ 		user: 'andrew',
+ 		password: '',
+		database: 'maelstrom_world'
 	},
 	regexp: { //regular expressions to use in database
 		productName: /^[A-Z][a-z\ -]*[a-z]$/,

@@ -9,43 +9,45 @@ var assert = require('chai').assert;
 var async = require('async');
 var mongoose = require('mongoose');
 
-var auxFunc = require('./config/functions.js');
-
 var dbHandler = require('../app/dbhandler.js');
+
+
+/*var auxFunc = require('./config/functions.js');
+
+
 var data = require('./config/data.js');
-var Models = dbHandler.models;
+var Models = dbHandler.models;*/
 
 
 describe('Database Handler', function() {
 	this.timeout(2000);
-	var db;
 	before(function(done) {
-		db = auxFunc.connectDB(function(err) {
+		dbHandler.dropTables(function(err,res){
 			assert.notOk(err);
-			done();
+			dbHandler.createTables(function(err,res){
+				assert.notOk(err);
+				done();				
+			});			
 		});
 	});
 	beforeEach(function(done) {
-		auxFunc.clearDB(function(err) {
+		dbHandler.clearTables(function(err){
 			assert.notOk(err);
-			auxFunc.insertAllData(function(err) {
-				assert.notOk(err);
-				done();
-			});
+			done();
+			//insert data
 		});
 	});
 	after(function(done) {
-		auxFunc.clearDB(function(err) {
+		dbHandler.clearTables(function(err){
 			assert.notOk(err);
-			db.close(done);
+			done();
+			//insert data
 		});
 	});
-	it('Models', function() {
-		assert.ok(dbHandler.models);
-		assert.ok(dbHandler.models.City);
-		assert.ok(dbHandler.models.Product);
-		assert.ok(dbHandler.models.User);
-		assert.ok(dbHandler.models.Ship);
+	it('First Test',function(done){
+		
+		done();
+		
 	});
 	it('Get Ship', function(done) {
 		var shipId;

@@ -4,7 +4,7 @@ Project: Maelström - World
 Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Unit test for world models
 */
-
+/*
 var assert = require('chai').assert;
 var async = require('async');
 var mongoose = require('mongoose');
@@ -19,7 +19,7 @@ var UserShip = mongoose.model('user_ship_test', require('../app/models/user_ship
 
 var testData = require('./config/data.js');
 
-describe('Models', function() {
+describe.('Models', function() {
 	this.timeout(2000);
 	var db;
 	before(function(done) {
@@ -211,4 +211,4 @@ describe('Models', function() {
 			});
 		});
 	});
-});
+});*/

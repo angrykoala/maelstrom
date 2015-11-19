@@ -7,17 +7,11 @@ Description: Handler for world database
 
 //var knex = require('knex')(config.connection);
 var mysql = require('mysql');
-var async=require('async');
+var async = require('async');
 var config = require('../config/database.js');
-var Models=require('../config/models.js');
+var Models = require('../config/models.js');
 var tables = config.tables;
-var connection = mysql.createPool({
-	host: config.host,
-	user: config.user,
-	password: config.password,
-	database: config.database,
-	connectionLimit: config.connection_limit
-});
+var pool = mysql.createPool(config.connection);
 
 
 function runQuery(query, done) {
@@ -26,101 +20,110 @@ function runQuery(query, done) {
 			connection.release();
 			return done(new Error("Error connection database"));
 		}
-		connection.query(mysql, query, function(err, res) {
+		connection.query(query, function(err, res) {
 			connection.release();
-			if (err) return done(new Error("Error in query"));
+			if (err) return done(new Error(err));
 			else return done(null, res);
 		});
 	});
 }
-function createTable(name,schema,done){
-	var query="CREATE TABLE IF NOT EXISTS "+name+"("+schema+")";
-	runQuery(query,done);
+
+function createTable(name, schema, done) {
+	var query = "CREATE TABLE IF NOT EXISTS " + name + "(" + schema + ")";
+	runQuery(query, done);
 }
 
 module.exports = {
-	connect: function(done) {
-		connection.connect(done);
-	},
 	close: function(done) {
 		connection.end(done);
 	},
 	escapeString: function(string) {
 		return mysql.escape(string);
 	},
-	dropTables: function(done){
-		var query="DROP TABLE IF EXISTS "+tables.shipProducts+","+tables.cityProducts+","+tables.userShips+","+tables.users+","+tables.cities+","+tables.products+","+tables.shipModels;
-		runQuery(query,done);
+	dropTables: function(done) {
+		var query = "DROP TABLE IF EXISTS " + tables.shipProducts + "," + tables.cityProducts + "," + tables.userShips + "," + tables.users + "," + tables.cities + "," + tables.products + "," + tables.shipModels;
+		//var query="DROP TABLE IF EXISTS ship_products,city_products,user_ships,users,cities,products,ship_models;";
+		runQuery(query, done);
 	},
-	createTables: function(done){
+	clearTables: function(done){
+		
+		async.each(Object.keys(tables), function(table, callback) {
+				runQuery("TRUNCATE "+table,callback);
+			},
+			function(err) {
+				done(err);
+			});
+	},
+	createTables: function(done) {
 		async.waterfall([
-			function(callback){
-				createTable(tables.users,Models.users,function(err,res){
-					if(err) return callback(err);
+			function(callback) {
+				createTable(tables.users, Models.users, function(err, res) {
+					if (err) return callback(err);
 					else callback(null);
 				});
 			},
-			function(callback){
-				createTable(tables.cities,Models.cities,function(err,res){
-					if(err) return callback(err);
+			function(callback) {
+				createTable(tables.cities, Models.cities, function(err, res) {
+					if (err) return callback(err);
 					else callback(null);
 				});
 			},
-			function(callback){
-				createTable(tables.products,Models.products,function(err,res){
-					if(err) return callback(err);
+			function(callback) {
+				createTable(tables.products, Models.products, function(err, res) {
+					if (err) return callback(err);
 					else callback(null);
 				});
 			},
-			function(callback){
-				createTable(tables.shipModels,Models.shipModels,function(err,res){
-					if(err) return callback(err);
+			function(callback) {
+				createTable(tables.shipModels, Models.shipModels, function(err, res) {
+					if (err) return callback(err);
 					else callback(null);
 				});
 			},
-			function(callback){
-				createTable(tables.userShips,Models.userShips,function(err,res){
-					if(err) return callback(err);
+			function(callback) {
+				createTable(tables.userShips, Models.userShips, function(err, res) {
+					if (err) return callback(err);
 					else callback(null);
 				});
 			},
-			function(callback){
-				createTable(tables.shipProducts,Models.shipProducts,function(err,res){
-					if(err) return callback(err);
+			function(callback) {
+				createTable(tables.shipProducts, Models.shipProducts, function(err, res) {
+					if (err) return callback(err);
 					else callback(null);
 				});
 			},
-			function(callback){
-				createTable(tables.cityProducts,Models.cityProducts,function(err,res){
-					if(err) return callback(err);
+			function(callback) {
+				createTable(tables.cityProducts, Models.cityProducts, function(err, res) {
+					if (err) return callback(err);
 					else callback(null);
 				});
-			}			
-		],function(err){
+			}
+		], function(err) {
 			done(err);
-		});	
+		});
 	},
-	getAll: function(table, done) {
-		var query = "SELECT * FROM " + escapeString(table);
-		runQuery(query, done);
+	get: {
+		all: function(table, done) {
+			var query = "SELECT * FROM " + escapeString(table);
+			runQuery(query, done);
+		},
+		byId: function(table, id, done) {
+			var query = "SELECT * FROM " + escapeString(table) + " WHERE id=" + escapeString(id);
+			runQuery(query, done);
+		},
+		userShips: function(userId, done) {
+			var query = "SELECT * FROM " + tables.userShips + "WHERE user_id=" + escapeString(userId);
+			runQuery(query, done);
+		},
+		shipDetails: function(userId, shipId, done) {
+			var query = "SELECT * FROM " + tables.userShips + "WHERE ship_id=" + escapeString(shipId);
+			runQuery(query, done);
+		},
+		shipProducts: function(shipId, done) {
+			var query = "SELECT * FROM " + tables.shipProduct + "WHERE ship_id=" + escapeString(shipId);
+			runQuery(query, done);
+		}
 	},
-	getById: function(table, id, done) {
-		var query = "SELECT * FROM " + escapeString(table) + " WHERE id=" + escapeString(id);
-		runQuery(query, done);
-	},
-	getUserShips: function(userId, done) {
-		var query = "SELECT * FROM " + tables.userShips + "WHERE user_id=" + escapeString(userId);
-		runQuery(query, done);
-	},
-	getShipDetails: function(userId, shipId, done) {
-		var query = "SELECT * FROM " + tables.userShips + "WHERE ship_id=" + escapeString(shipId);
-		runQuery(query, done);
-	},
-	getShipProducts: function(shipId, done) {
-		var query = "SELECT * FROM " + tables.shipProduct + "WHERE ship_id=" + escapeString(shipId);
-		runQuery(query, done);
-	}
-	
 	/*	
 		
 		
