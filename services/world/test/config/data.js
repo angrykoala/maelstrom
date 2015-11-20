@@ -198,7 +198,7 @@ module.exports = {
 	},
 	users: {
 		arthur: {
-			_id: mongoose.Types.ObjectId(),
+			id: mongoose.Types.ObjectId(),
 			money: 100,
 			ships: [{
 				name: "Black Pearl",
@@ -214,7 +214,7 @@ module.exports = {
 			correct: true
 		},
 		ford: {
-			_id: mongoose.Types.ObjectId(),
+			id: mongoose.Types.ObjectId(),
 			money: 120,
 			ships: [{
 				name: "Black Pearl",
@@ -227,7 +227,7 @@ module.exports = {
 			correct: true
 		},
 		ohCaptainMyCaptain: {
-			_id: mongoose.Types.ObjectId(),
+			id: mongoose.Types.ObjectId(),
 			money: 1300,
 			ships: [{
 				name: "Black Pearl",
@@ -253,12 +253,12 @@ module.exports = {
 			correct: true
 		},
 		captainCrunch: {
-			_id: mongoose.Types.ObjectId(),
+			id: mongoose.Types.ObjectId(),
 			money: 0,
 			correct: true
 		},
 		travelingCaptain: {
-			_id: mongoose.Types.ObjectId(),
+			id: mongoose.Types.ObjectId(),
 			money: 120,
 			ships: [{
 				name: "Black Pearl",
@@ -277,7 +277,7 @@ module.exports = {
 			correct: true
 		},
 		blackBeard: {
-			_id: mongoose.Types.ObjectId(),
+			id: mongoose.Types.ObjectId(),
 			money: -20,
 			correct: false
 		},
@@ -291,7 +291,7 @@ module.exports = {
 			correct: false
 		},
 		thecaptain: {
-			_id: mongoose.Types.ObjectId(),
+			id: mongoose.Types.ObjectId(),
 			money: 1000,
 			ships: [{
 				name: "My Boat", //no life (required)
@@ -303,7 +303,7 @@ module.exports = {
 			correct: false
 		},
 		han: {
-			_id: mongoose.Types.ObjectId(),
+			id: mongoose.Types.ObjectId(),
 			money: 1000,
 			ships: [{
 				life: 100, //no name (required)
