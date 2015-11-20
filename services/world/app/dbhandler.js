@@ -142,17 +142,50 @@ module.exports = {
 			});
 		},
 		product: function(productData, done) {
-			if (!productData || !name || !base_price || !base_consumption || !weigth) return done(new Error("Not product data"), false);
+			if (!productData || !productData.name || !productData.base_price || !productData.base_consumption || !productData.weigth) return done(new Error("Not product data"), false);
+			var query = "INSERT INTO " + tables.products + " (name,base_price,base_consumption,weigth) VALUES(" + productData.name + "," + productData.base_price + "," + productData.base_consumption + "," + productData.weigth + ")";
+			runQuery(query, function(err, res) {
+				if (err || !res) return done(err, false);
+				else return done(null, true);
+			});
+		},
+		shipModel: function(shipData, done) {
+			if (!shipData || !shipData.name || !shipData.life || !shipData.speed || !shipData.price || !shipData.cargo)
+				return done(new Error("No ShipModel data"), false);
+
+			var query = "INSERT INTO " + tables.shipModels + " (name,life,speed,price,cargo) VALUES(" + shipData.name + "," + shipData.life + "," + shipData.speed + "," + shipData.price + "," + shipData.cargo + ")";
+
+			runQuery(query, function(err, res) {
+				if (err || !res) return done(err, false);
+				else return done(null, true);
+			});
+		},
+		userShip: function(userId, shipData) {
+			if (!userId || !shipData || !shipData.name || !shipData.model || !shipData.life) return done(new Error("No user ship data"), false);
+			var query = "INSERT INTO " + tables.userShips + " (user_id,name,model,life) VALUES(" + userId + "," + shipData.name + "," + shipData.model + "," + shipData.life + ")";
+			runQuery(query, function(err, res) {
+				if (err || !res) return done(err, false);
+				else return done(null, true);
+			});
+		},
+		shipProduct: function(shipId, productId, productData, done) {
+			if (!shipId || !productId || !productData || productData.quantity) return done(new Error("No product ship data"), false);
+			var query = "INSERT INTO " + tables.shipProducts + " (ship_id,product_id,quantity) VALUES(" + shipId + "," + productId + "," + productData.quantity + ")";
+			runQuery(query, function(err, res) {
+				if (err || !res) return done(err, false);
+				else return done(null, true);
+			});
+		},
+		cityProduct: function(cityId, productId, productData, done) {
+			if (!cityId || !productId || !productData || !productData.quantity) return done(new Error("No City product data"), false);
+			var query = "INSERT INTO " + tables.cityProducts + " (city_id,product_id,quantity) VALUES (" + cityId + "," + productId + "," + productData.quantity + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err, false);
 				else return done(null, true);
 			});
 		}
-
-
-
-
 	}
+
 	/*	
 		
 		
