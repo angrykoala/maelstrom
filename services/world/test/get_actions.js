@@ -15,7 +15,7 @@ var regexp = require('../config/database.js').regexp;
 var Get = require('../app/get_actions.js');
 var Models = require('../app/dbhandler.js').models;*/
 
-describe('Get Actions', function() {
+describe.skip('Get Actions', function() {
 	this.timeout(2000);
 	var db;
 	before(function(done) {

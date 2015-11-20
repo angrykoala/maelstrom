@@ -2,7 +2,7 @@ Maelström
 ===========
 _by @demiurgosoft_
 
-_Version: 0.1.1_
+_Version: 0.1.2_
 
 [![Build Status](https://travis-ci.org/demiurgosoft/maelstrom.svg)](https://travis-ci.org/demiurgosoft/maelstrom)
 [![Coverage Status](https://coveralls.io/repos/demiurgosoft/maelstrom/badge.svg?branch=master&service=github)](https://coveralls.io/github/demiurgosoft/maelstrom?branch=master)
@@ -15,6 +15,7 @@ Economy and trading **MMO-RTS**(_Massively Multiplayer Online - Real Time Strate
 Maelström will need the following software installed to work (may vary for each service)
 * **Node.js** 0.10 or newer
 * **MongoDB** 2.6.3 or newer
+* **MySql** 5.6 or newer
 * **Npm**
 * **RabbitMQ**
 
@@ -36,6 +37,6 @@ Maelström is composed of several [_microservices_](https://github.com/demiurgos
 |:----------:|:---------:|:---------:|:-----------------------------------------|
 |Users		 |Working	 |0.1.4  	 |Users login/signup and sessions  			|
 |Proxy		 |In progress|0.0.4		 |Client conection with system with sockets	|
-|World       |In progress|0.0.17      |World server and game logic              |
+|World       |In progress|0.1.0      |World server and game logic              |
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3

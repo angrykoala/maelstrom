@@ -8,6 +8,7 @@ node_js:
 services:
 #    - mongodb #mongo 2.4
     - rabbitmq
+    - mysql
 sudo: false
 addons: #installs mongo 3
   apt:

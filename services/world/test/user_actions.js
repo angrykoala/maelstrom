@@ -18,7 +18,7 @@ var Actions = require('../app/user_actions.js');
 var dbHandler = require('../app/dbhandler.js');*/
 
 
-describe('User Actions', function() {
+describe.skip('User Actions', function() {
 	this.timeout(2000);
 
 	before(function(done) {

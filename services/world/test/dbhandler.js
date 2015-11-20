@@ -44,6 +44,7 @@ describe('Database Handler', function() {
 			done();
 		});
 	});
+
 	it('Insert and Get User', function(done) {
 		var user = data.users.arthur;
 		var user2 = data.users.ford;
@@ -88,6 +89,25 @@ describe('Database Handler', function() {
 				});
 			});
 		});
+	});
+	
+	it.skip('Insert and Get City',function(done){
+		done(new Error("Not implemented"));
+	});
+	it.skip('Insert and Get Product',function(done){
+		done(new Error("Not implemented"));
+	});
+	it.skip('Insert and Get Ship Model',function(done){
+		done(new Error("Not implemented"));
+	});
+	it.skip('Insert and Get User Ship',function(done){
+		done(new Error("Not implemented"));
+	});
+	it.skip('Insert and Get Ship Product',function(done){
+		done(new Error("Not implemented"));
+	});
+	it.skip('Insert and Get City Product',function(done){
+		done(new Error("Not implemented"));
 	});
 
 });
