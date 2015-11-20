@@ -108,7 +108,7 @@ module.exports = {
 			runQuery(query, done);
 		},
 		user: function(id, done) {
-			var query = "SELECT * FROM " + tables.users + " WHERE id=" + escapeString(id.toString());
+			var query = "SELECT * FROM " + tables.users + " WHERE id=" + escapeString(id);
 			runQuery(query, done);
 		},
 		byId: function(table, id, done) {
@@ -130,8 +130,8 @@ module.exports = {
 	},
 	insert: {
 		user: function(userId, userData, done) {
-			if (!userId || !userData || !userData.money) return done(new Error("Not user data"), false);
-			var query = "INSERT INTO " + tables.users + " (id,money) VALUES (" + escapeString(userId.toHexString()) + "," + escapeString(userData.money) + ")";
+			if (userId===undefined || !userData || userData.money===undefined) return done(new Error("Not user data"), false);
+			var query = "INSERT INTO " + tables.users + " (id,money) VALUES (" + escapeString(userId) + "," + escapeString(userData.money) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err, false);
 				else return done(null, true);

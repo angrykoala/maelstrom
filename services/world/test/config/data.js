@@ -198,121 +198,22 @@ module.exports = {
 	},
 	users: {
 		arthur: {
-			id: mongoose.Types.ObjectId(),
+			id: 1,
 			money: 100,
-			ships: [{
-				name: "Black Pearl",
-				model: mongoose.Types.ObjectId(),
-				life: 110,
-				speed: 35,
-				products: [{
-					id: mongoose.Types.ObjectId(),
-					quantity: 10
-				}],
-				city: mongoose.Types.ObjectId()
-			}],
 			correct: true
 		},
 		ford: {
-			id: mongoose.Types.ObjectId(),
-			money: 120,
-			ships: [{
-				name: "Black Pearl",
-				model: mongoose.Types.ObjectId(),
-				life: 110,
-				speed: 35,
-				products: [],
-				city: mongoose.Types.ObjectId()
-			}],
+			id: 2,
+			money: 12000,
 			correct: true
 		},
-		ohCaptainMyCaptain: {
-			id: mongoose.Types.ObjectId(),
-			money: 1300,
-			ships: [{
-				name: "Black Pearl",
-				model: mongoose.Types.ObjectId(),
-				life: 110,
-				speed: 35,
-				products: [{
-					id: mongoose.Types.ObjectId(),
-					quantity: 10
-				}, {
-					id: mongoose.Types.ObjectId(),
-					quantity: 100
-				}],
-				city: mongoose.Types.ObjectId()
-			}, {
-				name: "Flying Dutchman",
-				model: mongoose.Types.ObjectId(),
-				life: 310,
-				speed: 15,
-				products: [],
-				city: mongoose.Types.ObjectId()
-			}],
-			correct: true
+		marvin:{
+			id: 4,
+			correct: false			
 		},
-		captainCrunch: {
-			id: mongoose.Types.ObjectId(),
-			money: 0,
-			correct: true
-		},
-		travelingCaptain: {
-			id: mongoose.Types.ObjectId(),
-			money: 120,
-			ships: [{
-				name: "Black Pearl",
-				model: mongoose.Types.ObjectId(),
-				life: 110,
-				speed: 35,
-				products: [],
-				status: "traveling",
-				travelStatus: {
-					origin: mongoose.Types.ObjectId(),
-					destiny: mongoose.Types.ObjectId(),
-					remaining: 10
-				},
-				city: mongoose.Types.ObjectId()
-			}],
-			correct: true
-		},
-		blackBeard: {
-			id: mongoose.Types.ObjectId(),
-			money: -20,
-			correct: false
-		},
-		whiteBeard: {
-			id: mongoose.Types.ObjectId(),
-			money: 20,
-			correct: false
-		},
-		strawHat: {
-			money: 20,
-			correct: false
-		},
-		thecaptain: {
-			id: mongoose.Types.ObjectId(),
-			money: 1000,
-			ships: [{
-				name: "My Boat", //no life (required)
-				model: mongoose.Types.ObjectId(),
-				speed: 35,
-				products: [],
-				city: mongoose.Types.ObjectId()
-			}],
-			correct: false
-		},
-		han: {
-			id: mongoose.Types.ObjectId(),
-			money: 1000,
-			ships: [{
-				life: 100, //no name (required)
-				model: mongoose.Types.ObjectId(),
-				speed: 35,
-				products: [],
-				city: mongoose.Types.ObjectId()
-			}],
-			correct: false
+		deepthinking:{
+			money:150,
+			correct: false			
 		}
 	}
 };

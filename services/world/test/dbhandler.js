@@ -65,15 +65,15 @@ describe('Database Handler', function() {
 					assert.ok(res[0].money);
 					assert.ok(res[1].id);
 					assert.ok(res[1].money);
-					assert.strictEqual(res[0].id, user.id.toString());
+					assert.strictEqual(res[0].id, user.id);
 					assert.strictEqual(res[0].money, user.money);
-					assert.strictEqual(res[1].id, user2.id.toString());
+					assert.strictEqual(res[1].id, user2.id);
 					assert.strictEqual(res[1].money, user2.money);
 					dbHandler.get.user(user.id, function(err, res) {
 						assert.notOk(err);
 						assert.ok(res);
 						assert.strictEqual(res.length, 1);
-						assert.strictEqual(res[0].id, user.id.toString());
+						assert.strictEqual(res[0].id, user.id);
 						assert.strictEqual(res[0].money, user.money);
 						dbHandler.get.user("11111", function(err, res) {
 							assert.notOk(err);
@@ -90,7 +90,34 @@ describe('Database Handler', function() {
 			});
 		});
 	});
-	
+	it('User validation',function(done){
+		var correctElements=0;
+		async.each(Object.keys(data.users), function(key, callback) {
+				if (data.users.hasOwnProperty(key)) {
+					var user=data.users[key];
+					var isCorrect=user.correct;
+					if ( isCorrect=== true) correctElements++;
+					dbHandler.insert.user(user.id, user, function(err, res) {
+						if(isCorrect){
+							assert.notOk(err);
+							assert.strictEqual(res,true);							
+						}
+						else assert.strictEqual(res,false);
+						callback();
+					});
+				}
+			},
+			function(err) {
+				assert.notOk(err);
+				dbHandler.get.all("users", function(err, res) {
+					assert.notOk(err);
+					assert.strictEqual(res.length, correctElements);
+					done();
+				});
+			});
+		
+		
+	});
 	it.skip('Insert and Get City',function(done){
 		done(new Error("Not implemented"));
 	});
