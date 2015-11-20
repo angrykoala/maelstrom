@@ -84,43 +84,17 @@ module.exports = {
 			name: "Minas Tirith",
 			position_x: 10,
 			position_y: 40,
-			products: [{
-				id: mongoose.Types.ObjectId(),
-				production: 60,
-				consume: 120,
-				quantity: 589
-			}, {
-				id: mongoose.Types.ObjectId(),
-				production: 40,
-				consume: 20,
-				quantity: 80
-			}],
 			correct: true
 		},
 		isengard: {
 			name: "Isengard",
 			position_x: -5,
 			position_y: -259.5,
-			products: [],
 			correct: true
 		},
 		rivendel: {
-			name: "rivendel",
 			position_x: -5,
 			position_y: -259.5,
-			products: [],
-			correct: false
-		},
-		vale: {
-			name: "Vale ",
-			position_x: -5,
-			position_y: -259.5,
-			products: [{
-				id: mongoose.Types.ObjectId(),
-				production: 60,
-				consume: 120,
-				quantity: 589
-			}],
 			correct: false
 		}
 	},
@@ -207,13 +181,13 @@ module.exports = {
 			money: 12000,
 			correct: true
 		},
-		marvin:{
+		marvin: {
 			id: 4,
-			correct: false			
+			correct: false
 		},
-		deepthinking:{
-			money:150,
-			correct: false			
+		deepthinking: {
+			money: 150,
+			correct: false
 		}
 	}
 };

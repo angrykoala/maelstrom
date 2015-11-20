@@ -10,6 +10,7 @@ var async = require('async');
 
 var data = require('./config/data');
 var dbHandler = require('../app/dbhandler.js');
+var tables = dbHandler.tables;
 
 
 /*var auxFunc = require('./config/functions.js');
@@ -57,31 +58,23 @@ describe('Database Handler', function() {
 				assert.notOk(err);
 				assert.ok(res);
 				assert.strictEqual(res, true);
-				dbHandler.get.all("users", function(err, res) {
-					assert.notOk(err);
-					assert.ok(res);
-					assert.strictEqual(res.length, 2);
-					assert.ok(res[0].id);
-					assert.ok(res[0].money);
-					assert.ok(res[1].id);
-					assert.ok(res[1].money);
-					assert.strictEqual(res[0].id, user.id);
-					assert.strictEqual(res[0].money, user.money);
-					assert.strictEqual(res[1].id, user2.id);
-					assert.strictEqual(res[1].money, user2.money);
-					dbHandler.get.user(user.id, function(err, res) {
+				dbHandler.insert.user(user.id, user, function(err, res) {
+					assert.ok(err);
+					assert.strictEqual(res, false);
+					dbHandler.get.all(tables.users, function(err, res) {
 						assert.notOk(err);
 						assert.ok(res);
-						assert.strictEqual(res.length, 1);
-						assert.strictEqual(res[0].id, user.id);
-						assert.strictEqual(res[0].money, user.money);
-						dbHandler.get.user("11111", function(err, res) {
+						assert.strictEqual(res.length, 2);
+						dbHandler.get.user(user.id, function(err, res) {
 							assert.notOk(err);
 							assert.ok(res);
-							assert.strictEqual(res.length, 0);
-							dbHandler.insert.user(user.id, user, function(err, res) {
-								assert.ok(err);
-								assert.strictEqual(res, false);
+							assert.strictEqual(res.length, 1);
+							assert.strictEqual(res[0].id, user.id);
+							assert.strictEqual(res[0].money, user.money);
+							dbHandler.get.user("11111", function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								assert.strictEqual(res.length, 0);
 								done();
 							});
 						});
@@ -90,50 +83,106 @@ describe('Database Handler', function() {
 			});
 		});
 	});
-	it('User validation',function(done){
-		var correctElements=0;
+	it('User validation', function(done) {
+		var correctElements = 0;
 		async.each(Object.keys(data.users), function(key, callback) {
 				if (data.users.hasOwnProperty(key)) {
-					var user=data.users[key];
-					var isCorrect=user.correct;
-					if ( isCorrect=== true) correctElements++;
+					var user = data.users[key];
+					var isCorrect = user.correct;
+					if (isCorrect === true) correctElements++;
 					dbHandler.insert.user(user.id, user, function(err, res) {
-						if(isCorrect){
+						if (isCorrect) {
 							assert.notOk(err);
-							assert.strictEqual(res,true);							
-						}
-						else assert.strictEqual(res,false);
+							assert.strictEqual(res, true);
+						} else assert.strictEqual(res, false);
 						callback();
 					});
 				}
 			},
 			function(err) {
 				assert.notOk(err);
-				dbHandler.get.all("users", function(err, res) {
+				dbHandler.get.all(tables.users, function(err, res) {
 					assert.notOk(err);
 					assert.strictEqual(res.length, correctElements);
 					done();
 				});
 			});
-		
-		
 	});
-	it.skip('Insert and Get City',function(done){
+	it('Insert and Get City', function(done) {
+		var city = data.cities.minasTirith;
+		var city2 = data.cities.isengard;
+		dbHandler.insert.city(city, function(err, res) {
+			assert.notOk(err);
+			assert.strictEqual(res, true);
+			dbHandler.insert.city(city2, function(err, res) {
+				assert.notOk(err);
+				assert.strictEqual(res, true);
+				dbHandler.insert.city(city2, function(err, res) {
+					assert.ok(err);
+					assert.strictEqual(res, false);
+					dbHandler.get.all(tables.cities, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res);
+						assert.strictEqual(res.length, 2);
+						city = res[0];
+						dbHandler.get.byId(tables.cities, city.id, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.strictEqual(res.length, 1);
+							assert.ok(res[0].id);
+							assert.strictEqual(res[0].name, city.name);
+							assert.strictEqual(res[0].position_x, city.position_x);
+							assert.strictEqual(res[0].position_y, city.position_y);
+							dbHandler.get.byId(tables.cities, "11111", function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								assert.strictEqual(res.length, 0);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+	it('City validation', function(done) {
+		var correctElements = 0;
+		async.each(Object.keys(data.cities), function(key, callback) {
+				if (data.cities.hasOwnProperty(key)) {
+					var city = data.cities[key];
+					var isCorrect = city.correct;
+					if (isCorrect === true) correctElements++;
+					dbHandler.insert.city(city, function(err, res) {
+						if (isCorrect) {
+							assert.notOk(err);
+							assert.strictEqual(res, true);
+						} else assert.strictEqual(res, false);
+						callback();
+					});
+				}
+			},
+			function(err) {
+				assert.notOk(err);
+				dbHandler.get.all(tables.cities, function(err, res) {
+					assert.notOk(err);
+					assert.strictEqual(res.length, correctElements);
+					done();
+				});
+			});
+	});
+	it.skip('Insert and Get Product', function(done) {
 		done(new Error("Not implemented"));
 	});
-	it.skip('Insert and Get Product',function(done){
+	it.skip('Insert and Get Ship Model', function(done) {
 		done(new Error("Not implemented"));
 	});
-	it.skip('Insert and Get Ship Model',function(done){
+	it.skip('Insert and Get User Ship', function(done) {
 		done(new Error("Not implemented"));
 	});
-	it.skip('Insert and Get User Ship',function(done){
+	it.skip('Insert and Get Ship Product', function(done) {
 		done(new Error("Not implemented"));
 	});
-	it.skip('Insert and Get Ship Product',function(done){
-		done(new Error("Not implemented"));
-	});
-	it.skip('Insert and Get City Product',function(done){
+	it.skip('Insert and Get City Product', function(done) {
 		done(new Error("Not implemented"));
 	});
 
