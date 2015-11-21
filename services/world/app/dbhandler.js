@@ -157,7 +157,7 @@ module.exports = {
 		shipModel: function(shipData, done) {
 			if (!shipData || !shipData.name || !shipData.life || !shipData.speed || !shipData.price || !shipData.cargo)
 				return done(new Error("No ShipModel data"), false);
-			var query = "INSERT INTO " + escapeString(tables.shipModels) + " (name,life,speed,price,cargo) VALUES(" + escapeString(shipData.name) + "," + escapeString(shipData.life) + "," + escapeString(shipData.speed) + "," + escapeString(shipData.price) + "," + escapeString(shipData.cargo) + ")";
+			var query = "INSERT INTO " + tables.shipModels + " (name,life,speed,price,cargo) VALUES(" + escapeString(shipData.name) + "," + escapeString(shipData.life) + "," + escapeString(shipData.speed) + "," + escapeString(shipData.price) + "," + escapeString(shipData.cargo) + ")";
 
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err, false);

@@ -234,8 +234,60 @@ describe('Database Handler', function() {
 				});
 			});
 	});
-	it.skip('Insert and Get Ship Model', function(done) {
-		done(new Error("Not implemented"));
+	it('Insert and Get Ship Model', function(done) {
+		var ship=data.ships.galleon;
+		assert.ok(ship);
+		dbHandler.insert.shipModel(ship,function(err,res){
+			assert.notOk(err);
+			assert.strictEqual(res,true);
+			dbHandler.insert.shipModel(ship,function(err,res){
+				assert.ok(err);
+				assert.strictEqual(res,false);
+				dbHandler.get.all(tables.shipModels,function(err,res){
+					assert.notOk(err);
+					assert.ok(res);
+					assert.strictEqual(res.length,1);
+					var shipId=res[0].id;
+					dbHandler.get.byId(tables.shipModels,shipId,function(err,res){
+						assert.notOk(err);
+						assert.ok(res);
+						assert.ok(res[0]);
+						assert.strictEqual(res[0].id,shipId);
+						assert.strictEqual(res[0].name,ship.name);
+						assert.strictEqual(res[0].life,ship.life);
+						assert.strictEqual(res[0].speed,ship.speed);
+						assert.strictEqual(res[0].price,ship.price);
+						assert.strictEqual(res[0].cargo,ship.cargo);
+						done();
+					});					
+				});			
+			});
+		});
+	});
+	it('Ship Model Validation', function(done) {
+		var correctElements = 0;
+		async.each(Object.keys(data.ships), function(key, callback) {
+				if (data.ships.hasOwnProperty(key)) {
+					var ship = data.ships[key];
+					var isCorrect = ship.correct;
+					if (isCorrect === true) correctElements++;
+					dbHandler.insert.shipModel(ship, function(err, res) {
+						if (isCorrect) {
+							assert.notOk(err);
+							assert.strictEqual(res, true);
+						} else assert.strictEqual(res, false);
+						callback();
+					});
+				}
+			},
+			function(err) {
+				assert.notOk(err);
+				dbHandler.get.all(tables.shipModels, function(err, res) {
+					assert.notOk(err);
+					assert.strictEqual(res.length, correctElements);
+					done();
+				});
+			});
 	});
 	it.skip('Insert and Get User Ship', function(done) {
 		done(new Error("Not implemented"));

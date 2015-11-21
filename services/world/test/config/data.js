@@ -14,34 +14,9 @@ module.exports = {
 		},
 		caravel: {
 			name: "caravel",
-			life: 200,
 			price: 100,
 			speed: 8,
 			cargo: 400,
-			correct: false
-		},
-		lineship: {
-			name: "Ship of the line",
-			life: 3000,
-			price: 3100,
-			speed: 3,
-			cargo: 0,
-			correct: true
-		},
-		sloop: {
-			name: "Sloop",
-			life: -5,
-			price: 20,
-			speed: 22,
-			cargo: 2,
-			correct: false
-		},
-		space: {
-			name: "Space Ship ",
-			life: 100,
-			price: 200,
-			speed: 4.5,
-			cargo: 200,
 			correct: false
 		}
 	},
