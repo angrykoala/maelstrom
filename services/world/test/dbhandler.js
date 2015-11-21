@@ -53,14 +53,14 @@ describe('Database Handler', function() {
 		dbHandler.insert.user(user.id, user, function(err, res) {
 			assert.notOk(err);
 			assert.ok(res);
-			assert.strictEqual(res, true);
+			assert.strictEqual(res, user.id);
 			dbHandler.insert.user(user2.id, user2, function(err, res) {
 				assert.notOk(err);
 				assert.ok(res);
-				assert.strictEqual(res, true);
+				assert.strictEqual(res, user2.id);
 				dbHandler.insert.user(user.id, user, function(err, res) {
 					assert.ok(err);
-					assert.strictEqual(res, false);
+					assert.isUndefined(res);
 					dbHandler.get.all(tables.users, function(err, res) {
 						assert.notOk(err);
 						assert.ok(res);
@@ -93,8 +93,11 @@ describe('Database Handler', function() {
 					dbHandler.insert.user(user.id, user, function(err, res) {
 						if (isCorrect) {
 							assert.notOk(err);
-							assert.strictEqual(res, true);
-						} else assert.strictEqual(res, false);
+							assert.isDefined(res);
+						} else {
+							assert.ok(err);
+							assert.isUndefined(res);
+						}
 						callback();
 					});
 				}
@@ -113,13 +116,13 @@ describe('Database Handler', function() {
 		var city2 = data.cities.isengard;
 		dbHandler.insert.city(city, function(err, res) {
 			assert.notOk(err);
-			assert.strictEqual(res, true);
+			assert.isDefined(res);
 			dbHandler.insert.city(city2, function(err, res) {
 				assert.notOk(err);
-				assert.strictEqual(res, true);
+				assert.isDefined(res);
 				dbHandler.insert.city(city2, function(err, res) {
 					assert.ok(err);
-					assert.strictEqual(res, false);
+					assert.isUndefined(res);
 					dbHandler.get.all(tables.cities, function(err, res) {
 						assert.notOk(err);
 						assert.ok(res);
@@ -155,8 +158,11 @@ describe('Database Handler', function() {
 					dbHandler.insert.city(city, function(err, res) {
 						if (isCorrect) {
 							assert.notOk(err);
-							assert.strictEqual(res, true);
-						} else assert.strictEqual(res, false);
+							assert.isDefined(res);
+						} else {
+							assert.ok(err);
+							assert.isUndefined(res);
+						}
 						callback();
 					});
 				}
@@ -175,13 +181,13 @@ describe('Database Handler', function() {
 		var product2 = data.products.redmeat;
 		dbHandler.insert.product(product, function(err, res) {
 			assert.notOk(err);
-			assert.strictEqual(res, true);
+			assert.isDefined(res);
 			dbHandler.insert.product(product2, function(err, res) {
 				assert.notOk(err);
-				assert.strictEqual(res, true);
+				assert.isDefined(res);
 				dbHandler.insert.product(product2, function(err, res) {
 					assert.ok(err);
-					assert.strictEqual(res, false);
+					assert.isUndefined(res);
 					dbHandler.get.all(tables.products, function(err, res) {
 						assert.notOk(err);
 						assert.ok(res);
@@ -219,8 +225,11 @@ describe('Database Handler', function() {
 					dbHandler.insert.product(product, function(err, res) {
 						if (isCorrect) {
 							assert.notOk(err);
-							assert.strictEqual(res, true);
-						} else assert.strictEqual(res, false);
+							assert.isDefined(res);
+						} else {
+							assert.ok(err);
+							assert.isUndefined(res);
+						}
 						callback();
 					});
 				}
@@ -239,10 +248,10 @@ describe('Database Handler', function() {
 		assert.ok(ship);
 		dbHandler.insert.shipModel(ship, function(err, res) {
 			assert.notOk(err);
-			assert.strictEqual(res, true);
+			assert.isDefined(res);
 			dbHandler.insert.shipModel(ship, function(err, res) {
 				assert.ok(err);
-				assert.strictEqual(res, false);
+				assert.isUndefined(res);
 				dbHandler.get.all(tables.shipModels, function(err, res) {
 					assert.notOk(err);
 					assert.ok(res);
@@ -274,8 +283,11 @@ describe('Database Handler', function() {
 					dbHandler.insert.shipModel(ship, function(err, res) {
 						if (isCorrect) {
 							assert.notOk(err);
-							assert.strictEqual(res, true);
-						} else assert.strictEqual(res, false);
+							assert.isDefined(res);
+						} else {
+							assert.ok(err);
+							assert.isUndefined(res);
+						}
 						callback();
 					});
 				}
@@ -298,21 +310,22 @@ describe('Database Handler', function() {
 		assert.ok(model);
 		dbHandler.insert.userShip(user.id, ship, function(err, res) {
 			assert.ok(err); //foreign id not valid
-			assert.strictEqual(res, false);
+			assert.isUndefined(res);
 			dbHandler.insert.user(user.id, user, function(err, res) {
 				assert.notOk(err);
-				assert.ok(res);
+				assert.isDefined(res);
 				dbHandler.insert.shipModel(model, function(err, res) {
 					assert.notOk(err);
-					assert.ok(res);
+					assert.isDefined(res);
+					ship.model=res;
 					dbHandler.insert.userShip(user.id, ship, function(err, res) {
 						assert.notOk(err);
-						assert.strictEqual(res, true);
+						assert.isDefined(res);
+						var shipId=res;
 						dbHandler.get.userShips(user.id, function(err, res) {
 							assert.notOk(err);
 							assert.ok(res);
 							assert.strictEqual(res.length, 1);
-							var shipId = res[0].id;
 							dbHandler.get.shipDetails(user.id, shipId, function(err, res) {
 								assert.notOk(err);
 								assert.ok(res);
@@ -350,8 +363,11 @@ describe('Database Handler', function() {
 							dbHandler.insert.userShip(user.id, ship, function(err, res) {
 								if (isCorrect) {
 									assert.notOk(err);
-									assert.strictEqual(res, true);
-								} else assert.strictEqual(res, false);
+									assert.isDefined(res);
+								} else {
+									assert.ok(err);
+									assert.isUndefined(res);
+								}
 								callback();
 							});
 						}
@@ -367,8 +383,42 @@ describe('Database Handler', function() {
 			});
 		});
 	});
-	it.skip('Insert and Get Ship Product', function(done) {
-		done(new Error("Not implemented"));
+	it('Insert and Get Ship Product', function(done) {
+		var product = data.products.bread;
+		var ship = data.userShips.blackPearl;
+		var user = data.users.arthur;
+		var model = data.ships.galleon;
+		dbHandler.insert.user(user.id, user, function(err, res) {
+			assert.notOk(err);
+			var userId = res;
+			dbHandler.insert.shipModel(model, function(err, res) {
+				assert.notOk(err);
+				ship.model = res;
+				dbHandler.insert.userShip(user.id, ship, function(err, res) {
+					assert.notOk(err);
+					var shipId = res;
+					dbHandler.insert.product(product, function(err, res) {
+						assert.notOk(err);
+						var productId = res;
+						dbHandler.insert.shipProduct(shipId, productId, {
+							quantity: 100
+						}, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res.length, 2);
+							dbHandler.get.shipProducts(shipId, function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								assert.strictEqual(res.length, 1);
+								assert.strictEqual(res[0].quantity, 100);
+								assert.strictEqual(res[0].ship_id, shipId);
+								assert.strictEqual(res[0].product_id, productId);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 	it.skip('Insert and Get City Product', function(done) {
 		done(new Error("Not implemented"));

@@ -47,7 +47,7 @@ module.exports = {
 		runQuery(query, done);
 	},
 	clearTables: function(done) {
-		async.each(Object.keys(tables), function(table, callback) {
+		async.eachSeries(Object.keys(tables), function(table, callback) {
 				var query = "DELETE FROM " + tables[table];
 				runQuery(query, callback);
 			},
@@ -125,67 +125,67 @@ module.exports = {
 			runQuery(query, done);
 		},
 		shipProducts: function(shipId, done) {
-			var query = "SELECT * FROM " + tables.shipProducts + "WHERE ship_id=" + escapeString(shipId);
+			var query = "SELECT * FROM " + tables.shipProducts + " WHERE ship_id=" + escapeString(shipId);
 			runQuery(query, done);
 		}
 	},
 	insert: {
 		user: function(userId, userData, done) {
-			if (userId === undefined || !userData || userData.money === undefined) return done(new Error("Not user data"), false);
+			if (userId === undefined || !userData || userData.money === undefined) return done(new Error("Not user data"));
 			var query = "INSERT INTO " + tables.users + " (id,money) VALUES (" + escapeString(userId) + "," + escapeString(userData.money) + ")";
 			runQuery(query, function(err, res) {
-				if (err || !res) return done(err, false);
-				else return done(null, true);
+				if (err || !res) return done(err);
+				else return done(null, userId);
 			});
 		},
 		city: function(cityData, done) {
-			if (!cityData || !cityData.name || cityData.position_x === undefined || cityData.position_y === undefined) return done(new Error("Not city data"), false);
+			if (!cityData || !cityData.name || cityData.position_x === undefined || cityData.position_y === undefined) return done(new Error("Not city data"));
 			var query = "INSERT INTO " + tables.cities + " (name,position_x,position_y) VALUES(" + escapeString(cityData.name) + "," + escapeString(cityData.position_x) + "," + escapeString(cityData.position_y) + ")";
 			runQuery(query, function(err, res) {
-				if (err || !res) return done(err, false);
-				else return done(null, true);
+				if (err || !res) return done(err);
+				else return done(null, res.insertId);
 			});
 		},
 		product: function(productData, done) {
-			if (!productData || !productData.name || productData.basePrice === undefined || productData.baseConsumption === undefined || productData.baseProduction === undefined || productData.weight === undefined) return done(new Error("Not product data"), false);
+			if (!productData || !productData.name || productData.basePrice === undefined || productData.baseConsumption === undefined || productData.baseProduction === undefined || productData.weight === undefined) return done(new Error("Not product data"));
 			var query = "INSERT INTO " + tables.products + " (name,base_price,base_production,base_consumption,weight) VALUES(" + escapeString(productData.name) + "," + escapeString(productData.basePrice) + "," + escapeString(productData.baseProduction) + "," + escapeString(productData.baseConsumption) + "," + escapeString(productData.weight) + ")";
 			runQuery(query, function(err, res) {
-				if (err || !res) return done(err, false);
-				else return done(null, true);
+				if (err || !res) return done(err);
+				else return done(null, res.insertId);
 			});
 		},
 		shipModel: function(shipData, done) {
 			if (!shipData || !shipData.name || !shipData.life || !shipData.speed || !shipData.price || !shipData.cargo)
-				return done(new Error("No ShipModel data"), false);
+				return done(new Error("No ShipModel data"));
 			var query = "INSERT INTO " + tables.shipModels + " (name,life,speed,price,cargo) VALUES(" + escapeString(shipData.name) + "," + escapeString(shipData.life) + "," + escapeString(shipData.speed) + "," + escapeString(shipData.price) + "," + escapeString(shipData.cargo) + ")";
 
 			runQuery(query, function(err, res) {
-				if (err || !res) return done(err, false);
-				else return done(null, true);
+				if (err || !res) return done(err);
+				else return done(null, res.insertId);
 			});
 		},
 		userShip: function(userId, shipData, done) {
-			if (!userId || !shipData || !shipData.name || !shipData.model || !shipData.life || !shipData.status) return done(new Error("No user ship data"), false);
+			if (!userId || !shipData || !shipData.name || !shipData.model || !shipData.life || !shipData.status) return done(new Error("No user ship data"));
 			var query = "INSERT INTO " + tables.userShips + " (user_id,name,model,life,status) VALUES(" + escapeString(userId) + "," + escapeString(shipData.name) + "," + escapeString(shipData.model) + "," + escapeString(shipData.life) + "," + escapeString(shipData.status) + ")";
 			runQuery(query, function(err, res) {
-				if (err || !res) return done(err, false);
-				else return done(null, true);
+				if (err || !res) return done(err);
+				else return done(null, res.insertId);
 			});
 		},
 		shipProduct: function(shipId, productId, productData, done) {
-			if (!shipId || !productId || !productData || productData.quantity) return done(new Error("No product ship data"), false);
+			if (shipId === undefined || productId === undefined || !productData) return done(new Error("No product ship data"));
 			var query = "INSERT INTO " + tables.shipProducts + " (ship_id,product_id,quantity) VALUES(" + escapeString(shipId) + "," + escapeString(productId) + "," + escapeString(productData.quantity) + ")";
 			runQuery(query, function(err, res) {
-				if (err || !res) return done(err, false);
-				else return done(null, true);
+				if (err || !res) return done(err);
+				else return done(null, [shipId, productId]);
 			});
 		},
 		cityProduct: function(cityId, productId, productData, done) {
-			if (!cityId || !productId || !productData || !productData.quantity) return done(new Error("No City product data"), false);
+			if (!cityId || !productId || !productData || !productData.quantity) return done(new Error("No City product data"));
 			var query = "INSERT INTO " + tables.cityProducts + " (city_id,product_id,quantity) VALUES (" + escapeString(cityId) + "," + escapeString(productId) + "," + escapeString(productData.quantity) + ")";
 			runQuery(query, function(err, res) {
-				if (err || !res) return done(err, false);
-				else return done(null, true);
+				if (err || !res) return done(err);
+				else return done(null, [cityId, productId]);
 			});
 		}
 	}
