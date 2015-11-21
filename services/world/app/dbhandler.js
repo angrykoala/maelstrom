@@ -127,6 +127,10 @@ module.exports = {
 		shipProducts: function(shipId, done) {
 			var query = "SELECT * FROM " + tables.shipProducts + " WHERE ship_id=" + escapeString(shipId);
 			runQuery(query, done);
+		},
+		cityProducts: function(cityId, done) {
+			var query = "SELECT * FROM " + tables.cityProducts + " WHERE city_id=" + escapeString(cityId);
+			runQuery(query, done);
 		}
 	},
 	insert: {
@@ -181,7 +185,7 @@ module.exports = {
 			});
 		},
 		cityProduct: function(cityId, productId, productData, done) {
-			if (!cityId || !productId || !productData || !productData.quantity) return done(new Error("No City product data"));
+			if (cityId===undefined || productId===undefined || !productData) return done(new Error("No City product data"));
 			var query = "INSERT INTO " + tables.cityProducts + " (city_id,product_id,quantity) VALUES (" + escapeString(cityId) + "," + escapeString(productId) + "," + escapeString(productData.quantity) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err);

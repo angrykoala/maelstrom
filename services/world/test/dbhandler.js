@@ -317,11 +317,11 @@ describe('Database Handler', function() {
 				dbHandler.insert.shipModel(model, function(err, res) {
 					assert.notOk(err);
 					assert.isDefined(res);
-					ship.model=res;
+					ship.model = res;
 					dbHandler.insert.userShip(user.id, ship, function(err, res) {
 						assert.notOk(err);
 						assert.isDefined(res);
-						var shipId=res;
+						var shipId = res;
 						dbHandler.get.userShips(user.id, function(err, res) {
 							assert.notOk(err);
 							assert.ok(res);
@@ -420,8 +420,32 @@ describe('Database Handler', function() {
 			});
 		});
 	});
-	it.skip('Insert and Get City Product', function(done) {
-		done(new Error("Not implemented"));
+	it('Insert and Get City Product', function(done) {
+		var city = data.cities.minasTirith;
+		var product = data.products.bread;
+		dbHandler.insert.product(product, function(err, res) {
+			assert.notOk(err);
+			assert.isDefined(res);
+			var productId = res;
+			dbHandler.insert.city(city, function(err, res) {
+				assert.notOk(err);
+				assert.isDefined(res);
+				var cityId = res;
+				dbHandler.insert.cityProduct(cityId, productId,{quantity:100}, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.strictEqual(res.length,2);
+					dbHandler.get.cityProducts(cityId,function(err,res){
+						assert.notOk(err);
+						assert.ok(res);
+						assert.strictEqual(res.length,1);
+						assert.strictEqual(res[0].product_id,productId);
+						assert.strictEqual(res[0].city_id,cityId);
+						assert.strictEqual(res[0].quantity,100);
+						done();
+					});
+				});
+			});
+		});
 	});
-
 });
