@@ -21,9 +21,9 @@ var Models = dbHandler.models;*/
 
 
 describe('Database Handler', function() {
-	this.timeout(2000);
+	this.timeout(4000);
 	before(function(done) {
-		this.timeout(9000);
+		this.timeout(20000);
 		dbHandler.dropTables(function(err, res) {
 			assert.notOk(err);
 			dbHandler.createTables(function(err, res) {
