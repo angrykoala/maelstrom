@@ -147,8 +147,8 @@ module.exports = {
 			});
 		},
 		product: function(productData, done) {
-			if (!productData || !productData.name || !productData.base_price || !productData.base_consumption || !productData.weigth) return done(new Error("Not product data"), false);
-			var query = "INSERT INTO " + tables.products + " (name,base_price,base_consumption,weigth) VALUES(" + escapeString(productData.name) + "," + escapeString(productData.base_price) + "," + escapeString(productData.base_consumption) + "," + escapeString(productData.weigth) + ")";
+			if (!productData || !productData.name || productData.basePrice === undefined || productData.baseConsumption === undefined || productData.baseProduction === undefined || productData.weight === undefined) return done(new Error("Not product data"), false);
+			var query = "INSERT INTO " + tables.products + " (name,base_price,base_production,base_consumption,weight) VALUES(" + escapeString(productData.name) + "," + escapeString(productData.basePrice) + "," + escapeString(productData.baseProduction) + "," + escapeString(productData.baseConsumption) + "," + escapeString(productData.weight) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err, false);
 				else return done(null, true);

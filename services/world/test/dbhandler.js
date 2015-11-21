@@ -83,7 +83,7 @@ describe('Database Handler', function() {
 			});
 		});
 	});
-	it('User validation', function(done) {
+	it('User Validation', function(done) {
 		var correctElements = 0;
 		async.each(Object.keys(data.users), function(key, callback) {
 				if (data.users.hasOwnProperty(key)) {
@@ -145,7 +145,7 @@ describe('Database Handler', function() {
 			});
 		});
 	});
-	it('City validation', function(done) {
+	it('City Validation', function(done) {
 		var correctElements = 0;
 		async.each(Object.keys(data.cities), function(key, callback) {
 				if (data.cities.hasOwnProperty(key)) {
@@ -170,8 +170,69 @@ describe('Database Handler', function() {
 				});
 			});
 	});
-	it.skip('Insert and Get Product', function(done) {
-		done(new Error("Not implemented"));
+	it('Insert and Get Product', function(done) {
+		var product = data.products.bread;
+		var product2 = data.products.redmeat;
+		dbHandler.insert.product(product, function(err, res) {
+			assert.notOk(err);
+			assert.strictEqual(res, true);
+			dbHandler.insert.product(product2, function(err, res) {
+				assert.notOk(err);
+				assert.strictEqual(res, true);
+				dbHandler.insert.product(product2, function(err, res) {
+					assert.ok(err);
+					assert.strictEqual(res, false);
+					dbHandler.get.all(tables.products, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res);
+						assert.strictEqual(res.length, 2);
+						product = res[0];
+						dbHandler.get.byId(tables.products, product.id, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.strictEqual(res.length, 1);
+							assert.ok(res[0].id);
+							assert.strictEqual(res[0].name, product.name);
+							assert.strictEqual(res[0].base_price, product.base_price);
+							assert.strictEqual(res[0].base_consumption, product.base_consumption);
+							assert.strictEqual(res[0].base_production, product.base_production);
+							assert.strictEqual(res[0].weight, product.weight);
+							dbHandler.get.byId(tables.products, "11111", function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								assert.strictEqual(res.length, 0);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+	it('Product Validation', function(done) {
+		var correctElements = 0;
+		async.each(Object.keys(data.products), function(key, callback) {
+				if (data.products.hasOwnProperty(key)) {
+					var product = data.products[key];
+					var isCorrect = product.correct;
+					if (isCorrect === true) correctElements++;
+					dbHandler.insert.product(product, function(err, res) {
+						if (isCorrect) {
+							assert.notOk(err);
+							assert.strictEqual(res, true);
+						} else assert.strictEqual(res, false);
+						callback();
+					});
+				}
+			},
+			function(err) {
+				assert.notOk(err);
+				dbHandler.get.all(tables.products, function(err, res) {
+					assert.notOk(err);
+					assert.strictEqual(res.length, correctElements);
+					done();
+				});
+			});
 	});
 	it.skip('Insert and Get Ship Model', function(done) {
 		done(new Error("Not implemented"));

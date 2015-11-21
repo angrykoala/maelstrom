@@ -50,31 +50,29 @@ module.exports = {
 			name: "Bread",
 			basePrice: 50,
 			baseProduction: 25.3,
-			baseConsume: 30,
+			baseConsumption: 30,
 			weight: 1,
 			correct: true
-		},
-		bricks: {
-			name: "Bricks",
-			basePrice: 20,
-			baseProduction: 5.3,
-			baseConsume: -2,
-			weight: 2,
-			correct: false
 		},
 		redmeat: {
 			name: "Red meat",
 			basePrice: 50.2,
 			baseProduction: 24.3,
-			baseConsume: 30.9,
+			baseConsumption: 30.9,
 			weight: 2.2,
 			correct: true
 		},
 		salt: {
-			name: "salt",
 			basePrice: 100,
 			baseProduction: 2.3,
-			baseConsume: 3,
+			baseConsumption: 3,
+			weight: 1,
+			correct: false
+		},
+		gold: {
+			name: "Gold",
+			baseProduction: 2.3,
+			baseConsumption: 3,
 			weight: 1,
 			correct: false
 		}
