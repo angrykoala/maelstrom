@@ -235,32 +235,32 @@ describe('Database Handler', function() {
 			});
 	});
 	it('Insert and Get Ship Model', function(done) {
-		var ship=data.ships.galleon;
+		var ship = data.ships.galleon;
 		assert.ok(ship);
-		dbHandler.insert.shipModel(ship,function(err,res){
+		dbHandler.insert.shipModel(ship, function(err, res) {
 			assert.notOk(err);
-			assert.strictEqual(res,true);
-			dbHandler.insert.shipModel(ship,function(err,res){
+			assert.strictEqual(res, true);
+			dbHandler.insert.shipModel(ship, function(err, res) {
 				assert.ok(err);
-				assert.strictEqual(res,false);
-				dbHandler.get.all(tables.shipModels,function(err,res){
+				assert.strictEqual(res, false);
+				dbHandler.get.all(tables.shipModels, function(err, res) {
 					assert.notOk(err);
 					assert.ok(res);
-					assert.strictEqual(res.length,1);
-					var shipId=res[0].id;
-					dbHandler.get.byId(tables.shipModels,shipId,function(err,res){
+					assert.strictEqual(res.length, 1);
+					var shipId = res[0].id;
+					dbHandler.get.byId(tables.shipModels, shipId, function(err, res) {
 						assert.notOk(err);
 						assert.ok(res);
 						assert.ok(res[0]);
-						assert.strictEqual(res[0].id,shipId);
-						assert.strictEqual(res[0].name,ship.name);
-						assert.strictEqual(res[0].life,ship.life);
-						assert.strictEqual(res[0].speed,ship.speed);
-						assert.strictEqual(res[0].price,ship.price);
-						assert.strictEqual(res[0].cargo,ship.cargo);
+						assert.strictEqual(res[0].id, shipId);
+						assert.strictEqual(res[0].name, ship.name);
+						assert.strictEqual(res[0].life, ship.life);
+						assert.strictEqual(res[0].speed, ship.speed);
+						assert.strictEqual(res[0].price, ship.price);
+						assert.strictEqual(res[0].cargo, ship.cargo);
 						done();
-					});					
-				});			
+					});
+				});
 			});
 		});
 	});
@@ -289,8 +289,83 @@ describe('Database Handler', function() {
 				});
 			});
 	});
-	it.skip('Insert and Get User Ship', function(done) {
-		done(new Error("Not implemented"));
+	it('Insert and Get User Ship', function(done) {
+		var ship = data.userShips.blackPearl;
+		var user = data.users.arthur;
+		var model = data.ships.galleon;
+		assert.ok(ship);
+		assert.ok(user);
+		assert.ok(model);
+		dbHandler.insert.userShip(user.id, ship, function(err, res) {
+			assert.ok(err); //foreign id not valid
+			assert.strictEqual(res, false);
+			dbHandler.insert.user(user.id, user, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				dbHandler.insert.shipModel(model, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					dbHandler.insert.userShip(user.id, ship, function(err, res) {
+						assert.notOk(err);
+						assert.strictEqual(res, true);
+						dbHandler.get.userShips(user.id, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.strictEqual(res.length, 1);
+							var shipId = res[0].id;
+							dbHandler.get.shipDetails(user.id, shipId, function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								assert.strictEqual(res.length, 1);
+								assert.strictEqual(res[0].id, shipId);
+								assert.strictEqual(res[0].name, ship.name);
+								assert.strictEqual(res[0].model, ship.model);
+								assert.strictEqual(res[0].user_id, user.id);
+								assert.strictEqual(res[0].status, ship.status);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+	it('User Ship Validation', function(done) {
+		var correctElements = 0;
+		var user = data.users.arthur;
+		var model = data.ships.galleon;
+		dbHandler.insert.user(user.id, user, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			dbHandler.insert.shipModel(model, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+
+
+				async.each(Object.keys(data.userShips), function(key, callback) {
+						if (data.userShips.hasOwnProperty(key)) {
+							var ship = data.userShips[key];
+							var isCorrect = ship.correct;
+							if (isCorrect === true) correctElements++;
+							dbHandler.insert.userShip(user.id, ship, function(err, res) {
+								if (isCorrect) {
+									assert.notOk(err);
+									assert.strictEqual(res, true);
+								} else assert.strictEqual(res, false);
+								callback();
+							});
+						}
+					},
+					function(err) {
+						assert.notOk(err);
+						dbHandler.get.all(tables.userShips, function(err, res) {
+							assert.notOk(err);
+							assert.strictEqual(res.length, correctElements);
+							done();
+						});
+					});
+			});
+		});
 	});
 	it.skip('Insert and Get Ship Product', function(done) {
 		done(new Error("Not implemented"));

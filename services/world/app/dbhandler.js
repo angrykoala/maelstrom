@@ -117,11 +117,11 @@ module.exports = {
 			runQuery(query, done);
 		},
 		userShips: function(userId, done) {
-			var query = "SELECT * FROM " + tables.userShips + "WHERE user_id=" + escapeString(userId);
+			var query = "SELECT * FROM " + tables.userShips + " WHERE user_id=" + escapeString(userId);
 			runQuery(query, done);
 		},
 		shipDetails: function(userId, shipId, done) {
-			var query = "SELECT * FROM " + tables.userShips + "WHERE ship_id=" + escapeString(shipId);
+			var query = "SELECT * FROM " + tables.userShips + " WHERE id=" + escapeString(shipId);
 			runQuery(query, done);
 		},
 		shipProducts: function(shipId, done) {
@@ -164,9 +164,9 @@ module.exports = {
 				else return done(null, true);
 			});
 		},
-		userShip: function(userId, shipData) {
-			if (!userId || !shipData || !shipData.name || !shipData.model || !shipData.life) return done(new Error("No user ship data"), false);
-			var query = "INSERT INTO " + escapeString(tables.userShips) + " (user_id,name,model,life) VALUES(" + escapeString(userId) + "," + escapeString(shipData.name) + "," + escapeString(shipData.model) + "," + escapeString(shipData.life) + ")";
+		userShip: function(userId, shipData, done) {
+			if (!userId || !shipData || !shipData.name || !shipData.model || !shipData.life || !shipData.status) return done(new Error("No user ship data"), false);
+			var query = "INSERT INTO " + tables.userShips + " (user_id,name,model,life,status) VALUES(" + escapeString(userId) + "," + escapeString(shipData.name) + "," + escapeString(shipData.model) + "," + escapeString(shipData.life) + "," + escapeString(shipData.status) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err, false);
 				else return done(null, true);
@@ -174,7 +174,7 @@ module.exports = {
 		},
 		shipProduct: function(shipId, productId, productData, done) {
 			if (!shipId || !productId || !productData || productData.quantity) return done(new Error("No product ship data"), false);
-			var query = "INSERT INTO " + escapeString(tables.shipProducts) + " (ship_id,product_id,quantity) VALUES(" + escapeString(shipId) + "," + escapeString(productId) + "," + escapeString(productData.quantity) + ")";
+			var query = "INSERT INTO " + tables.shipProducts + " (ship_id,product_id,quantity) VALUES(" + escapeString(shipId) + "," + escapeString(productId) + "," + escapeString(productData.quantity) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err, false);
 				else return done(null, true);
@@ -182,7 +182,7 @@ module.exports = {
 		},
 		cityProduct: function(cityId, productId, productData, done) {
 			if (!cityId || !productId || !productData || !productData.quantity) return done(new Error("No City product data"), false);
-			var query = "INSERT INTO " + escapeString(tables.cityProducts) + " (city_id,product_id,quantity) VALUES (" + escapeString(cityId) + "," + escapeString(productId) + "," + escapeString(productData.quantity) + ")";
+			var query = "INSERT INTO " + tables.cityProducts + " (city_id,product_id,quantity) VALUES (" + escapeString(cityId) + "," + escapeString(productId) + "," + escapeString(productData.quantity) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err, false);
 				else return done(null, true);
