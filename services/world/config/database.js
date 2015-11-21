@@ -4,7 +4,7 @@ module.exports = {
 	connection: {
 		connectionLimit: 10,
 		host: '127.0.0.1',
-		user: 'andrew',
+		user: process.env.DB_USER || 'demiurgosoft',
 		password: '',
 		database: 'maelstrom_world'
 	},

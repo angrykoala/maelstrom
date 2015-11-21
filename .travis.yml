@@ -20,6 +20,7 @@ addons: #installs mongo 3
       - mongodb-org-shell      
 before_script:
   - sleep 15
+  - mysql -e 'create database maelstrom_world'
   
 script:
     - npm test
