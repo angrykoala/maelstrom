@@ -13,20 +13,23 @@ var Models = require('../config/models.js');
 var tables = config.tables;
 var pool = mysql.createPool(config.connection);
 
-
-function runQuery(query, done) {
-	pool.getConnection(function(err, connection) {
-		if (err) {
+function getConnection(done){
+	pool.getConnection(function(err,connection){
+		if(err){
 			connection.release();
-			return done(new Error("Error connection database"));
-		}
+			return done(new Error("Error connecting to database -" + err));
+		}else return done(null,connection);
+	});
+}
+function runQuery(query, done) {
+	getConnection(function(err, connection) {
+		if (err) return done(err);
 		connection.query(query, function(err, rows) {
 			connection.release();
-			done(err, rows);
+			return done(err, rows);
 		});
 	});
 }
-
 function createTable(name, schema, done) {
 	var query = "CREATE TABLE IF NOT EXISTS " + name + "(" + schema + ")";
 	runQuery(query, done);
@@ -39,7 +42,36 @@ function escapeString(string) {
 module.exports = {
 	tables: tables,
 	close: function(done) {
-		connection.end(done);
+		pool.end(done);
+	},
+	beginTransaction: function(done){
+		getConnection(function(err,connection){
+			if(err) return done(err);
+			else connection.beginTransaction(function(err){
+				if(err) return done(err);
+				else return done(null,connection);			
+			});		
+		});
+	},
+	query: function(query,connection,done){
+			connection.query(query,function(err,res){
+				if(err) connection.rollback(function(){
+					return done(err);
+				});
+				else done(null,res);
+			});		
+	},
+	commitTransaction: function(connection,done){
+		connection.commit(function(err){
+			if(err){
+				connection.rollback(function(){
+					return done(err);
+				});			
+			} else{
+				connection.release();
+				 return done(null);
+			 }	
+		});	
 	},
 	dropTables: function(done) {
 		var query = "DROP TABLE IF EXISTS " + tables.shipProducts + "," + tables.cityProducts + "," + tables.userShips + "," + tables.users + "," + tables.cities + "," + tables.products + "," + tables.shipModels;

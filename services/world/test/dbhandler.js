@@ -45,7 +45,31 @@ describe('Database Handler', function() {
 			done();
 		});
 	});
-
+	it('Transactions',function(done){
+		var user = data.users.arthur;
+		dbHandler.insert.user(user.id, user, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+		dbHandler.beginTransaction(function(err,connection){
+			assert.notOk(err);
+			assert.ok(connection);
+			dbHandler.query("SELECT * FROM " + tables.users,connection,function(err,res){
+				assert.notOk(err);
+				assert.ok(res);
+				assert.strictEqual(res.length,1);
+			});	
+			dbHandler.commitTransaction(connection,function(err){
+				assert.notOk(err);
+				done();				
+			});	
+		});
+		
+		//query: function(query,connection,done){
+		
+		//commitTransaction: function(connection,done){
+		});
+		
+	});
 	it('Insert and Get User', function(done) {
 		var user = data.users.arthur;
 		var user2 = data.users.ford;
