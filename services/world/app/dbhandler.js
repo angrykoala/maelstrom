@@ -13,14 +13,15 @@ var Models = require('../config/models.js');
 var tables = config.tables;
 var pool = mysql.createPool(config.connection);
 
-function getConnection(done){
-	pool.getConnection(function(err,connection){
-		if(err){
+function getConnection(done) {
+	pool.getConnection(function(err, connection) {
+		if (err) {
 			connection.release();
 			return done(new Error("Error connecting to database -" + err));
-		}else return done(null,connection);
+		} else return done(null, connection);
 	});
 }
+
 function runQuery(query, done) {
 	getConnection(function(err, connection) {
 		if (err) return done(err);
@@ -30,6 +31,7 @@ function runQuery(query, done) {
 		});
 	});
 }
+
 function createTable(name, schema, done) {
 	var query = "CREATE TABLE IF NOT EXISTS " + name + "(" + schema + ")";
 	runQuery(query, done);
@@ -41,37 +43,38 @@ function escapeString(string) {
 
 module.exports = {
 	tables: tables,
+	runQuery: runQuery,
 	close: function(done) {
 		pool.end(done);
 	},
-	beginTransaction: function(done){
-		getConnection(function(err,connection){
-			if(err) return done(err);
-			else connection.beginTransaction(function(err){
-				if(err) return done(err);
-				else return done(null,connection);			
-			});		
+	beginTransaction: function(done) {
+		getConnection(function(err, connection) {
+			if (err) return done(err);
+			else connection.beginTransaction(function(err) {
+				if (err) return done(err);
+				else return done(null, connection);
+			});
 		});
 	},
-	query: function(query,connection,done){
-			connection.query(query,function(err,res){
-				if(err) connection.rollback(function(){
+	query: function(query, connection, done) {
+		connection.query(query, function(err, res) {
+			if (err) connection.rollback(function() {
+				return done(err);
+			});
+			else done(null, res);
+		});
+	},
+	commitTransaction: function(connection, done) {
+		connection.commit(function(err) {
+			if (err) {
+				connection.rollback(function() {
 					return done(err);
 				});
-				else done(null,res);
-			});		
-	},
-	commitTransaction: function(connection,done){
-		connection.commit(function(err){
-			if(err){
-				connection.rollback(function(){
-					return done(err);
-				});			
-			} else{
+			} else {
 				connection.release();
-				 return done(null);
-			 }	
-		});	
+				return done(null);
+			}
+		});
 	},
 	dropTables: function(done) {
 		var query = "DROP TABLE IF EXISTS " + tables.shipProducts + "," + tables.cityProducts + "," + tables.userShips + "," + tables.users + "," + tables.cities + "," + tables.products + "," + tables.shipModels;
@@ -217,7 +220,7 @@ module.exports = {
 			});
 		},
 		cityProduct: function(cityId, productId, productData, done) {
-			if (cityId===undefined || productId===undefined || !productData) return done(new Error("No City product data"));
+			if (cityId === undefined || productId === undefined || !productData) return done(new Error("No City product data"));
 			var query = "INSERT INTO " + tables.cityProducts + " (city_id,product_id,quantity) VALUES (" + escapeString(cityId) + "," + escapeString(productId) + "," + escapeString(productData.quantity) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err);

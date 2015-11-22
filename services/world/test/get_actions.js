@@ -8,36 +8,40 @@ Description: Unit test for get actions
 var assert = require('chai').assert;
 var async = require('async');
 
-/*var auxFunc = require('./config/functions.js');
 var data = require('./config/data.js');
-var regexp = require('../config/database.js').regexp;
+var dbHandler = require('../app/dbhandler.js');
+var tables = dbHandler.tables;
+var auxFunc = require('./config/functions.js');
 
 var Get = require('../app/get_actions.js');
-var Models = require('../app/dbhandler.js').models;*/
 
 describe.skip('Get Actions', function() {
-	this.timeout(2000);
-	var db;
+	this.timeout(4000);
 	before(function(done) {
-		db = auxFunc.connectDB(function(err) {
+		this.timeout(20000);
+		dbHandler.dropTables(function(err, res) {
 			assert.notOk(err);
-			auxFunc.clearDB(function(err) {
+			dbHandler.createTables(function(err, res) {
 				assert.notOk(err);
-				auxFunc.insertAllData(function(err) {
-					assert.notOk(err);
-					done();
-				});
+				done();
 			});
 		});
 	});
-	after(function(done) {
-		auxFunc.clearDB(function(err) {
+	beforeEach(function(done) {
+		dbHandler.clearTables(function(err) {
 			assert.notOk(err);
-			db.close(done);
+			auxFunc.insertData(done);
+		});
+	});
+	after(function(done) {
+		dbHandler.clearTables(function(err) {
+			assert.notOk(err);
+			dbHandler.close(function() {
+				done();
+			});
 		});
 	});
 	it('Get Map', function(done) {
-		var correctData = auxFunc.getCorrectData(data.cities);
 		Get.map(function(err, res) {
 			assert.notOk(err);
 			assert.ok(res);
@@ -46,7 +50,7 @@ describe.skip('Get Actions', function() {
 				assert.ok(res[i].id);
 				assert.ok(res[i]._id);
 				assert.ok(res[i].name);
-				assert.match(res[i].name, regexp.cityName);
+				//assert.match(res[i].name, regexp.cityName);
 				assert.isNumber(res[i].position_x);
 				assert.isNumber(res[i].position_y);
 			}

@@ -36,39 +36,40 @@ describe('Database Handler', function() {
 		dbHandler.clearTables(function(err) {
 			assert.notOk(err);
 			done();
-			//insert data
 		});
 	});
 	after(function(done) {
 		dbHandler.clearTables(function(err) {
 			assert.notOk(err);
-			done();
+			dbHandler.close(function() {
+				done();
+			});
 		});
 	});
-	it('Transactions',function(done){
+	it('Transactions', function(done) {
 		var user = data.users.arthur;
 		dbHandler.insert.user(user.id, user, function(err, res) {
 			assert.notOk(err);
 			assert.ok(res);
-		dbHandler.beginTransaction(function(err,connection){
-			assert.notOk(err);
-			assert.ok(connection);
-			dbHandler.query("SELECT * FROM " + tables.users,connection,function(err,res){
+			dbHandler.beginTransaction(function(err, connection) {
 				assert.notOk(err);
-				assert.ok(res);
-				assert.strictEqual(res.length,1);
-			});	
-			dbHandler.commitTransaction(connection,function(err){
-				assert.notOk(err);
-				done();				
-			});	
+				assert.ok(connection);
+				dbHandler.query("SELECT * FROM " + tables.users, connection, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.strictEqual(res.length, 1);
+				});
+				dbHandler.commitTransaction(connection, function(err) {
+					assert.notOk(err);
+					done();
+				});
+			});
+
+			//query: function(query,connection,done){
+
+			//commitTransaction: function(connection,done){
 		});
-		
-		//query: function(query,connection,done){
-		
-		//commitTransaction: function(connection,done){
-		});
-		
+
 	});
 	it('Insert and Get User', function(done) {
 		var user = data.users.arthur;
@@ -455,17 +456,19 @@ describe('Database Handler', function() {
 				assert.notOk(err);
 				assert.isDefined(res);
 				var cityId = res;
-				dbHandler.insert.cityProduct(cityId, productId,{quantity:100}, function(err, res) {
+				dbHandler.insert.cityProduct(cityId, productId, {
+					quantity: 100
+				}, function(err, res) {
 					assert.notOk(err);
 					assert.ok(res);
-					assert.strictEqual(res.length,2);
-					dbHandler.get.cityProducts(cityId,function(err,res){
+					assert.strictEqual(res.length, 2);
+					dbHandler.get.cityProducts(cityId, function(err, res) {
 						assert.notOk(err);
 						assert.ok(res);
-						assert.strictEqual(res.length,1);
-						assert.strictEqual(res[0].product_id,productId);
-						assert.strictEqual(res[0].city_id,cityId);
-						assert.strictEqual(res[0].quantity,100);
+						assert.strictEqual(res.length, 1);
+						assert.strictEqual(res[0].product_id, productId);
+						assert.strictEqual(res[0].city_id, cityId);
+						assert.strictEqual(res[0].quantity, 100);
 						done();
 					});
 				});

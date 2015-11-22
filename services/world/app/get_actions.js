@@ -6,13 +6,13 @@ Description: Actions in  world (API) to get info
 */
 
 var dbHandler = require('./dbhandler.js');
-var tables = require('../config/database.js');
+var tables = dbHandler.tables;
 
 //Maybe use some enum to handle the level of info to get
 module.exports = {
 	//returns all the map basic information
 	map: function(done) {
-		dbHandler.getAll(tables.cities, done);
+		dbHandler.get.all(tables.cities, done);
 	},
 	//returns full information of certain city
 	cityDetails: function(cityId, done) {
