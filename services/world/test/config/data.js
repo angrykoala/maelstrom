@@ -65,6 +65,12 @@ module.exports = {
 			position_y: -259.5,
 			correct: true
 		},
+		rohan: {
+			name: "Rohan",
+			position_x: 0,
+			position_y: 0,
+			correct: true
+		},
 		rivendel: {
 			position_x: -5,
 			position_y: -259.5,

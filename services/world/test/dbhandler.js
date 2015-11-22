@@ -41,9 +41,7 @@ describe('Database Handler', function() {
 	after(function(done) {
 		dbHandler.clearTables(function(err) {
 			assert.notOk(err);
-			dbHandler.close(function() {
-				done();
-			});
+			done();
 		});
 	});
 	it('Transactions', function(done) {
