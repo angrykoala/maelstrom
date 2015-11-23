@@ -105,9 +105,27 @@ describe('Get Actions', function() {
 			done();
 		});
 	});
-	it.skip('Get Ship Products', function(done) {
-
-
+	it('Get Ship Products', function(done) {
+		var userId = data.users.arthur.id;
+		Get.ships(userId, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var shipId = res[0].id;
+			Get.shipProducts(shipId, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.ok(res[0]);
+				assert.strictEqual(res[0].ship_id, shipId);
+				assert.ok(res[0].product_id);
+				assert.ok(res[0].quantity);
+				Get.shipProducts(44, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.strictEqual(res.length, 0);
+					done();
+				});
+			});
+		});
 	});
 	it('Get Ship Models', function(done) {
 		Get.shipModels(function(err, res) {
@@ -119,7 +137,7 @@ describe('Get Actions', function() {
 			done();
 		});
 	});
-	it.only('Get Products', function(done) {
+	it('Get Products', function(done) {
 		Get.productList(function(err, res) {
 			assert.notOk(err);
 			assert.ok(res);
