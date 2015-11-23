@@ -164,12 +164,21 @@ describe('Get Actions', function() {
 			assert.ok(res);
 			assert.ok(res[0]);
 			assert.ok(res[1]);
-			Get.distance(res[0].id, res[1].id, function(err, res) {
+			var cityId1=res[0].id;
+			var cityId2=res[1].id;
+			Get.distance(cityId1,cityId2, function(err, res) {
 				assert.notOk(err);
 				assert.ok(res);
 				assert.closeTo(res, 300.3747659175, 0.000001);
-
-				done();
+				Get.distance(cityId1, 44, function(err, res) {
+					assert.ok(err);
+					assert.notOk(res);
+					Get.distance(44,cityId2, function(err, res) {
+						assert.ok(err);
+						assert.notOk(res);
+						done();
+					});
+				});
 			});
 		});
 	});
