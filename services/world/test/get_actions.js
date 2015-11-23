@@ -50,7 +50,6 @@ describe('Get Actions', function() {
 				assert.isDefined(res[i].position_y);
 				assert.isDefined(res[i].position_x);
 			}
-
 			done();
 		});
 	});
@@ -63,78 +62,41 @@ describe('Get Actions', function() {
 				assert.notOk(err);
 				assert.ok(res);
 				assert.ok(res.products);
+				Get.cityDetails(44, function(err, res) {
+					assert.ok(err);
+					assert.notOk(res);
 				done();
+			});
 			});
 		});
 	});
-	it.skip('Get User Data', function(done) {
-		var correctData = auxFunc.getCorrectData(data.users);
-		async.each(correctData, function(usr, callback) {
-			Get.userData(usr._id, function(err, res) {
+	it('Get City Products',function(done){
+		Get.map(function(err,res){
+			assert.notOk(err);
+			assert.ok(res);
+			var cities=res;
+			Get.cityProducts(cities[0].id,function(err,res){
 				assert.notOk(err);
 				assert.ok(res);
-				assert.isNumber(res.money);
-				//assert.ok(res.id); //maybe will remove id from result
-				callback();
-			});
-		}, function(err, res) {
+				done();		
+			});				
+		});		
+	});
+	it('Get User Data', function(done) {
+		var user=data.users.arthur;
+		Get.userData(user.id,function(err,res){
 			assert.notOk(err);
-			Get.userData(mongoose.Types.ObjectId(), function(err, res) {
-				assert.notOk(err);
+			assert.ok(res);
+			assert.strictEqual(res.money,user.money);
+			Get.userData(44,function(err,res){
+				assert.ok(err);
 				assert.notOk(res);
 				done();
-			});
+			});			
 		});
 	});
 	it.skip('Get User Ships', function(done) {
-		var correctData = auxFunc.getCorrectData(data.users);
-		async.each(correctData, function(usr, callback) {
-			Get.ships(usr._id, function(err, res) {
-				assert.notOk(err);
-				assert.ok(res);
-				async.each(res, function(ship, callback2) {
-					assert.ok(ship._id);
-					assert.match(ship.name, regexp.shipName);
-					assert.isNumber(ship.life);
-					assert.ok(ship.status);
-					assert.ok(ship.model);
-					assert.ok(ship.travelStatus);
-					Get.shipDetails(usr._id, ship._id, function(err, res) {
-						assert.notOk(err);
-						assert.ok(res._id);
-						assert.match(res.name, regexp.shipName);
-						assert.isNumber(res.life);
-						assert.ok(res.status);
-						assert.ok(res.model);
-						assert.ok(res.travelStatus);
-						assert.ok(res.products);
-						for (var i = 0; i < res.products.length; i++) {
-							assert.ok(res.products[i].id);
-							assert.isNumber(res.products[i].quantity);
-						}
-						callback2();
-					});
-				}, function(err) {
-					assert.notOk(err);
-					callback();
-				});
-			});
-		}, function(err, res) {
-			assert.notOk(err);
-			Get.ships(mongoose.Types.ObjectId(), function(err, res) {
-				assert.notOk(err);
-				assert.notOk(res);
-				Get.shipDetails(mongoose.Types.ObjectId(), mongoose.Types.ObjectId(), function(err, res) {
-					assert.notOk(err);
-					assert.notOk(res);
-					Get.shipDetails(correctData[0], mongoose.Types.ObjectId(), function(err, res) {
-						assert.notOk(err);
-						assert.notOk(res);
-						done();
-					});
-				});
-			});
-		});
+	
 
 	});
 	it.skip('Get Ship Models', function(done) {

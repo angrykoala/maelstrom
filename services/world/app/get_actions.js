@@ -17,10 +17,11 @@ module.exports = {
 	//returns information of certain city
 	cityDetails: function(cityId, done) {
 		dbHandler.get.byId(tables.cities, cityId, function(err, res) {
-			if (err || !res) return done(err, res);
-			var cityDetails = res;
+			if (err) return done(err, null);
+			else if(!res || res.length===0) return done(new Error("City not found"),null);
+			var cityDetails = res[0];
 			dbHandler.get.cityProducts(cityId, function(err, res) {
-				if (err || !res) return done(err, cityDetails);
+				if (err) return done(err, cityDetails);
 				cityDetails.products = res;
 				done(null, cityDetails);
 			});
@@ -32,7 +33,12 @@ module.exports = {
 	},
 	//returns all user data (money)
 	userData: function(userId, done) {
-		dbHandler.get.byId(tables.users, userId, done);
+		dbHandler.get.byId(tables.users, userId, function(err,res){
+			if(err) return done(err,null);
+			else if(!res || res.length===0) return done(new Error("User not found"),null);
+			else return done(null,res[0]);
+			
+		});
 	},
 	//returns all userId ships basic info 
 	ships: function(userId, done) {
