@@ -74,43 +74,27 @@ module.exports = {
 
 		});
 	},
-	/*
 	distance: function(from, to, done) {
-		Models.City.findOne({
-			_id: from
-		}, function(err, res) {
+		dbHandler.get.byId(tables.cities, from, function(err, res) {
 			if (err) done(err);
-			else if (!res) done(new Error("From not found"));
-			else {
-				var x1 = res.position_x;
-				var y1 = res.position_y;
-				Models.City.findOne({
-					_id: to
-				}, function(err, res) {
-					if (err) done(err);
-					else if (!res) done(new Error("From not found"));
-					else {
-						var x2 = res.position_x;
-						var y2 = res.position_y;
-						var x = x2 - x1;
-						var y = y2 - y1;
-						var distance = Math.sqrt(x * x + y * y);
-						done(null, distance);
-					}
-				});
-			}
+			else if (!res || res.length === 0) return done(new Error("From city not found"));
+			var x1 = res[0].positionX;
+			var y1 = res[0].positionY;
+			dbHandler.get.byId(tables.cities, to, function(err, res) {
+				if (err) done(err);
+				else if (!res || res.length === 0) return done(new Error("To city not found"));
+				var x2 = res[0].positionX;
+				var y2 = res[0].positionY;
+
+				var x = x2 - x1;
+				var y = y2 - y1;
+				var distance = Math.sqrt(x * x + y * y);
+				done(null, distance);
+			});
 		});
 	},
 	remainingTime: function(userId, shipId, done) {
-		dbHandler.getShip(userId, shipId, function(err, res) {
-			if (err) done(err, null);
-			else if (!res) done(new Error("Not ship found"), null);
-			else if (res.status != "traveling" && res.status != "returning") done(new Error("Ship not traveling"), null);
-			else if (!res.travelStatus) done(new Error("Not travel status in ship"), null);
-			else {
-				done(null, res.travelStatus.remaining);
-			}
-		});
+		return done(new Error("Not implemented"));
 	},
 	getSellingPrice: function(cityId, productId, quantity, done) {
 		//TODO: improve
@@ -137,5 +121,5 @@ module.exports = {
 				return done(null, price);
 			});
 		});
-	}*/
+	}
 };

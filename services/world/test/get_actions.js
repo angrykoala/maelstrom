@@ -158,74 +158,25 @@ describe('Get Actions', function() {
 			});
 		});
 	});
+	it('Get Distance', function(done) {
+		Get.map(function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			assert.ok(res[0]);
+			assert.ok(res[1]);
+			Get.distance(res[0].id, res[1].id, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.closeTo(res, 300.3747659175, 0.000001);
+
+				done();
+			});
+		});
+	});
 	it.skip('Get Remaining Time', function(done) {
-		var userId = data.users.travelingCaptain._id;
-		Models.User.findOne({
-			_id: userId
-		}, function(err, res) {
-			assert.notOk(err);
-			assert.ok(res);
-			var shipId = res.ships[0];
-			Get.remainingTime(userId, shipId, function(err, res) {
-				assert.notOk(err);
-				assert.ok(res);
-				assert.strictEqual(res, 10);
-				Get.remainingTime(mongoose.Types.ObjectId(), shipId, function(err, res) {
-					assert.ok(err);
-					assert.notOk(res);
-					Get.remainingTime(userId, mongoose.Types.ObjectId(), function(err, res) {
-						assert.ok(err);
-						assert.notOk(res);
-						userId = data.users.arthur._id;
-						Models.User.findOne({
-							_id: userId
-						}, function(err, res) {
-							assert.notOk(err);
-							assert.ok(res);
-							var shipId = res.ships[0];
-							//A docked ship
-							Get.remainingTime(userId, shipId, function(err, res) {
-								assert.ok(err);
-								assert.notOk(res);
-								done();
-							});
-						});
-					});
-				});
-			});
-		});
+		done(new Error("Not implemented"));
 	});
-	it.skip('Get Distance', function(done) {
-		Models.City.find({}, function(err, res) {
-			assert.notOk(err);
-			assert.ok(res);
-			assert(res.length >= 2);
-			cityId1 = res[0]._id;
-			cityId2 = res[1]._id;
-			Get.distance(cityId1, cityId2, function(err, res) {
-				assert.notOk(err);
-				assert.ok(res);
-				assert.closeTo(res, 299.8753, 0.0001); //values (10,40) and (-5,-259.5)
-				Get.distance(cityId1, cityId1, function(err, res) {
-					assert.notOk(err);
-					assert.strictEqual(res, 0.0);
-					Get.distance(mongoose.Types.ObjectId(), cityId1, function(err, res) {
-						assert.ok(err);
-						assert.notOk(res);
-						Get.distance(cityId1, mongoose.Types.ObjectId(), function(err, res) {
-							assert.ok(err);
-							assert.notOk(res);
-							Get.distance(mongoose.Types.ObjectId(), mongoose.Types.ObjectId(), function(err, res) {
-								assert.ok(err);
-								assert.notOk(res);
-								done();
-							});
-						});
-					});
-				});
-			});
-		});
-	});
+
 	it.skip('Get Price', function(done) {
 		done(new Error("Not implemented"));
 
