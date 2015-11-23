@@ -96,30 +96,30 @@ module.exports = {
 	remainingTime: function(userId, shipId, done) {
 		return done(new Error("Not implemented"));
 	},
-	getSellingPrice: function(cityId, productId, quantity, done) {
+	sellingPrice: function(cityId, productId, quantity, done) {
 		//TODO: improve
-		dbHandler.getCityProduct(cityId, productId, function(err, res) {
+		dbHandler.get.cityProduct(cityId, productId, function(err, res) {
 			if (err) return done(err);
-			if (!res) return done(new Error("Not city-product found"));
-			this.productDetails(productId, function(err, res) {
+			if (!res || res.length === 0) return done(new Error("Not city-product found"));
+			dbHandler.get.byId(tables.products, productId, function(err, res) {
 				if (err) return done(err);
-				if (!res) return done(new Error("Not product found"));
-				var price = res.basePrice * quantity * 0.8;
+				if (!res || res.length === 0) return done(new Error("Not product found"));
+				var price = res[0].basePrice * quantity * 0.8;
 				return done(null, price);
 			});
 		});
 	},
-	getBuyingPrice: function(CityId, productId, quantity, done) {
+	buyingPrice: function(cityId, productId, quantity, done) {
 		//TODO: improve
-		dbHandler.getCityProduct(cityId, productId, function(err, res) {
+		dbHandler.get.cityProduct(cityId, productId, function(err, res) {
 			if (err) return done(err);
-			if (!res) return done(new Error("Not city-product found"));
-			this.productDetails(productId, function(err, res) {
+			if (!res || res.length === 0) return done(new Error("Not city-product found"));
+			dbHandler.get.byId(tables.products, productId, function(err, res) {
 				if (err) return done(err);
-				if (!res) return done(new Error("Not product found"));
-				var price = res.basePrice * quantity;
+				if (!res || res.length === 0) return done(new Error("Not product found"));
+				var price = res[0].basePrice * quantity * 1.2;
 				return done(null, price);
 			});
 		});
-	}
+	},
 };

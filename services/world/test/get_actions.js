@@ -186,8 +186,33 @@ describe('Get Actions', function() {
 		done(new Error("Not implemented"));
 	});
 
-	it.skip('Get Price', function(done) {
-		done(new Error("Not implemented"));
-
+	it('Get Price', function(done) {
+		Get.map(function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var cityId = res[0].id;
+			Get.cityProducts(cityId, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.ok(res[0]);
+				var productId = res[0].productId;
+				Get.buyingPrice(cityId, productId, 10, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					var bprice = res;
+					Get.buyingPrice(cityId, productId, 100, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res);
+						assert.strictEqual(res, bprice * 10);
+						Get.sellingPrice(cityId, productId, 10, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.closeTo(res, bprice /1.5,0.001);
+							done();
+						});
+					});
+				});
+			});
+		});
 	});
 });
