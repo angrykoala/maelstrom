@@ -47,8 +47,8 @@ describe('Get Actions', function() {
 			for (var i = 0; i < res.length; i++) {
 				assert.isDefined(res[i].id);
 				assert.ok(res[i].name);
-				assert.isDefined(res[i].position_y);
-				assert.isDefined(res[i].position_x);
+				assert.isDefined(res[i].positionY);
+				assert.isDefined(res[i].positionX);
 			}
 			done();
 		});
@@ -100,8 +100,9 @@ describe('Get Actions', function() {
 		Get.ships(user.id, function(err, res) {
 			assert.notOk(err);
 			assert.ok(res);
-			assert.ok(res[0].id);
-			assert.strictEqual(res[0].user_id, user.id);
+			assert.isDefined(res[0].id);
+			assert.isDefined(res[0].userId);
+			assert.strictEqual(res[0].userId, user.id);
 			done();
 		});
 	});
@@ -115,8 +116,9 @@ describe('Get Actions', function() {
 				assert.notOk(err);
 				assert.ok(res);
 				assert.ok(res[0]);
-				assert.strictEqual(res[0].ship_id, shipId);
-				assert.ok(res[0].product_id);
+				assert.isDefined(res[0].shipId);
+				assert.strictEqual(res[0].shipId, shipId);
+				assert.ok(res[0].productId);
 				assert.ok(res[0].quantity);
 				Get.shipProducts(44, function(err, res) {
 					assert.notOk(err);

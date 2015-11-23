@@ -55,25 +55,25 @@ module.exports = {
 	cities: {
 		minasTirith: {
 			name: "Minas Tirith",
-			position_x: 10,
-			position_y: 40,
+			positionX: 10,
+			positionY: 40,
 			correct: true
 		},
 		isengard: {
 			name: "Isengard",
-			position_x: -5,
-			position_y: -259.5,
+			positionX: -5,
+			positionY: -259.5,
 			correct: true
 		},
 		rohan: {
 			name: "Rohan",
-			position_x: 0,
-			position_y: 0,
+			positionX: 0,
+			positionY: 0,
 			correct: true
 		},
 		rivendel: {
-			position_x: -5,
-			position_y: -259.5,
+			positionX: -5,
+			positionY: -259.5,
 			correct: false
 		}
 	},

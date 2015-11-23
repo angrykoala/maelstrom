@@ -157,8 +157,8 @@ describe('Database Handler', function() {
 							assert.strictEqual(res.length, 1);
 							assert.ok(res[0].id);
 							assert.strictEqual(res[0].name, city.name);
-							assert.strictEqual(res[0].position_x, city.position_x);
-							assert.strictEqual(res[0].position_y, city.position_y);
+							assert.strictEqual(res[0].positionX, city.positionX);
+							assert.strictEqual(res[0].positionY, city.positionY);
 							dbHandler.get.byId(tables.cities, "11111", function(err, res) {
 								assert.notOk(err);
 								assert.ok(res);
@@ -216,15 +216,18 @@ describe('Database Handler', function() {
 						assert.ok(res);
 						assert.strictEqual(res.length, 2);
 						product = res[0];
+						assert.ok(product.basePrice);
+						assert.ok(product.baseConsumption);
+						assert.ok(product.basePrice);
 						dbHandler.get.byId(tables.products, product.id, function(err, res) {
 							assert.notOk(err);
 							assert.ok(res);
 							assert.strictEqual(res.length, 1);
 							assert.ok(res[0].id);
 							assert.strictEqual(res[0].name, product.name);
-							assert.strictEqual(res[0].base_price, product.base_price);
-							assert.strictEqual(res[0].base_consumption, product.base_consumption);
-							assert.strictEqual(res[0].base_production, product.base_production);
+							assert.strictEqual(res[0].basePrice, product.basePrice);
+							assert.strictEqual(res[0].baseConsumption, product.baseConsumption);
+							assert.strictEqual(res[0].baseProduction, product.baseProduction);
 							assert.strictEqual(res[0].weight, product.weight);
 							dbHandler.get.byId(tables.products, "11111", function(err, res) {
 								assert.notOk(err);
@@ -356,7 +359,7 @@ describe('Database Handler', function() {
 								assert.strictEqual(res[0].id, shipId);
 								assert.strictEqual(res[0].name, ship.name);
 								assert.strictEqual(res[0].model, ship.model);
-								assert.strictEqual(res[0].user_id, user.id);
+								assert.strictEqual(res[0].userId, user.id);
 								assert.strictEqual(res[0].status, ship.status);
 								done();
 							});
@@ -433,8 +436,8 @@ describe('Database Handler', function() {
 								assert.ok(res);
 								assert.strictEqual(res.length, 1);
 								assert.strictEqual(res[0].quantity, 100);
-								assert.strictEqual(res[0].ship_id, shipId);
-								assert.strictEqual(res[0].product_id, productId);
+								assert.strictEqual(res[0].shipId, shipId);
+								assert.strictEqual(res[0].productId, productId);
 								done();
 							});
 						});
@@ -464,8 +467,8 @@ describe('Database Handler', function() {
 						assert.notOk(err);
 						assert.ok(res);
 						assert.strictEqual(res.length, 1);
-						assert.strictEqual(res[0].product_id, productId);
-						assert.strictEqual(res[0].city_id, cityId);
+						assert.strictEqual(res[0].productId, productId);
+						assert.strictEqual(res[0].cityId, cityId);
 						assert.strictEqual(res[0].quantity, 100);
 						done();
 					});
