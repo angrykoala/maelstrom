@@ -65,39 +65,45 @@ describe('Get Actions', function() {
 				Get.cityDetails(44, function(err, res) {
 					assert.ok(err);
 					assert.notOk(res);
-				done();
-			});
+					done();
+				});
 			});
 		});
 	});
-	it('Get City Products',function(done){
-		Get.map(function(err,res){
+	it('Get City Products', function(done) {
+		Get.map(function(err, res) {
 			assert.notOk(err);
 			assert.ok(res);
-			var cities=res;
-			Get.cityProducts(cities[0].id,function(err,res){
+			var cities = res;
+			Get.cityProducts(cities[0].id, function(err, res) {
 				assert.notOk(err);
 				assert.ok(res);
-				done();		
-			});				
-		});		
+				done();
+			});
+		});
 	});
 	it('Get User Data', function(done) {
-		var user=data.users.arthur;
-		Get.userData(user.id,function(err,res){
+		var user = data.users.arthur;
+		Get.userData(user.id, function(err, res) {
 			assert.notOk(err);
 			assert.ok(res);
-			assert.strictEqual(res.money,user.money);
-			Get.userData(44,function(err,res){
+			assert.strictEqual(res.money, user.money);
+			Get.userData(44, function(err, res) {
 				assert.ok(err);
 				assert.notOk(res);
 				done();
-			});			
+			});
 		});
 	});
-	it.skip('Get User Ships', function(done) {
-	
-
+	it('Get User Ships', function(done) {
+		var user = data.users.arthur;
+		Get.ships(user.id, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			assert.ok(res[0].id);
+			assert.strictEqual(res[0].user_id, user.id);
+			done();
+		});
 	});
 	it.skip('Get Ship Models', function(done) {
 		var correctData = auxFunc.getCorrectData(data.ships);
