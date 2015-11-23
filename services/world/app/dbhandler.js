@@ -166,6 +166,14 @@ module.exports = {
 		cityProducts: function(cityId, done) {
 			var query = "SELECT * FROM " + tables.cityProducts + " WHERE cityId=" + escapeString(cityId);
 			runQuery(query, done);
+		},
+		cityProduct: function(cityId, productId, done) {
+			var query = "SELECT * FROM " + tables.cityProducts + " WHERE cityId=" + escapeString(cityId) + " AND productId=" + escapeString(productId);
+			runQuery(query, done);
+		},
+		shipProduct: function(shipId, productId, done) {
+			var query = "SELECT * FROM " + tables.shipProducts + " WHERE shipId=" + escapeString(shipId) + " AND productId=" + escapeString(productId);
+			runQuery(query, done);
 		}
 	},
 	insert: {

@@ -436,9 +436,22 @@ describe('Database Handler', function() {
 								assert.ok(res);
 								assert.strictEqual(res.length, 1);
 								assert.strictEqual(res[0].quantity, 100);
+								assert.isDefined(res[0].shipId);
+								assert.isDefined(res[0].productId);
 								assert.strictEqual(res[0].shipId, shipId);
 								assert.strictEqual(res[0].productId, productId);
-								done();
+								dbHandler.get.shipProduct(shipId, res[0].productId, function(err, res) {
+									assert.notOk(err);
+									assert.ok(res);
+									assert.strictEqual(res.length, 1);
+									assert.isDefined(res[0].productId);
+									dbHandler.get.shipProduct(shipId, 44, function(err, res) {
+										assert.notOk(err);
+										assert.ok(res);
+										assert.strictEqual(res.length, 0);
+										done();
+									});
+								});
 							});
 						});
 					});
@@ -446,7 +459,7 @@ describe('Database Handler', function() {
 			});
 		});
 	});
-	it('Insert and Get City Product', function(done) {
+	it('Insert and Get City Products', function(done) {
 		var city = data.cities.minasTirith;
 		var product = data.products.bread;
 		dbHandler.insert.product(product, function(err, res) {
@@ -470,7 +483,18 @@ describe('Database Handler', function() {
 						assert.strictEqual(res[0].productId, productId);
 						assert.strictEqual(res[0].cityId, cityId);
 						assert.strictEqual(res[0].quantity, 100);
-						done();
+						dbHandler.get.cityProduct(cityId, res[0].productId, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.strictEqual(res.length, 1);
+							assert.isDefined(res[0].productId);
+							dbHandler.get.cityProduct(cityId, 44, function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								assert.strictEqual(res.length, 0);
+								done();
+							});
+						});
 					});
 				});
 			});
