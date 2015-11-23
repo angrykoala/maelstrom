@@ -54,35 +54,16 @@ describe('Get Actions', function() {
 			done();
 		});
 	});
-	it.skip('Get City Details', function(done) {
-		var correctData = auxFunc.getCorrectData(data.cities);
+	it('Get City Details', function(done) {
 		Get.map(function(err, res) {
 			assert.notOk(err);
-			assert.strictEqual(res.length, correctData.length);
-			async.each(res, function(city, callback) {
-				Get.cityDetails(city.id, function(err, res) {
-					assert.notOk(err);
-					assert.ok(res.id);
-					assert.ok(res.name);
-					assert.match(res.name, regexp.cityName);
-					assert.isNumber(res.position_y);
-					assert.isNumber(res.position_x);
-					assert.ok(res.products);
-					for (var i = 0; i < res.products; i++) {
-						assert.ok(res.products[i]);
-						assert.isNumber(res.products[i].quantity);
-						assert.isNumber(res.products[i].consume);
-						assert.isNumber(res.products[i].production);
-					}
-					callback();
-				});
-			}, function(err) {
+			assert.ok(res);
+			var cities = res;
+			Get.cityDetails(cities[0].id, function(err, res) {
 				assert.notOk(err);
-				Get.cityDetails(mongoose.Types.ObjectId(), function(err, res) {
-					assert.notOk(err);
-					assert.notOk(res);
-					done();
-				});
+				assert.ok(res);
+				assert.ok(res.products);
+				done();
 			});
 		});
 	});

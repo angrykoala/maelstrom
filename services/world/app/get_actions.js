@@ -14,37 +14,54 @@ module.exports = {
 	map: function(done) {
 		dbHandler.get.all(tables.cities, done);
 	},
-	//returns full information of certain city
+	//returns information of certain city
 	cityDetails: function(cityId, done) {
-		dbHandler.getById(tables.cities, cityId, done);
+		dbHandler.get.byId(tables.cities, cityId, function(err, res) {
+			if (err || !res) return done(err, res);
+			var cityDetails = res;
+			dbHandler.get.cityProducts(cityId, function(err, res) {
+				if (err || !res) return done(err, cityDetails);
+				cityDetails.products = res;
+				done(null, cityDetails);
+			});
+		});
+	},
+	//return city products information of a city
+	cityProducts: function(cityId, done) {
+		dbHandler.get.cityProducts(cityId, done);
 	},
 	//returns all user data (money)
 	userData: function(userId, done) {
-		dbHandler.getById(tables.users, userId, done);
+		dbHandler.get.byId(tables.users, userId, done);
 	},
 	//returns all userId ships basic info 
 	ships: function(userId, done) {
-		dbHandler.getUserShips(userId, done);
+		dbHandler.get.userShips(userId, done);
+	},
+	shipProducts: function(shipId, done) {
+		dbHandler.get.shipProducts(shipId, done);
 	},
 	//returns details of a certain ship
 	shipDetails: function(shipId, done) {
-		dbHandler.getShipDetails(shipId, function(err, res) {
+		dbHandler.get.shipDetails(shipId, function(err, res) {
 			if (err || !res) return done(err, res);
-			dbHandler.getShipProduct(shipId, function(err, res) {
-				//return all data in one object
-
+			var shipDetails = res;
+			dbHandler.get.shipProducts(shipId, function(err, res) {
+				if (err || !res) return done(err, shipDetails);
+				shipDetails.products = res;
+				done(null, shipDetails);
 			});
 		});
 	},
 	//return all ships models
 	shipModels: function(done) {
-		dbHandler.getAll(tables.shipModels, done);
+		dbHandler.get.all(tables.shipModels, done);
 	},
 	productList: function(done) {
-		dbHandler.getAll(tables.products, done);
+		dbHandler.get.all(tables.products, done);
 	},
 	productDetails: function(productId, done) {
-		dbHandler.getById(tables.products, productId, done);
+		dbHandler.get.byId(tables.products, productId, done);
 	},
 	/*
 	distance: function(from, to, done) {
