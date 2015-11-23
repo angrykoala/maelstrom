@@ -207,7 +207,7 @@ describe('Get Actions', function() {
 						Get.sellingPrice(cityId, productId, 10, function(err, res) {
 							assert.notOk(err);
 							assert.ok(res);
-							assert.closeTo(res, bprice /1.5,0.001);
+							assert.closeTo(res, bprice / 1.5, 0.001);
 							done();
 						});
 					});

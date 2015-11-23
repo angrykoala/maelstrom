@@ -46,28 +46,29 @@ describe('Database Handler', function() {
 	});
 	it('Transactions', function(done) {
 		var user = data.users.arthur;
-		dbHandler.insert.user(user.id, user, function(err, res) {
+		var user2 = data.users.ford;
+		var query1 = "INSERT INTO " + tables.users + " (id,money) VALUES (" + user.id + "," + user.money + ")";
+		var query2 = "INSERT INTO " + tables.users + " (id,money) VALUES (" + user2.id + "," + user2.money + ")";
+
+		dbHandler.beginTransaction(function(err, connection) {
 			assert.notOk(err);
-			assert.ok(res);
-			dbHandler.beginTransaction(function(err, connection) {
+			assert.ok(connection);
+			dbHandler.query(query1, connection, function(err) {
 				assert.notOk(err);
-				assert.ok(connection);
-				dbHandler.query("SELECT * FROM " + tables.users, connection, function(err, res) {
+				dbHandler.query(query2, connection, function(err) {
 					assert.notOk(err);
-					assert.ok(res);
-					assert.strictEqual(res.length, 1);
-				});
-				dbHandler.commitTransaction(connection, function(err) {
-					assert.notOk(err);
-					done();
+					dbHandler.commitTransaction(connection, function(err) {
+						assert.notOk(err);
+						dbHandler.get.all(tables.users, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.strictEqual(res.length, 2);
+							done();
+						});
+					});
 				});
 			});
-
-			//query: function(query,connection,done){
-
-			//commitTransaction: function(connection,done){
 		});
-
 	});
 	it('Insert and Get User', function(done) {
 		var user = data.users.arthur;
@@ -493,6 +494,76 @@ describe('Database Handler', function() {
 								assert.ok(res);
 								assert.strictEqual(res.length, 0);
 								done();
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+	it('Add User Money', function(done) {
+		var user = data.users.arthur;
+		dbHandler.insert.user(user.id, user, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			dbHandler.get.byId(tables.users, user.id, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				var money = res[0].money;
+				dbHandler.beginTransaction(function(err, connection) {
+					assert.notOk(err);
+					assert.ok(connection);
+					dbHandler.update.addUserMoney(connection, user.id, 100, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res);
+						dbHandler.update.addUserMoney(connection, user.id, -100, function(err, res) {
+							assert.ok(err);
+							assert.notOk(res);
+							dbHandler.commitTransaction(connection, function(err) {
+								assert.notOk(err);
+								dbHandler.get.byId(tables.users, user.id, function(err, res) {
+									assert.notOk(err);
+									assert.ok(res);
+									assert.strictEqual(res[0].money, money + 100);
+									done();
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+	it('Remove User Money', function(done) {
+		var user = data.users.arthur;
+		dbHandler.insert.user(user.id, user, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			dbHandler.get.byId(tables.users, user.id, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				var money = res[0].money;
+				dbHandler.beginTransaction(function(err, connection) {
+					assert.notOk(err);
+					assert.ok(connection);
+					dbHandler.update.removeUserMoney(connection, user.id, 90, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res);
+						dbHandler.update.removeUserMoney(connection, user.id, -100, function(err, res) {
+							assert.ok(err);
+							assert.notOk(res);
+							dbHandler.update.removeUserMoney(connection, user.id, 100, function(err, res) {
+								assert.ok(err);
+								assert.notOk(res);
+								dbHandler.commitTransaction(connection, function(err) {
+									assert.notOk(err);
+									dbHandler.get.byId(tables.users, user.id, function(err, res) {
+										assert.notOk(err);
+										assert.ok(res);
+										assert.strictEqual(res[0].money, money - 90);
+										done();
+									});
+								});
 							});
 						});
 					});

@@ -32,6 +32,16 @@ function runQuery(query, done) {
 	});
 }
 
+function runTransactionQuery(query, connection, done) {
+	connection.query(query, function(err, res) {
+		if (err) connection.rollback(function() {
+			connection.release();
+			return done(err);
+		});
+		else done(null, res);
+	});
+}
+
 function createTable(name, schema, done) {
 	var query = "CREATE TABLE IF NOT EXISTS " + name + "(" + schema + ")";
 	runQuery(query, done);
@@ -44,6 +54,7 @@ function escapeString(string) {
 module.exports = {
 	tables: tables,
 	runQuery: runQuery,
+	query: runTransactionQuery,
 	close: function(done) {
 		pool.end(done);
 	},
@@ -56,18 +67,11 @@ module.exports = {
 			});
 		});
 	},
-	query: function(query, connection, done) {
-		connection.query(query, function(err, res) {
-			if (err) connection.rollback(function() {
-				return done(err);
-			});
-			else done(null, res);
-		});
-	},
 	commitTransaction: function(connection, done) {
 		connection.commit(function(err) {
 			if (err) {
 				connection.rollback(function() {
+					connection.release();
 					return done(err);
 				});
 			} else {
@@ -233,6 +237,38 @@ module.exports = {
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err);
 				else return done(null, [cityId, productId]);
+			});
+		}
+	},
+	update: {
+		addUserMoney: function(connection, userId, quantity, done) {
+			var query1 = "SELECT money FROM " + tables.users + " WHERE id=" + escapeString(userId);
+			if (!quantity || quantity < 0) return done(new Error("Money quantity not valid"), false);
+			runTransactionQuery(query1, connection, function(err, res) {
+				if (err) return done(err, false);
+				else if (!res || res.length === 0) return done(new Error("User not found"), false);
+
+				var money = res[0].money + quantity;
+				var query2 = "UPDATE " + tables.users + " SET money=" + money + " WHERE id=" + userId;
+				runTransactionQuery(query2, connection, function(err, res) {
+					if (err) return done(err, false);
+					else return done(null, true);
+				});
+			});
+		},
+		removeUserMoney: function(connection, userId, quantity, done) {
+			var query1 = "SELECT money FROM " + tables.users + " WHERE id=" + escapeString(userId);
+			if (!quantity || quantity < 0) return done(new Error("Money quantity not valid"), false);
+			runTransactionQuery(query1, connection, function(err, res) {
+				if (err) return done(err, false);
+				else if (!res || res.length === 0) return done(new Error("User not found"), false);
+				if (res[0].money < quantity) return done(new Error("Not enough money"), false);
+				var money = res[0].money - quantity;
+				var query2 = "UPDATE " + tables.users + " SET money=" + money + " WHERE id=" + userId;
+				runTransactionQuery(query2, connection, function(err, res) {
+					if (err) return done(err, false);
+					else return done(null, true);
+				});
 			});
 		}
 	}
