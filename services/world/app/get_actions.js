@@ -67,7 +67,12 @@ module.exports = {
 		dbHandler.get.all(tables.products, done);
 	},
 	productDetails: function(productId, done) {
-		dbHandler.get.byId(tables.products, productId, done);
+		dbHandler.get.byId(tables.products, productId, function(err, res) {
+			if (err) return done(err, res);
+			else if (!res || res.length === 0) return done(new Error("Product not found"), null);
+			else return done(null, res[0]);
+
+		});
 	},
 	/*
 	distance: function(from, to, done) {

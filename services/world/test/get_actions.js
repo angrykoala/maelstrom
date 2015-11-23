@@ -105,6 +105,10 @@ describe('Get Actions', function() {
 			done();
 		});
 	});
+	it.skip('Get Ship Products', function(done) {
+
+
+	});
 	it('Get Ship Models', function(done) {
 		Get.shipModels(function(err, res) {
 			assert.notOk(err);
@@ -115,27 +119,19 @@ describe('Get Actions', function() {
 			done();
 		});
 	});
-	it.skip('Get Products', function(done) {
-		var correctData = auxFunc.getCorrectData(data.products);
+	it.only('Get Products', function(done) {
 		Get.productList(function(err, res) {
 			assert.notOk(err);
-			assert.strictEqual(res.length, correctData.length);
-			async.each(res, function(product, callback) {
-				assert.ok(product);
-				assert.ok(product.id);
-				assert.match(product.name, regexp.productName);
-				assert.isNumber(product.weight);
-				Get.productDetails(product.id, function(err, res) {
-					assert.notOk(err);
-					assert.ok(res);
-					assert.strictEqual(res.id, product.id);
-					assert.strictEqual(res.name, product.name);
-					callback();
-				});
-			}, function(err) {
+			assert.ok(res);
+			assert.ok(res[0]);
+			var prod = res[0];
+			Get.productDetails(prod.id, function(err, res) {
 				assert.notOk(err);
-				Get.productDetails(mongoose.Types.ObjectId(), function(err, res) {
-					assert.notOk(err);
+				assert.ok(res);
+				assert.strictEqual(res.id, prod.id);
+				assert.strictEqual(res.name, prod.name);
+				Get.productDetails(44, function(err, res) {
+					assert.ok(err);
 					assert.notOk(res);
 					done();
 				});
