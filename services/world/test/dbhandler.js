@@ -13,11 +13,12 @@ var dbHandler = require('../app/dbhandler.js');
 var tables = dbHandler.tables;
 
 
-/*var auxFunc = require('./config/functions.js');
+var auxFunc = require('./config/functions.js');
 
-
+/*
 var data = require('./config/data.js');
-var Models = dbHandler.models;*/
+var Models = dbHandler.models;
+*/
 
 
 describe('Database Handler', function() {
@@ -570,5 +571,72 @@ describe('Database Handler', function() {
 				});
 			});
 		});
+	});
+	it('Add/Remove Ship Product', function(done) {
+		var user = data.users.arthur;
+		auxFunc.insertData(function() {
+			dbHandler.get.userShips(user.id, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				var shipId = res[0].id;
+				dbHandler.get.shipProducts(shipId, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.ok(res[0]);
+					var prod = res[0];
+					async.series([function(callback) {
+						dbHandler.beginTransaction(function(err, connection) {
+							assert.notOk(err);
+							assert.ok(connection);
+							dbHandler.update.addShipProduct(connection, shipId, prod.productId, -5, function(err, res) {
+								assert.ok(err);
+								assert.notOk(res);
+								dbHandler.update.addShipProduct(connection, shipId, prod.productId, 5, function(err, res) {
+									assert.notOk(err);
+									assert.ok(res);
+									dbHandler.commitTransaction(connection, function(err) {
+										assert.notOk(err);
+										dbHandler.get.shipProduct(shipId, prod.productId, function(err, res) {
+											assert.notOk(err);
+											assert.ok(res);
+											assert.ok(res[0]);
+											assert.strictEqual(res[0].quantity, prod.quantity + 5);
+											callback();
+										});
+									});
+								});
+							});
+						});
+					}, function(callback) {
+						dbHandler.beginTransaction(function(err, connection) {
+							assert.notOk(err);
+							assert.ok(connection);
+							dbHandler.update.removeShipProduct(connection, shipId, prod.productId, -5, function(err, res) {
+								assert.ok(err);
+								assert.notOk(res);
+								dbHandler.update.removeShipProduct(connection, shipId, prod.productId, 5, function(err, res) {
+									assert.notOk(err);
+									assert.ok(res);
+									dbHandler.commitTransaction(connection, function(err) {
+										assert.notOk(err);
+										dbHandler.get.shipProduct(shipId, prod.productId, function(err, res) {
+											assert.notOk(err);
+											assert.ok(res);
+											assert.ok(res[0]);
+											assert.strictEqual(res[0].quantity, prod.quantity);
+											done();
+										});
+									});
+								});
+							});
+						});
+					}]);
+				});
+			});
+		});
+	});
+
+	it.skip('Add/Remove City Product', function(done) {
+
 	});
 });
