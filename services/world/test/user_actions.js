@@ -101,9 +101,61 @@ describe('User Actions', function() {
 			});
 		});
 	});
-	it.skip("Sell Product", function(done) {
-		done(new Error('Not implemented'));
-		//TODO
+	it("Sell Product", function(done) {
+		var userId = data.users.arthur.id;
+		dbHandler.get.user(userId, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res[0]);
+			var userMoney = res[0].money;
+			dbHandler.get.all(tables.products, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res[0]);
+				var productId = res[0].id;
+				var productPrice = res[0].basePrice;
+				dbHandler.get.all(tables.cities, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res[0]);
+					var cityId = res[0].id;
+					dbHandler.get.userShips(userId, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res[0]);
+						var shipId = res[0].id;
+						dbHandler.get.shipProduct(shipId, productId, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res[0]);
+							var shipProd = res[0].quantity;
+							assert.strictEqual(res[0].productId, productId);
+							dbHandler.get.cityProduct(cityId, productId, function(err, res) {
+								assert.notOk(err);
+								assert.ok(res[0]);
+								var cityProd = res[0].quantity;
+								assert.strictEqual(res[0].productId, productId);
+								Actions.sellProduct(userId, shipId, cityId, productId, 2, function(err, res) {
+									assert.notOk(err);
+									assert.ok(res);
+									dbHandler.get.shipProduct(shipId, productId, function(err, res) {
+										assert.notOk(err);
+										assert.ok(res[0]);
+										assert.strictEqual(res[0].quantity, shipProd - 2);
+										dbHandler.get.cityProduct(cityId, productId, function(err, res) {
+											assert.notOk(err);
+											assert.ok(res[0]);
+											assert.strictEqual(res[0].quantity, cityProd + 2);
+											dbHandler.get.user(userId, function(err, res) {
+												assert.notOk(err);
+												assert.ok(res[0]);
+												assert.strictEqual(res[0].money,userMoney + (productPrice * 2));
+												done();
+											});
+										});
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 	it.skip("Build Ship", function(done) {
 		done(new Error('Not implemented'));

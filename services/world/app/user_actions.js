@@ -53,8 +53,41 @@ module.exports = {
 		});
 	},
 	sellProduct: function(userId, shipId, cityId, productId, quantity, done) {
-		done(new Error('Not implemented'));
-		//TODO
+		if (userId === undefined || cityId === undefined || productId === undefined || quantity < 0) return done(new Error("Not valid data"), false);
+		if (quantity === 0) return done(null, true);
+		//Check city-ship!!!
+		dbHandler.beginTransaction(function(err, connection) {
+			if (err) return done(err, false);
+			dbHandler.get.byId(tables.products, productId, function(err, res) {
+				if (err || !res[0]) {
+					dbHandler.cancelTransaction(connection);
+					return done(err, false);
+				}
+				var price = res[0].basePrice * quantity;
+				dbHandler.update.addUserMoney(connection, userId, price, function(err, res) {
+					if (err || !res) {
+						dbHandler.cancelTransaction(connection);
+						return done(err, false);
+					}
+					dbHandler.update.addCityProduct(connection, cityId, productId, quantity, function(err, res) {
+						if (err || !res) {
+							dbHandler.cancelTransaction(connection);
+							return done(err, false);
+						}
+						dbHandler.update.removeShipProduct(connection, shipId, productId, quantity, function(err, res) {
+							if (err || !res) {
+								dbHandler.cancelTransaction(connection);
+								return done(err, false);
+							}
+							dbHandler.commitTransaction(connection, function(err) {
+								if (err || !res) return done(err, false);
+								else return done(null, true);
+							});
+						});
+					});
+				});
+			});
+		});
 	},
 	buildShip: function(userId, shipModelId, cityId, shipName, done) {
 		done(new Error('Not implemented'));
