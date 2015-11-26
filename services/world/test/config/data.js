@@ -96,7 +96,7 @@ module.exports = {
 	users: {
 		arthur: {
 			id: 1,
-			money: 100,
+			money: 101,
 			correct: true
 		},
 		ford: {

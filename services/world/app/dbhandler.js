@@ -33,10 +33,10 @@ function runQuery(query, done) {
 
 function runTransactionQuery(query, connection, done) {
 	connection.query(query, function(err, res) {
-		if (err) connection.rollback(function() {
-			//connection.release();
+		if (err) //connection.rollback(function() {
+		//connection.release();
 			return done(err);
-		});
+		//	});
 		else done(null, res);
 	});
 }
@@ -77,6 +77,12 @@ module.exports = {
 				connection.release();
 				return done(null);
 			}
+		});
+	},
+	cancelTransaction: function(connection, done) {
+		connection.rollback(function() {
+			connection.release();
+			done();
 		});
 	},
 	dropTables: function(done) {

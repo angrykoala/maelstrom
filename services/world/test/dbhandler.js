@@ -649,7 +649,6 @@ describe('Database Handler', function() {
 					assert.ok(res);
 					assert.ok(res[0]);
 					var prod = res[0];
-
 					async.series([function(callback) {
 						dbHandler.beginTransaction(function(err, connection) {
 							assert.notOk(err);
