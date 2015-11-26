@@ -271,7 +271,7 @@ module.exports = {
 			});
 		},
 		addShipProduct: function(connection, shipId, productId, quantity, done) {
-			var query = "SELECT quantity FROM " + tables.shipProducts + " where shipId=" + shipId + " ";
+			var query = "SELECT quantity FROM " + tables.shipProducts + " where shipId=" + escapeString(shipId);
 			if (!quantity || quantity < 0) return done(new Error("Product quantity not valid"), false);
 			runTransactionQuery(query, connection, function(err, res) {
 				var query2;
@@ -288,29 +288,58 @@ module.exports = {
 			});
 		},
 		removeShipProduct: function(connection, shipId, productId, quantity, done) {
-			var query = "SELECT quantity FROM " + tables.shipProducts + " where shipId=" + shipId + " ";
+			var query = "SELECT quantity FROM " + tables.shipProducts + " where shipId=" + escapeString(shipId);
 			if (!quantity || quantity < 0) return done(new Error("Product quantity not valid"), false);
 			runTransactionQuery(query, connection, function(err, res) {
 				var query2;
 				if (err) return done(err, false);
-				else if (!res || res.length === 0) return done(new Error("Not product to remove"),false);
-				else if(res[0].quantity<quantity) return done(new Error("Not enough quantity to remove"));
+				else if (!res || res.length === 0) return done(new Error("Not product to remove"), false);
+				else if (res[0].quantity < quantity) return done(new Error("Not enough quantity to remove"), false);
 				else {
 					var productQuantity = res[0].quantity - quantity;
 					query2 = "UPDATE " + tables.shipProducts + " SET quantity=" + productQuantity;
-				
+					runTransactionQuery(query2, connection, function(err, res) {
+						if (err) return done(err, false);
+						else return done(null, true);
+					});
+				}
+			});
+		},
+		addCityProduct: function(connection, cityId, productId, quantity, done) {
+			var query = "SELECT quantity FROM " + tables.cityProducts + " where cityId=" + escapeString(cityId);
+			if (!quantity || quantity < 0) return done(new Error("Product quantity not valid"), false);
+			runTransactionQuery(query, connection, function(err, res) {
+				var query2;
+				if (err) return done(err, false);
+				else if (!res || res.length === 0) query2 = "INSERT INTO " + tables.cityProducts + "(cityId,productId,quantity) VALUES(" + escapeString(cityId) + "," + escapeString(productId) + "," + escapeString(quantity) + ")";
+				else {
+					var productQuantity = res[0].quantity + quantity;
+					query2 = "UPDATE " + tables.cityProducts + " SET quantity=" + productQuantity;
+				}
 				runTransactionQuery(query2, connection, function(err, res) {
 					if (err) return done(err, false);
 					else return done(null, true);
 				});
-			}
 			});
-		},
-		addCityProduct: function(connection, cityId, productId, quantity, done) {
 
 		},
 		removeCityProduct: function(connection, cityId, productId, quantity, done) {
-
+			var query = "SELECT quantity FROM " + tables.cityProducts + " where cityId=" + escapeString(cityId);
+			if (!quantity || quantity < 0) return done(new Error("Product quantity not valid"), false);
+			runTransactionQuery(query, connection, function(err, res) {
+				var query2;
+				if (err) return done(err, false);
+				else if (!res || res.length === 0) return done(new Error("Not product to remove"), false);
+				else if (res[0].quantity < quantity) return done(new Error("Not enough quantity to remove"), false);
+				else {
+					var productQuantity = res[0].quantity - quantity;
+					query2 = "UPDATE " + tables.cityProducts + " SET quantity=" + productQuantity;
+					runTransactionQuery(query2, connection, function(err, res) {
+						if (err) return done(err, false);
+						else return done(null, true);
+					});
+				}
+			});
 		}
 	}
 };

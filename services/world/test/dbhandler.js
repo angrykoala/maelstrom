@@ -636,7 +636,69 @@ describe('Database Handler', function() {
 		});
 	});
 
-	it.skip('Add/Remove City Product', function(done) {
+	it('Add/Remove City Product', function(done) {
+		var user = data.users.arthur;
+		auxFunc.insertData(function() {
+			dbHandler.get.all(tables.cities, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.ok(res[0]);
+				var cityId = res[0].id;
+				dbHandler.get.cityProducts(res[0].id, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.ok(res[0]);
+					var prod = res[0];
 
+					async.series([function(callback) {
+						dbHandler.beginTransaction(function(err, connection) {
+							assert.notOk(err);
+							assert.ok(connection);
+							dbHandler.update.addCityProduct(connection, cityId, prod.productId, -5, function(err, res) {
+								assert.ok(err);
+								assert.notOk(res);
+								dbHandler.update.addCityProduct(connection, cityId, prod.productId, 5, function(err, res) {
+									assert.notOk(err);
+									assert.ok(res);
+									dbHandler.commitTransaction(connection, function(err) {
+										assert.notOk(err);
+										dbHandler.get.cityProducts(cityId, function(err, res) {
+											assert.notOk(err);
+											assert.ok(res);
+											assert.ok(res[0]);
+											assert.strictEqual(res[0].quantity, prod.quantity + 5);
+											callback();
+										});
+									});
+								});
+							});
+						});
+					}, function(callback) {
+						dbHandler.beginTransaction(function(err, connection) {
+							assert.notOk(err);
+							assert.ok(connection);
+							dbHandler.update.removeCityProduct(connection, cityId, prod.productId, -5, function(err, res) {
+								assert.ok(err);
+								assert.notOk(res);
+								dbHandler.update.removeCityProduct(connection, cityId, prod.productId, 5, function(err, res) {
+									assert.notOk(err);
+									assert.ok(res);
+									dbHandler.commitTransaction(connection, function(err) {
+										assert.notOk(err);
+										dbHandler.get.cityProducts(cityId, function(err, res) {
+											assert.notOk(err);
+											assert.ok(res);
+											assert.ok(res[0]);
+											assert.strictEqual(res[0].quantity, prod.quantity);
+											done();
+										});
+									});
+								});
+							});
+						});
+					}]);
+				});
+			});
+		});
 	});
 });
