@@ -7,7 +7,7 @@ module.exports = {
 		galleon: {
 			name: "Galleon",
 			life: 1000,
-			price: 1200,
+			price: 12,
 			speed: 4.5,
 			cargo: 1200,
 			correct: true

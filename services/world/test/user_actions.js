@@ -12,6 +12,7 @@ var auxFunc = require('./config/functions.js');
 var data = require('./config/data.js');
 
 var Actions = require('../app/user_actions.js');
+var Get = require('../app/get_actions.js');
 var dbHandler = require('../app/dbhandler.js');
 var tables = dbHandler.tables;
 
@@ -88,7 +89,7 @@ describe('User Actions', function() {
 											dbHandler.get.user(userId, function(err, res) {
 												assert.notOk(err);
 												assert.ok(res[0]);
-												assert.strictEqual(res[0].money,userMoney - (productPrice * 2));
+												assert.strictEqual(res[0].money, userMoney - (productPrice * 2));
 												done();
 											});
 										});
@@ -144,7 +145,7 @@ describe('User Actions', function() {
 											dbHandler.get.user(userId, function(err, res) {
 												assert.notOk(err);
 												assert.ok(res[0]);
-												assert.strictEqual(res[0].money,userMoney + (productPrice * 2));
+												assert.strictEqual(res[0].money, userMoney + (productPrice * 2));
 												done();
 											});
 										});
@@ -157,9 +158,47 @@ describe('User Actions', function() {
 			});
 		});
 	});
-	it.skip("Build Ship", function(done) {
-		done(new Error('Not implemented'));
-		//TODO
+	it("Build Ship", function(done) {
+		var userId = data.users.arthur.id;
+		var money = data.users.arthur.money;
+		var shipName = "Golden Heart";
+		Get.shipModels(function(err, res) {
+			assert.notOk(err);
+			assert.ok(res[0]);
+			var shipModelId = res[0].id;
+			var model = res[0];
+			Get.map(function(err, res) {
+				assert.notOk(err);
+				assert.ok(res[0]);
+				var cityId = res[0].id;
+				Actions.buildShip(userId, shipModelId, cityId, shipName, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					var shipId = res;
+					Get.ships(userId, function(err, res) {
+						assert.notOk(err);
+						assert.strictEqual(res.length, 2);
+						Get.shipDetails(shipId, function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							assert.strictEqual(res.id, shipId);
+							assert.strictEqual(res.name, shipName);
+							assert.strictEqual(res.status, "docked");
+							assert.strictEqual(res.model, shipModelId);
+							assert.strictEqual(res.life, model.life);
+							assert.ok(res.products);
+							assert.strictEqual(res.products.length, 0);
+							Get.userData(userId, function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								assert.strictEqual(res.money, money - model.price);
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 	it.skip("Sell Ship", function(done) {
 		done(new Error('Not implemented'));

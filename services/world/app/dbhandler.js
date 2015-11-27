@@ -53,7 +53,8 @@ function escapeString(string) {
 module.exports = {
 	tables: tables,
 	runQuery: runQuery,
-	query: runTransactionQuery,
+	runTransactionQuery: runTransactionQuery,
+	escapeString: escapeString,
 	close: function(done) {
 		pool.end(done);
 	},
@@ -164,7 +165,7 @@ module.exports = {
 			var query = "SELECT * FROM " + tables.userShips + " WHERE userId=" + escapeString(userId);
 			runQuery(query, done);
 		},
-		shipDetails: function(userId, shipId, done) {
+		shipDetails: function(shipId, done) {
 			var query = "SELECT * FROM " + tables.userShips + " WHERE id=" + escapeString(shipId);
 			runQuery(query, done);
 		},

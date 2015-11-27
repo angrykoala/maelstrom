@@ -54,9 +54,9 @@ describe('Database Handler', function() {
 		dbHandler.beginTransaction(function(err, connection) {
 			assert.notOk(err);
 			assert.ok(connection);
-			dbHandler.query(query1, connection, function(err) {
+			dbHandler.runTransactionQuery(query1, connection, function(err) {
 				assert.notOk(err);
-				dbHandler.query(query2, connection, function(err) {
+				dbHandler.runTransactionQuery(query2, connection, function(err) {
 					assert.notOk(err);
 					dbHandler.commitTransaction(connection, function(err) {
 						assert.notOk(err);
@@ -354,7 +354,7 @@ describe('Database Handler', function() {
 							assert.notOk(err);
 							assert.ok(res);
 							assert.strictEqual(res.length, 1);
-							dbHandler.get.shipDetails(user.id, shipId, function(err, res) {
+							dbHandler.get.shipDetails(shipId, function(err, res) {
 								assert.notOk(err);
 								assert.ok(res);
 								assert.strictEqual(res.length, 1);

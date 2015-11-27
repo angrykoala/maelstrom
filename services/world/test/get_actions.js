@@ -95,7 +95,7 @@ describe('Get Actions', function() {
 			});
 		});
 	});
-	it('Get User Ships', function(done) {
+	it.skip('Get User Ships', function(done) {
 		var user = data.users.arthur;
 		Get.ships(user.id, function(err, res) {
 			assert.notOk(err);
@@ -103,7 +103,7 @@ describe('Get Actions', function() {
 			assert.isDefined(res[0].id);
 			assert.isDefined(res[0].userId);
 			assert.strictEqual(res[0].userId, user.id);
-			done();
+			done(new Error("Get ship details not tested"));
 		});
 	});
 	it('Get Ship Products', function(done) {

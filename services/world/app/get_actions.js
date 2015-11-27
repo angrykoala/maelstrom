@@ -50,8 +50,8 @@ module.exports = {
 	//returns details of a certain ship
 	shipDetails: function(shipId, done) {
 		dbHandler.get.shipDetails(shipId, function(err, res) {
-			if (err || !res) return done(err, res);
-			var shipDetails = res;
+			if (err || !res[0]) return done(err, null);
+			var shipDetails = res[0];
 			dbHandler.get.shipProducts(shipId, function(err, res) {
 				if (err || !res) return done(err, shipDetails);
 				shipDetails.products = res;

@@ -21,7 +21,7 @@ module.exports = {
 		//Check city-ship!!!
 		dbHandler.beginTransaction(function(err, connection) {
 			if (err) return done(err, false);
-			dbHandler.get.byId(tables.products, productId, function(err, res) {
+			dbHandler.runTransactionQuery("SELECT * FROM " + tables.products + " WHERE id=" + productId, connection, function(err, res) {
 				if (err || !res[0]) {
 					dbHandler.cancelTransaction(connection);
 					return done(err, false);
@@ -58,7 +58,7 @@ module.exports = {
 		//Check city-ship!!!
 		dbHandler.beginTransaction(function(err, connection) {
 			if (err) return done(err, false);
-			dbHandler.get.byId(tables.products, productId, function(err, res) {
+			dbHandler.runTransactionQuery("SELECT * FROM " + tables.products + " WHERE id=" + dbHandler.escapeString(productId), connection, function(err, res) {
 				if (err || !res[0]) {
 					dbHandler.cancelTransaction(connection);
 					return done(err, false);
@@ -90,8 +90,45 @@ module.exports = {
 		});
 	},
 	buildShip: function(userId, shipModelId, cityId, shipName, done) {
-		done(new Error('Not implemented'));
-		//TODO
+		if (userId === undefined || cityId === undefined || !shipName || shipModelId === undefined) return done(new Error("Not valid data"));
+		var escapeString = dbHandler.escapeString;
+		var defaultStatus = "docked";
+		dbHandler.beginTransaction(function(err, connection) {
+			if (err) return done(err);
+			dbHandler.runTransactionQuery("SELECT * FROM " + tables.shipModels + " WHERE id=" + dbHandler.escapeString(shipModelId), connection, function(err, res) {
+				if (err) {
+					dbHandler.cancelTransaction(connection);
+					return done(err);
+				}
+				if (!res[0]) {
+					dbHandler.cancelTransaction(connection);
+					return done(new Error("Not valid model"));
+				}
+				var shipModel = res[0];
+				dbHandler.update.removeUserMoney(connection, userId, shipModel.price, function(err, res) {
+					if (err || !res) {
+						dbHandler.cancelTransaction(connection);
+						return done(err);
+					}
+					var query = "INSERT INTO " + tables.userShips + " (userId,name,model,life,status) VALUES(" + escapeString(userId) + "," + escapeString(shipName) + "," + escapeString(shipModel.id) + "," + escapeString(shipModel.life) + "," + escapeString(defaultStatus) + ")";
+					dbHandler.runTransactionQuery(query, connection, function(err, res) {
+						if (err) {
+							dbHandler.cancelTransaction(connection);
+							return done(err);
+						}
+						var userShipId = res.insertId;
+						if (userShipId === undefined || userShipId === null) {
+							dbHandler.cancelTransaction(connection);
+							return done(new Error("Inserted id not valid"));
+						}
+						dbHandler.commitTransaction(connection, function(err) {
+							if (err) return done(err);
+							else return done(null, userShipId);
+						});
+					});
+				});
+			});
+		});
 	},
 	sellShip: function(userId, shipId, done) {
 		done(new Error('Not implemented'));
