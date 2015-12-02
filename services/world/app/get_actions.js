@@ -54,6 +54,7 @@ module.exports = {
 			var shipDetails = res[0];
 			dbHandler.get.shipProducts(shipId, function(err, res) {
 				if (err || !res) return done(err, shipDetails);
+				for (var i = 0; i < res.length; i++) delete res[i].shipId;
 				shipDetails.products = res;
 				done(null, shipDetails);
 			});
