@@ -184,6 +184,7 @@ describe('User Actions', function() {
 							assert.strictEqual(res.id, shipId);
 							assert.strictEqual(res.name, shipName);
 							assert.strictEqual(res.status, "docked");
+							assert.strictEqual(res.city,cityId);
 							assert.strictEqual(res.model, shipModelId);
 							assert.strictEqual(res.life, model.life);
 							assert.ok(res.products);

@@ -110,7 +110,7 @@ module.exports = {
 						dbHandler.cancelTransaction(connection);
 						return done(err);
 					}
-					var query = "INSERT INTO " + tables.userShips + " (userId,name,model,life,status) VALUES(" + escapeString(userId) + "," + escapeString(shipName) + "," + escapeString(shipModel.id) + "," + escapeString(shipModel.life) + "," + escapeString(defaultStatus) + ")";
+					var query = "INSERT INTO " + tables.userShips + " (userId,name,model,life,status,city) VALUES(" + escapeString(userId) + "," + escapeString(shipName) + "," + escapeString(shipModel.id) + "," + escapeString(shipModel.life) + "," + escapeString(defaultStatus) + "," + escapeString(cityId) +  ")";
 					dbHandler.runTransactionQuery(query, connection, function(err, res) {
 						if (err) {
 							dbHandler.cancelTransaction(connection);
