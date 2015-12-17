@@ -184,7 +184,7 @@ describe('User Actions', function() {
 							assert.strictEqual(res.id, shipId);
 							assert.strictEqual(res.name, shipName);
 							assert.strictEqual(res.status, "docked");
-							assert.strictEqual(res.city,cityId);
+							assert.strictEqual(res.city, cityId);
 							assert.strictEqual(res.model, shipModelId);
 							assert.strictEqual(res.life, model.life);
 							assert.ok(res.products);
@@ -201,9 +201,36 @@ describe('User Actions', function() {
 			});
 		});
 	});
-	it.skip("Sell Ship", function(done) {
-		done(new Error('Not implemented'));
-		//TODO
+	it("Sell Ship", function(done) {
+		var userId = data.users.arthur.id;
+		var money = data.users.arthur.money;
+		Get.ships(userId, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+
+			var ships = res.length;
+			var price = data.ships.galleon.price;
+			var shipId = res[0].id;
+			Actions.sellShip(shipId, userId, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				Get.ships(userId, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					assert.strictEqual(res.length, ships - 1);
+					Get.userData(userId, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res);
+						assert.strictEqual(res.money, money + price);
+						Actions.sellShip(shipId, userId, function(err, res) {
+							assert.ok(err);
+							assert.notOk(res);
+							done();
+						});
+					});
+				});
+			});
+		});
 	});
 	it.skip("Repair Ship", function(done) {
 		done(new Error('Not implemented'));

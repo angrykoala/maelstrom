@@ -110,7 +110,7 @@ module.exports = {
 						dbHandler.cancelTransaction(connection);
 						return done(err);
 					}
-					var query = "INSERT INTO " + tables.userShips + " (userId,name,model,life,status,city) VALUES(" + escapeString(userId) + "," + escapeString(shipName) + "," + escapeString(shipModel.id) + "," + escapeString(shipModel.life) + "," + escapeString(defaultStatus) + "," + escapeString(cityId) +  ")";
+					var query = "INSERT INTO " + tables.userShips + " (userId,name,model,life,status,city) VALUES(" + escapeString(userId) + "," + escapeString(shipName) + "," + escapeString(shipModel.id) + "," + escapeString(shipModel.life) + "," + escapeString(defaultStatus) + "," + escapeString(cityId) + ")";
 					dbHandler.runTransactionQuery(query, connection, function(err, res) {
 						if (err) {
 							dbHandler.cancelTransaction(connection);
@@ -130,10 +130,49 @@ module.exports = {
 			});
 		});
 	},
-	sellShip: function(userId, shipId, done) {
-		done(new Error('Not implemented'));
-		//TODO
+	sellShip: function(shipId, userId, done) {
+		if (userId === undefined || shipId === undefined) return done(new Error("Not valid data"));
+		dbHandler.beginTransaction(function(err, connection) {
+			dbHandler.runTransactionQuery("SELECT * FROM " + tables.userShips + " WHERE id=" + dbHandler.escapeString(shipId), connection, function(err, res) {
+				if (err) {
+					dbHandler.cancelTransaction(connection);
+					return done(err, false);
+				}
+				if (!res[0]) {
+					dbHandler.cancelTransaction(connection);
+					return done(new Error("Not valid Ship ID"), false);
+				}
+				var shipModel = res[0].model;
+				dbHandler.runTransactionQuery("SELECT price FROM " + tables.shipModels + " WHERE id=" + shipModel, connection, function(err, res) {
+					if (err) {
+						dbHandler.cancelTransaction(connection);
+						return done(err, false);
+					}
+					if (!res[0]) {
+						dbHandler.cancelTransaction(connection);
+						return done(new Error("Not valid Ship Model"));
+					}
+					var price = res[0].price;
 
+					dbHandler.update.addUserMoney(connection, userId, price, function(err, res) {
+						if (err || res === false) {
+							dbHandler.cancelTransaction(connection);
+							return done(err, false);
+						}
+						dbHandler.runTransactionQuery("DELETE FROM " + tables.userShips + " WHERE id=" + dbHandler.escapeString(shipId), connection, function(err, res) {
+							if (err) {
+								dbHandler.cancelTransaction(connection);
+								return done(err, false);
+							}
+							dbHandler.commitTransaction(connection, function(err) {
+								if (err) return done(err, false);
+								else return done(null, true);
+							});
+						});
+					});
+				});
+			});
+		});
 	},
 	repairShip: function(userId, shipId, done) {
 		done(new Error('Not implemented'));

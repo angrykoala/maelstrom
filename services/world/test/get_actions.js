@@ -166,6 +166,22 @@ describe('Get Actions', function() {
 			});
 		});
 	});
+	it('Get Ship Model', function(done) {
+		Get.shipModels(function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			var shipModel = res[0];
+			Get.shipModel(shipModel.id, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.strictEqual(res.id, shipModel.id);
+				assert.strictEqual(res.name, shipModel.name);
+				assert.strictEqual(res.cargo, shipModel.cargo);
+				assert.strictEqual(res.price, shipModel.price);
+				done();
+			});
+		});
+	});
 	it('Get Distance', function(done) {
 		Get.map(function(err, res) {
 			assert.notOk(err);

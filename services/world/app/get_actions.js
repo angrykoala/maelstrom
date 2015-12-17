@@ -64,6 +64,13 @@ module.exports = {
 	shipModels: function(done) {
 		dbHandler.get.all(tables.shipModels, done);
 	},
+	shipModel: function(modelId, done) {
+		dbHandler.get.byId(tables.shipModels, modelId, function(err, res) {
+			if (err) return done(err, res);
+			else if (!res || res.length === 0) return done(new Error("Model not found"), null);
+			else return done(null, res[0]);
+		});
+	},
 	productList: function(done) {
 		dbHandler.get.all(tables.products, done);
 	},
