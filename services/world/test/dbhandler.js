@@ -574,7 +574,7 @@ describe('Database Handler', function() {
 	});
 	it('Add/Remove Ship Product', function(done) {
 		var user = data.users.arthur;
-		auxFunc.insertData(function() {
+		auxFunc.populate(function() {
 			dbHandler.get.userShips(user.id, function(err, res) {
 				assert.notOk(err);
 				assert.ok(res);
@@ -638,7 +638,7 @@ describe('Database Handler', function() {
 
 	it('Add/Remove City Product', function(done) {
 		var user = data.users.arthur;
-		auxFunc.insertData(function() {
+		auxFunc.populate(function() {
 			dbHandler.get.all(tables.cities, function(err, res) {
 				assert.notOk(err);
 				assert.ok(res);

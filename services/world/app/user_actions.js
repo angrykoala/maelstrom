@@ -10,10 +10,60 @@ var tables = dbHandler.tables;
 var Models = dbHandler.models;
 var Get = require('./get_actions.js');
 
+
+
+
 module.exports = {
 	moveShip: function(userId, shipId, toCityId, done) {
-		return done(new Error("Not implemented"));
-		//TODO: need database upgrade
+		if (userId === undefined || shipd === undefined || toCityId === undefined) return done(new Error("Not valid data"));
+		dbHandler.beginTransaction(function(err, connection) {
+			if (err) return done(err);
+			dbHandler.runTransactionQuery("SELECT * FROM " + tables.ships + " WHERE id=" + dbHandler.escapeString(shipId), connection, function(err, res) {
+				if (err) {
+					dbHandler.cancelTransaction(connection);
+					return done(err, false);
+				}
+				if (!res || !res[0]) return done(new Error("Not valid ship"));
+				if (!res[0].city || res[0].status !== "docked") return done(new Error("Ship not docked"));
+				var currentCity = res[0].city;
+				dbHandler.runTransactionQuery("SELECT speed FROM " + tables.shipModels + " WHERE id=" + res[0].model, connection, function(err, res) {
+					if (err) {
+						dbHandler.cancelTransaction(connection);
+						return done(err, false);
+					}
+					var speed = res[0].speed;
+
+
+					dbHandler.runTransactionQuery("SELECT * FROM " + tables.cities + " WHERE id IN (" + currentCity + "," + dbHandler.escapeString(toCityId), connection, function(err, res) {
+						if (err) {
+							dbHandler.cancelTransaction(connection);
+							return done(err, false);
+						}
+						if (!res || res.length !== 2) return done(new Error("Not valid cities"));
+
+						var posx1 = res[0].positionX;
+						var posx2 = res[1].positionX;
+						var posy1 = res[0].positionY;
+						var posy2 = res[1].positionY;
+						var dx = Math.abs(posx2 - posx1);
+						var dy = Math.abs(posy2 - posy1);
+						var distance = Math.sqrt(dx * dx + dy * dy);
+
+						var remaining = distance / speed;
+						dbHandler.runTransactionQuery("UPDATE " + tables.userShips + " SET status=\"sailing\",city=" + currentCity + ",destiny=" + dbHandler.escapeString(toCityId) + ",remaining=" + remaining + " WHERE id=" + dbHandler.escapeString(shipId), connection, function(err, res) {
+							if (err) {
+								dbHandler.cancelTransaction(connection);
+								return done(err, false);
+							}
+							dbHandler.commitTransaction(connection, function(err) {
+								if (err) return done(err, false);
+								else return done(null, true);
+							});
+						});
+					});
+				});
+			});
+		});
 	},
 	buyProduct: function(userId, shipId, cityId, productId, quantity, done) {
 		if (userId === undefined || cityId === undefined || productId === undefined || quantity < 0) return done(new Error("Not valid data"), false);
@@ -42,7 +92,7 @@ module.exports = {
 								dbHandler.cancelTransaction(connection);
 								return done(err, false);
 							}
-							dbHandler.commitTransaction(connection, function(err) {
+							dbHandler.commitTransaction(connection, function(err, res) {
 								if (err || !res) return done(err, false);
 								else return done(null, true);
 							});

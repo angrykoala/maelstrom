@@ -37,6 +37,14 @@ module.exports = {
 			weight: 2.2,
 			correct: true
 		},
+		stone: {
+			name: "Stone",
+			basePrice: 10.2,
+			baseProduction: 4.3,
+			baseConsumption: 1,
+			weight: 20.2,
+			correct: true
+		},
 		salt: {
 			basePrice: 100,
 			baseProduction: 2.3,

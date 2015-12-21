@@ -20,7 +20,6 @@ module.exports = {
 	},
 	shipUpdate: function(done) {
 
-
 	}
 
 

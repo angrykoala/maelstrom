@@ -31,7 +31,7 @@ describe('Game Update Logic', function() {
 	beforeEach(function(done) {
 		dbHandler.clearTables(function(err) {
 			assert.notOk(err);
-			auxFunc.insertData(done);
+			auxFunc.populate(done);
 		});
 	});
 	after(function(done) {
@@ -64,7 +64,7 @@ describe('Game Update Logic', function() {
 					});
 				});
 			});
-		})
+		});
 	});
 	it.skip("Ship Update", function(done) {
 		done(new Error("Not implemented"));

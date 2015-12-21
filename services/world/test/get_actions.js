@@ -30,7 +30,7 @@ describe('Get Actions', function() {
 	beforeEach(function(done) {
 		dbHandler.clearTables(function(err) {
 			assert.notOk(err);
-			auxFunc.insertData(done);
+			auxFunc.populate(done);
 		});
 	});
 	after(function(done) {
