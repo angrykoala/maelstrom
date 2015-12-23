@@ -15,6 +15,7 @@ module.exports = {
 		var city = data.cities.minasTirith;
 		var city2 = data.cities.isengard;
 		var userShip = data.userShips.blackPearl;
+		var userShip2 = data.userShips.whitePearl;
 
 		dbHandler.insert.user(user.id, user, function(err, res) {
 			assert.notOk(err);
@@ -43,27 +44,31 @@ module.exports = {
 									assert.notOk(err);
 									assert.ok(res);
 									var userShipId = res;
-									dbHandler.insert.cityProduct(cityId, productId, {
-										quantity: 100
-									}, function(err, res) {
+									dbHandler.insert.userShip(user.id, cityId, userShip2, function(err, res) {
 										assert.notOk(err);
 										assert.ok(res);
-										dbHandler.insert.cityProduct(cityId, productId2, {
-											quantity: 10
+										dbHandler.insert.cityProduct(cityId, productId, {
+											quantity: 100
 										}, function(err, res) {
 											assert.notOk(err);
 											assert.ok(res);
-											dbHandler.insert.shipProduct(userShipId, productId, {
+											dbHandler.insert.cityProduct(cityId, productId2, {
 												quantity: 10
 											}, function(err, res) {
 												assert.notOk(err);
 												assert.ok(res);
-												dbHandler.insert.shipProduct(userShipId, productId2, {
-													quantity: 20
+												dbHandler.insert.shipProduct(userShipId, productId, {
+													quantity: 10
 												}, function(err, res) {
 													assert.notOk(err);
 													assert.ok(res);
-													done();
+													dbHandler.insert.shipProduct(userShipId, productId2, {
+														quantity: 20
+													}, function(err, res) {
+														assert.notOk(err);
+														assert.ok(res);
+														done();
+													});
 												});
 											});
 										});

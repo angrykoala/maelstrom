@@ -18,8 +18,31 @@ module.exports = {
 
 		});
 	},
-	shipUpdate: function(done) {
-
+	shipsUpdate: function(done) {
+		var us = tables.userShips;
+		var query = "UPDATE " + us + " SET remaining=" + us + ".remaining-1" + " WHERE status=\"sailing\"";
+		var query2 = "UPDATE " + us + " SET city=" + us + ".destiny, status=\"docked\"" + " WHERE remaining=\"0\"";
+		dbHandler.beginTransaction(function(err, connection) {
+			if (err) return done(err);
+			dbHandler.runTransactionQuery(query, connection, function(err, res) {
+				if (err) {
+					dbHandler.cancelTransaction(connection, function() {
+						return done(new Error("Error in Update 1"), false);
+					});
+				} else dbHandler.runTransactionQuery(query2, connection, function(err, res) {
+					if (err) {
+						dbHandler.cancelTransaction(connection, function() {
+							return done(new Error("Error in Update 2"), false);
+						});
+					} else {
+						dbHandler.commitTransaction(connection, function(err) {
+							if (err) return done(err, false);
+							else return done(null, true);
+						});
+					}
+				});
+			});
+		});
 	}
 
 

@@ -14,6 +14,9 @@ var dbHandler = require('../app/dbhandler.js');
 var tables = dbHandler.tables;
 var auxFunc = require('./config/functions.js');
 
+var Get = require("../app/get_actions.js");
+var Actions = require("../app/user_actions.js");
+
 var gameUpdate = require('../app/game_update.js');
 
 describe('Game Update Logic', function() {
@@ -66,8 +69,84 @@ describe('Game Update Logic', function() {
 			});
 		});
 	});
-	it.skip("Ship Update", function(done) {
-		done(new Error("Not implemented"));
+	it("Ship Update", function(done) {
+		dbHandler.get.all(tables.userShips, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			assert.ok(res[0]);
+			assert.ok(res[1]);
+			assert.strictEqual(res[0].status, "docked");
+			var userId = res[0].userId;
+			var shipId = res[0].id;
+			var cityId = res[0].city;
+			var shipId2 = res[1].id;
+			var ship2city = res[1].city;
+			dbHandler.get.all(tables.cities, function(err, res) {
+				assert.notOk(err);
+				assert.ok(res);
+				assert.ok(res[0]);
+				assert.ok(res[1]);
+				var cityId2 = res[1].id;
+				if (cityId === cityId2) cityId2 = res[0].id;
+				Actions.moveShip(userId, shipId, cityId2, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+
+					Get.shipDetails(shipId, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res);
+						assert.strictEqual(res.city, cityId);
+						assert.strictEqual(res.destiny, cityId2);
+						assert.strictEqual(res.status, "sailing");
+						assert.ok(res.remaining);
+						var remaining1 = res.remaining;
+						gameUpdate.shipsUpdate(function(err, res) {
+							assert.notOk(err);
+							assert.ok(res);
+							Get.shipDetails(shipId, function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								assert.strictEqual(res.city, cityId);
+								assert.strictEqual(res.destiny, cityId2);
+								assert.strictEqual(res.status, "sailing");
+								assert.strictEqual(res.remaining, remaining1 - 1);
+
+								dbHandler.runQuery("UPDATE " + tables.userShips + " SET remaining=1 WHERE id=" + shipId, function(err, res) {
+									assert.notOk(err);
+									assert.ok(res);
+									Get.shipDetails(shipId, function(err, res) {
+										assert.notOk(err);
+										assert.ok(res);
+										assert.strictEqual(res.city, cityId);
+										assert.strictEqual(res.destiny, cityId2);
+										assert.strictEqual(res.status, "sailing");
+										assert.strictEqual(res.remaining, 1);
+										gameUpdate.shipsUpdate(function(err, res) {
+											assert.notOk(err);
+											assert.ok(res);
+											Get.shipDetails(shipId, function(err, res) {
+												assert.notOk(err);
+												assert.ok(res);
+												assert.strictEqual(res.status, "docked");
+												assert.strictEqual(res.city, cityId2);
+												assert.strictEqual(res.remaining, 0);
+												Get.shipDetails(shipId2, function(err, res) {
+													assert.notOk(err);
+													assert.ok(res);
+													assert.strictEqual(res.status, "docked");
+													assert.strictEqual(res.city, ship2city);
+													done();
+												});
+											});
+										});
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 
 

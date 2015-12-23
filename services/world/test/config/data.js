@@ -90,7 +90,13 @@ module.exports = {
 			name: "Black Pearl",
 			model: 1,
 			life: 110,
-			speed: 35,
+			status: "docked",
+			correct: true
+		},
+		whitePearl: {
+			name: "White Pearl",
+			model: 1,
+			life: 110,
 			status: "docked",
 			correct: true
 		},
