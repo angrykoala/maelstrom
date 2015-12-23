@@ -72,28 +72,32 @@ module.exports = {
 		dbHandler.beginTransaction(function(err, connection) {
 			if (err) return done(err, false);
 			dbHandler.runTransactionQuery("SELECT * FROM " + tables.products + " WHERE id=" + productId, connection, function(err, res) {
-				if (err || !res[0]) {
+				if (err || !res) {
 					dbHandler.cancelTransaction(connection);
+					if (!err) err = new Error("product not found");
 					return done(err, false);
 				}
 				var price = res[0].basePrice * quantity;
 				dbHandler.update.removeUserMoney(connection, userId, price, function(err, res) {
 					if (err || !res) {
 						dbHandler.cancelTransaction(connection);
+						if (!err) err = new Error("User money not removed");
 						return done(err, false);
 					}
 					dbHandler.update.removeCityProduct(connection, cityId, productId, quantity, function(err, res) {
 						if (err || !res) {
 							dbHandler.cancelTransaction(connection);
+							if (!res) err = new Error("City product not removed");
 							return done(err, false);
 						}
 						dbHandler.update.addShipProduct(connection, shipId, productId, quantity, function(err, res) {
 							if (err || !res) {
 								dbHandler.cancelTransaction(connection);
+								if (!res) err = new Error("Ship product not added");
 								return done(err, false);
 							}
-							dbHandler.commitTransaction(connection, function(err, res) {
-								if (err || !res) return done(err, false);
+							dbHandler.commitTransaction(connection, function(err) {
+								if (err) return done(err, false);
 								else return done(null, true);
 							});
 						});
@@ -130,7 +134,7 @@ module.exports = {
 								return done(err, false);
 							}
 							dbHandler.commitTransaction(connection, function(err) {
-								if (err || !res) return done(err, false);
+								if (err) return done(err, false);
 								else return done(null, true);
 							});
 						});

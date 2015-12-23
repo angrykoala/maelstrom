@@ -584,7 +584,7 @@ describe('Database Handler', function() {
 					assert.ok(res);
 					assert.ok(res[0]);
 					assert.ok(res[1]);
-					var prod2=res[1];
+					var prod2 = res[1];
 					var prod = res[0];
 					async.series([function(callback) {
 						dbHandler.beginTransaction(function(err, connection) {
@@ -656,7 +656,7 @@ describe('Database Handler', function() {
 					assert.ok(res[0]);
 					assert.ok(res[1]);
 					var prod = res[0];
-					var prod2=res[1];
+					var prod2 = res[1];
 					async.series([function(callback) {
 						dbHandler.beginTransaction(function(err, connection) {
 							assert.notOk(err);
