@@ -278,7 +278,7 @@ module.exports = {
 			});
 		},
 		addShipProduct: function(connection, shipId, productId, quantity, done) {
-			var query = "SELECT quantity FROM " + tables.shipProducts + " where shipId=" + escapeString(shipId);
+			var query = "SELECT quantity FROM " + tables.shipProducts + " wHERE shipId=" + escapeString(shipId)+" AND productId="+escapeString(productId);
 			if (!quantity || quantity < 0) return done(new Error("Product quantity not valid"), false);
 			runTransactionQuery(query, connection, function(err, res) {
 				var query2;
@@ -286,7 +286,7 @@ module.exports = {
 				else if (!res || res.length === 0) query2 = "INSERT INTO " + tables.shipProducts + "(shipId,productId,quantity) VALUES(" + escapeString(shipId) + "," + escapeString(productId) + "," + escapeString(quantity) + ")";
 				else {
 					var productQuantity = res[0].quantity + quantity;
-					query2 = "UPDATE " + tables.shipProducts + " SET quantity=" + productQuantity;
+					query2 = "UPDATE " + tables.shipProducts + " SET quantity=" + productQuantity+" WHERE productId="+escapeString(productId);
 				}
 				runTransactionQuery(query2, connection, function(err, res) {
 					if (err) return done(err, false);
@@ -295,7 +295,7 @@ module.exports = {
 			});
 		},
 		removeShipProduct: function(connection, shipId, productId, quantity, done) {
-			var query = "SELECT quantity FROM " + tables.shipProducts + " where shipId=" + escapeString(shipId);
+			var query = "SELECT quantity FROM " + tables.shipProducts + " WHERE shipId=" + escapeString(shipId)+" AND productId="+escapeString(productId);
 			if (!quantity || quantity < 0) return done(new Error("Product quantity not valid"), false);
 			runTransactionQuery(query, connection, function(err, res) {
 				var query2;
@@ -304,7 +304,7 @@ module.exports = {
 				else if (res[0].quantity < quantity) return done(new Error("Not enough quantity to remove"), false);
 				else {
 					var productQuantity = res[0].quantity - quantity;
-					query2 = "UPDATE " + tables.shipProducts + " SET quantity=" + productQuantity;
+					query2 = "UPDATE " + tables.shipProducts + " SET quantity=" + productQuantity+" WHERE productId="+escapeString(productId);
 					runTransactionQuery(query2, connection, function(err, res) {
 						if (err) return done(err, false);
 						else return done(null, true);
@@ -313,7 +313,7 @@ module.exports = {
 			});
 		},
 		addCityProduct: function(connection, cityId, productId, quantity, done) {
-			var query = "SELECT quantity FROM " + tables.cityProducts + " where cityId=" + escapeString(cityId);
+			var query = "SELECT quantity FROM " + tables.cityProducts + " where cityId=" + escapeString(cityId)+" AND productId="+escapeString(productId);
 			if (!quantity || quantity < 0) return done(new Error("Product quantity not valid"), false);
 			runTransactionQuery(query, connection, function(err, res) {
 				var query2;
@@ -321,7 +321,7 @@ module.exports = {
 				else if (!res || res.length === 0) query2 = "INSERT INTO " + tables.cityProducts + "(cityId,productId,quantity) VALUES(" + escapeString(cityId) + "," + escapeString(productId) + "," + escapeString(quantity) + ")";
 				else {
 					var productQuantity = res[0].quantity + quantity;
-					query2 = "UPDATE " + tables.cityProducts + " SET quantity=" + productQuantity;
+					query2 = "UPDATE " + tables.cityProducts + " SET quantity=" + productQuantity+ " WHERE productId="+escapeString(productId);
 				}
 				runTransactionQuery(query2, connection, function(err, res) {
 					if (err) return done(err, false);
@@ -331,7 +331,7 @@ module.exports = {
 
 		},
 		removeCityProduct: function(connection, cityId, productId, quantity, done) {
-			var query = "SELECT quantity FROM " + tables.cityProducts + " where cityId=" + escapeString(cityId);
+			var query = "SELECT quantity FROM " + tables.cityProducts + " where cityId=" + escapeString(cityId)+" AND productId="+escapeString(productId);
 			if (!quantity || quantity < 0) return done(new Error("Product quantity not valid"), false);
 			runTransactionQuery(query, connection, function(err, res) {
 				var query2;
@@ -340,7 +340,7 @@ module.exports = {
 				else if (res[0].quantity < quantity) return done(new Error("Not enough quantity to remove"), false);
 				else {
 					var productQuantity = res[0].quantity - quantity;
-					query2 = "UPDATE " + tables.cityProducts + " SET quantity=" + productQuantity;
+					query2 = "UPDATE " + tables.cityProducts + " SET quantity=" + productQuantity+" WHERE productId="+escapeString(productId);
 					runTransactionQuery(query2, connection, function(err, res) {
 						if (err) return done(err, false);
 						else return done(null, true);

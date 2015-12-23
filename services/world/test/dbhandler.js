@@ -583,6 +583,8 @@ describe('Database Handler', function() {
 					assert.notOk(err);
 					assert.ok(res);
 					assert.ok(res[0]);
+					assert.ok(res[1]);
+					var prod2=res[1];
 					var prod = res[0];
 					async.series([function(callback) {
 						dbHandler.beginTransaction(function(err, connection) {
@@ -596,11 +598,13 @@ describe('Database Handler', function() {
 									assert.ok(res);
 									dbHandler.commitTransaction(connection, function(err) {
 										assert.notOk(err);
-										dbHandler.get.shipProduct(shipId, prod.productId, function(err, res) {
+										dbHandler.get.shipProducts(shipId, function(err, res) {
 											assert.notOk(err);
 											assert.ok(res);
 											assert.ok(res[0]);
+											assert.ok(res[1]);
 											assert.strictEqual(res[0].quantity, prod.quantity + 5);
+											assert.strictEqual(res[1].quantity, prod2.quantity);
 											callback();
 										});
 									});
@@ -619,11 +623,13 @@ describe('Database Handler', function() {
 									assert.ok(res);
 									dbHandler.commitTransaction(connection, function(err) {
 										assert.notOk(err);
-										dbHandler.get.shipProduct(shipId, prod.productId, function(err, res) {
+										dbHandler.get.shipProducts(shipId, function(err, res) {
 											assert.notOk(err);
 											assert.ok(res);
 											assert.ok(res[0]);
+											assert.ok(res[1]);
 											assert.strictEqual(res[0].quantity, prod.quantity);
+											assert.strictEqual(res[1].quantity, prod2.quantity);
 											done();
 										});
 									});
@@ -648,7 +654,9 @@ describe('Database Handler', function() {
 					assert.notOk(err);
 					assert.ok(res);
 					assert.ok(res[0]);
+					assert.ok(res[1]);
 					var prod = res[0];
+					var prod2=res[1];
 					async.series([function(callback) {
 						dbHandler.beginTransaction(function(err, connection) {
 							assert.notOk(err);
@@ -666,6 +674,8 @@ describe('Database Handler', function() {
 											assert.ok(res);
 											assert.ok(res[0]);
 											assert.strictEqual(res[0].quantity, prod.quantity + 5);
+											assert.ok(res[1]);
+											assert.strictEqual(res[1].quantity, prod2.quantity);
 											callback();
 										});
 									});
@@ -688,7 +698,9 @@ describe('Database Handler', function() {
 											assert.notOk(err);
 											assert.ok(res);
 											assert.ok(res[0]);
+											assert.ok(res[1]);
 											assert.strictEqual(res[0].quantity, prod.quantity);
+											assert.strictEqual(res[1].quantity, prod2.quantity);
 											done();
 										});
 									});

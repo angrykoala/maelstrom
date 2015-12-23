@@ -58,7 +58,13 @@ module.exports = {
 											}, function(err, res) {
 												assert.notOk(err);
 												assert.ok(res);
-												done();
+												dbHandler.insert.shipProduct(userShipId, productId2, {
+													quantity: 20
+												}, function(err, res) {
+													assert.notOk(err);
+													assert.ok(res);
+													done();
+												});
 											});
 										});
 									});
