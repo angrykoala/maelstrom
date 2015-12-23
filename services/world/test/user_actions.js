@@ -42,13 +42,51 @@ describe('User Actions', function() {
 		});
 	});
 
-	it.skip("Move Ship", function(done) {
+	it("Move Ship", function(done) {
 		dbHandler.get.all(tables.userShips, function(err, res) {
-			console.log(res);
+			assert.notOk(err);
+			assert.ok(res);
+			assert.ok(res[0]);
+			assert.strictEqual(res[0].status, "docked");
+			var userId = res[0].userId;
+			var shipId = res[0].id;
+			var cityId = res[0].city;
+			var shipModel = res[0].model;
 			dbHandler.get.all(tables.cities, function(err, res) {
-				console.log(res);
-
-				done(new Error("Not implemented"));
+				assert.notOk(err);
+				assert.ok(res);
+				assert.ok(res[0]);
+				assert.ok(res[1]);
+				var cityId2 = res[1].id;
+				if (cityId === cityId2) cityId2 = res[0].id;
+				Get.distance(cityId, cityId2, function(err, res) {
+					assert.notOk(err);
+					assert.ok(res);
+					var dist = res;
+					Get.shipModel(shipModel, function(err, res) {
+						assert.notOk(err);
+						assert.ok(res);
+						var spd = res.speed;
+						Actions.moveShip(userId, shipId, cityId, function(err, res) {
+							assert.ok(err); //ERROR: same city as destiny
+							assert.notOk(res);
+							Actions.moveShip(userId, shipId, cityId2, function(err, res) {
+								assert.notOk(err);
+								assert.ok(res);
+								dbHandler.get.all(tables.userShips, function(err, res) {
+									assert.notOk(err);
+									assert.ok(res);
+									assert.ok(res[0]);
+									assert.strictEqual(res[0].city, cityId);
+									assert.strictEqual(res[0].destiny, cityId2);
+									assert.strictEqual(res[0].status, "sailing");
+									assert.closeTo(res[0].remaining, dist / spd, 0.5);
+									done();
+								});
+							});
+						});
+					});
+				});
 			});
 		});
 

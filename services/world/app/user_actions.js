@@ -15,14 +15,15 @@ var Get = require('./get_actions.js');
 
 module.exports = {
 	moveShip: function(userId, shipId, toCityId, done) {
-		if (userId === undefined || shipd === undefined || toCityId === undefined) return done(new Error("Not valid data"));
+		if (userId === undefined || shipId === undefined || toCityId === undefined) return done(new Error("Not valid data"));
 		dbHandler.beginTransaction(function(err, connection) {
 			if (err) return done(err);
-			dbHandler.runTransactionQuery("SELECT * FROM " + tables.ships + " WHERE id=" + dbHandler.escapeString(shipId), connection, function(err, res) {
+			dbHandler.runTransactionQuery("SELECT * FROM " + tables.userShips + " WHERE id=" + dbHandler.escapeString(shipId), connection, function(err, res) {
 				if (err) {
 					dbHandler.cancelTransaction(connection);
 					return done(err, false);
 				}
+
 				if (!res || !res[0]) return done(new Error("Not valid ship"));
 				if (!res[0].city || res[0].status !== "docked") return done(new Error("Ship not docked"));
 				var currentCity = res[0].city;
@@ -34,7 +35,7 @@ module.exports = {
 					var speed = res[0].speed;
 
 
-					dbHandler.runTransactionQuery("SELECT * FROM " + tables.cities + " WHERE id IN (" + currentCity + "," + dbHandler.escapeString(toCityId), connection, function(err, res) {
+					dbHandler.runTransactionQuery("SELECT * FROM " + tables.cities + " WHERE id IN (" + currentCity + "," + dbHandler.escapeString(toCityId) + ")", connection, function(err, res) {
 						if (err) {
 							dbHandler.cancelTransaction(connection);
 							return done(err, false);
