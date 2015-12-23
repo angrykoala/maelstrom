@@ -39,7 +39,7 @@ module.exports = {
 								assert.notOk(err);
 								assert.ok(res);
 								var productId2 = res;
-								dbHandler.insert.userShip(user.id, userShip, function(err, res) {
+								dbHandler.insert.userShip(user.id, cityId, userShip, function(err, res) {
 									assert.notOk(err);
 									assert.ok(res);
 									var userShipId = res;

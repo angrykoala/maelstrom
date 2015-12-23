@@ -336,7 +336,7 @@ describe('Database Handler', function() {
 		assert.ok(ship);
 		assert.ok(user);
 		assert.ok(model);
-		dbHandler.insert.userShip(user.id, ship, function(err, res) {
+		dbHandler.insert.userShip(user.id, 0, ship, function(err, res) {
 			assert.ok(err); //foreign id not valid
 			assert.isUndefined(res);
 			dbHandler.insert.user(user.id, user, function(err, res) {
@@ -346,7 +346,7 @@ describe('Database Handler', function() {
 					assert.notOk(err);
 					assert.isDefined(res);
 					ship.model = res;
-					dbHandler.insert.userShip(user.id, ship, function(err, res) {
+					dbHandler.insert.userShip(user.id, 0, ship, function(err, res) {
 						assert.notOk(err);
 						assert.isDefined(res);
 						var shipId = res;
@@ -363,6 +363,7 @@ describe('Database Handler', function() {
 								assert.strictEqual(res[0].model, ship.model);
 								assert.strictEqual(res[0].userId, user.id);
 								assert.strictEqual(res[0].status, ship.status);
+								assert.strictEqual(res[0].city, 0);
 								done();
 							});
 						});
@@ -388,7 +389,7 @@ describe('Database Handler', function() {
 							var ship = data.userShips[key];
 							var isCorrect = ship.correct;
 							if (isCorrect === true) correctElements++;
-							dbHandler.insert.userShip(user.id, ship, function(err, res) {
+							dbHandler.insert.userShip(user.id, 0, ship, function(err, res) {
 								if (isCorrect) {
 									assert.notOk(err);
 									assert.isDefined(res);
@@ -422,7 +423,7 @@ describe('Database Handler', function() {
 			dbHandler.insert.shipModel(model, function(err, res) {
 				assert.notOk(err);
 				ship.model = res;
-				dbHandler.insert.userShip(user.id, ship, function(err, res) {
+				dbHandler.insert.userShip(user.id, 0, ship, function(err, res) {
 					assert.notOk(err);
 					var shipId = res;
 					dbHandler.insert.product(product, function(err, res) {

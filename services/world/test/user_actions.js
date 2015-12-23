@@ -43,8 +43,15 @@ describe('User Actions', function() {
 	});
 
 	it.skip("Move Ship", function(done) {
-		done(new Error('Not implemented'));
-		//TODO
+		dbHandler.get.all(tables.userShips, function(err, res) {
+			console.log(res);
+			dbHandler.get.all(tables.cities, function(err, res) {
+				console.log(res);
+
+				done(new Error("Not implemented"));
+			});
+		});
+
 	});
 	it("Buy Product", function(done) {
 		var userId = data.users.arthur.id;

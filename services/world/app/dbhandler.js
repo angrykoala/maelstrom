@@ -221,9 +221,9 @@ module.exports = {
 				else return done(null, res.insertId);
 			});
 		},
-		userShip: function(userId, shipData, done) {
-			if (!userId || !shipData || !shipData.name || !shipData.model || !shipData.life || !shipData.status) return done(new Error("No user ship data"));
-			var query = "INSERT INTO " + tables.userShips + " (userId,name,model,life,status) VALUES(" + escapeString(userId) + "," + escapeString(shipData.name) + "," + escapeString(shipData.model) + "," + escapeString(shipData.life) + "," + escapeString(shipData.status) + ")";
+		userShip: function(userId, cityId, shipData, done) {
+			if (!userId || !shipData || !shipData.name || shipData.model === undefined || shipData.life === undefined || !shipData.status || cityId === undefined) return done(new Error("No user ship data"));
+			var query = "INSERT INTO " + tables.userShips + " (userId,name,model,life,status,city) VALUES(" + escapeString(userId) + "," + escapeString(shipData.name) + "," + escapeString(shipData.model) + "," + escapeString(shipData.life) + "," + escapeString(shipData.status) + "," + escapeString(cityId) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err);
 				else return done(null, res.insertId);
