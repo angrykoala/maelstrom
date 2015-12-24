@@ -32,7 +32,8 @@ var GameUpdate = {
 	cityProductsUpdate: function(done) {
 		var cp = tables.cityProducts;
 		var prod = tables.products;
-		var query = "UPDATE " + cp + "," + prod + " SET " + cp + ".quantity=" + cp + ".quantity+" + prod + ".baseProduction-" + prod + ".baseConsumption WHERE " + cp + ".productId=" + prod + ".id";
+		//var query = "UPDATE " + cp + "," + prod + " SET " + cp + ".quantity=" + cp + ".quantity+" + prod + ".baseProduction-" + prod + ".baseConsumption WHERE " + cp + ".productId=" + prod + ".id";
+		var query = "UPDATE " + cp + " SET quantity=quantity+production-consumption";
 		dbHandler.runQuery(query, function(err, res) {
 			if (err) return done(new Error("Error on City Product Update"), false);
 			else return done(null, true);

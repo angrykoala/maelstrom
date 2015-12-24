@@ -238,8 +238,8 @@ module.exports = {
 			});
 		},
 		cityProduct: function(cityId, productId, productData, done) {
-			if (cityId === undefined || productId === undefined || !productData || productData.quantity===undefined || productData.production===undefined || productData.consumption===undefined) return done(new Error("No City product data"));
-			var query = "INSERT INTO " + tables.cityProducts + " (cityId,productId,production,consumption,quantity) VALUES (" + escapeString(cityId) + "," + escapeString(productId) + ","+escapeString(productData.production)+","+escapeString(productData.consumption) + "," + escapeString(productData.quantity) + ")";
+			if (cityId === undefined || productId === undefined || !productData || productData.quantity === undefined || productData.production === undefined || productData.consumption === undefined) return done(new Error("No City product data"));
+			var query = "INSERT INTO " + tables.cityProducts + " (cityId,productId,production,consumption,quantity) VALUES (" + escapeString(cityId) + "," + escapeString(productId) + "," + escapeString(productData.production) + "," + escapeString(productData.consumption) + "," + escapeString(productData.quantity) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err);
 				else return done(null, [cityId, productId]);

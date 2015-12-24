@@ -27,10 +27,10 @@ module.exports = {
 			weight: 1,
 		},
 		meat: {
-			
-			
-			
-			
+
+
+
+
 		}
 	},
 	cities: {

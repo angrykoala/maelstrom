@@ -47,24 +47,20 @@ describe('Game Update Logic', function() {
 		dbHandler.runQuery("SELECT * FROM " + tables.cityProducts, function(err, res) {
 			assert.notOk(err);
 			assert.ok(res);
-			var prodId = res[0].productId;
+			var prod = res[0].production;
+			var cons = res[0].consumption;
 			var quantity = res[0].quantity;
-			dbHandler.get.byId(tables.products, prodId, function(err, res) {
+			assert.isDefined(prod);
+			assert.isDefined(cons);
+			assert.isDefined(quantity);
+			gameUpdate.cityProductsUpdate(function(err, res) {
 				assert.notOk(err);
 				assert.ok(res);
-				var prod = res[0].baseProduction;
-				var cons = res[0].baseConsumption;
-				assert.ok(prod);
-				assert.ok(cons);
-				gameUpdate.cityProductsUpdate(function(err, res) {
+				dbHandler.runQuery("SELECT * FROM " + tables.cityProducts, function(err, res) {
 					assert.notOk(err);
 					assert.ok(res);
-					dbHandler.runQuery("SELECT * FROM " + tables.cityProducts, function(err, res) {
-						assert.notOk(err);
-						assert.ok(res);
-						assert.closeTo(res[0].quantity, quantity + prod - cons, 0.5);
-						done();
-					});
+					assert.closeTo(res[0].quantity, quantity + prod - cons, 0.5);
+					done();
 				});
 			});
 		});
