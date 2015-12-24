@@ -1,6 +1,6 @@
 //Data for testing
 //correct value indicates if data is correct
-var mongoose = require('mongoose');
+//var mongoose = require('mongoose');
 
 module.exports = {
 	ships: {
@@ -24,38 +24,28 @@ module.exports = {
 		bread: {
 			name: "Bread",
 			basePrice: 50,
-			baseProduction: 25.3,
-			baseConsumption: 30,
 			weight: 1,
 			correct: true
 		},
 		redmeat: {
 			name: "Red meat",
 			basePrice: 50.2,
-			baseProduction: 24.3,
-			baseConsumption: 30.9,
 			weight: 2.2,
 			correct: true
 		},
 		stone: {
 			name: "Stone",
 			basePrice: 10.2,
-			baseProduction: 4.3,
-			baseConsumption: 1,
 			weight: 20.2,
 			correct: true
 		},
 		salt: {
 			basePrice: 100,
-			baseProduction: 2.3,
-			baseConsumption: 3,
 			weight: 1,
 			correct: false
 		},
 		gold: {
 			name: "Gold",
-			baseProduction: 2.3,
-			baseConsumption: 3,
 			weight: 1,
 			correct: false
 		}

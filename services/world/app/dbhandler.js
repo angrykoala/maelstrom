@@ -204,8 +204,8 @@ module.exports = {
 			});
 		},
 		product: function(productData, done) {
-			if (!productData || !productData.name || productData.basePrice === undefined || productData.baseConsumption === undefined || productData.baseProduction === undefined || productData.weight === undefined) return done(new Error("Not product data"));
-			var query = "INSERT INTO " + tables.products + " (name,basePrice,baseProduction,baseConsumption,weight) VALUES(" + escapeString(productData.name) + "," + escapeString(productData.basePrice) + "," + escapeString(productData.baseProduction) + "," + escapeString(productData.baseConsumption) + "," + escapeString(productData.weight) + ")";
+			if (!productData || !productData.name || productData.basePrice === undefined || productData.weight === undefined) return done(new Error("Not product data"));
+			var query = "INSERT INTO " + tables.products + " (name,basePrice,weight) VALUES(" + escapeString(productData.name) + "," + escapeString(productData.basePrice) + "," + escapeString(productData.weight) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err);
 				else return done(null, res.insertId);
@@ -238,8 +238,8 @@ module.exports = {
 			});
 		},
 		cityProduct: function(cityId, productId, productData, done) {
-			if (cityId === undefined || productId === undefined || !productData) return done(new Error("No City product data"));
-			var query = "INSERT INTO " + tables.cityProducts + " (cityId,productId,quantity) VALUES (" + escapeString(cityId) + "," + escapeString(productId) + "," + escapeString(productData.quantity) + ")";
+			if (cityId === undefined || productId === undefined || !productData || productData.quantity===undefined || productData.production===undefined || productData.consumption===undefined) return done(new Error("No City product data"));
+			var query = "INSERT INTO " + tables.cityProducts + " (cityId,productId,production,consumption,quantity) VALUES (" + escapeString(cityId) + "," + escapeString(productId) + ","+escapeString(productData.production)+","+escapeString(productData.consumption) + "," + escapeString(productData.quantity) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err);
 				else return done(null, [cityId, productId]);

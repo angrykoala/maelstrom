@@ -48,12 +48,16 @@ module.exports = {
 										assert.notOk(err);
 										assert.ok(res);
 										dbHandler.insert.cityProduct(cityId, productId, {
-											quantity: 100
+											quantity: 100,
+											consumption: 20,
+											production: 10
 										}, function(err, res) {
 											assert.notOk(err);
 											assert.ok(res);
 											dbHandler.insert.cityProduct(cityId, productId2, {
-												quantity: 10
+												quantity: 10,
+												consumption: 10,
+												production: 20
 											}, function(err, res) {
 												assert.notOk(err);
 												assert.ok(res);
