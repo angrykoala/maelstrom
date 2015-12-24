@@ -149,6 +149,35 @@ describe('Game Update Logic', function() {
 		});
 	});
 
+	it.skip("Game Loop", function(done) {
+		this.timeout(10000);
+		var nticks = 0;
+
+		function stopGame() {
+			gameUpdate.cancelLoop();
+			console.log("Game Stop at tick " + nticks);
+			done();
+		}
+
+		Get.map(function(err, res) {
+			assert.notOk(err);
+			var cityId = res[0].id;
+			gameUpdate.beginLoop(1000, function(err) {
+				console.log("tick:" + nticks);
+				if (err) {
+					console.log(err);
+					stopGame();
+				}
+
+				Get.cityProducts(cityId, function(err, res) {
+					assert.notOk(err);
+					console.log(res);
+				});
+				if (nticks > 5) stopGame();
+				nticks++;
+			});
+		});
+	});
 
 
 
