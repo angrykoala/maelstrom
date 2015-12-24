@@ -1,7 +1,7 @@
 //Data for database
 
-module.exports = {
-	shipModels: {
+module.exports = function(){
+	this.shipModels={
 		galleon: {
 			name: "Galleon",
 			life: 1000,
@@ -17,23 +17,21 @@ module.exports = {
 			cargo: 400,
 			correct: false
 		}
-	},
-	products: {
-		bread: {
+	};
+	this.products={
+		
+		beer: {
 			name: "Beer",
 			basePrice: 76,
-			baseProduction: 2,
-			baseConsumption: 2,
 			weight: 1,
 		},
 		meat: {
-
-
-
-
+			name: "Meat",
+			basePrice: 1951,
+			weight: 1
 		}
-	},
-	cities: {
+	};
+	/*cities: {
 		minasTirith: {
 			name: "Minas Tirith",
 			positionX: 10,
@@ -57,5 +55,5 @@ module.exports = {
 			positionY: -259.5,
 			correct: false
 		}
-	}
+	}*/
 };

@@ -204,8 +204,8 @@ module.exports = {
 			});
 		},
 		product: function(productData, done) {
-			if (!productData || !productData.name || productData.basePrice === undefined || productData.weight === undefined) return done(new Error("Not product data"));
-			var query = "INSERT INTO " + tables.products + " (name,basePrice,weight) VALUES(" + escapeString(productData.name) + "," + escapeString(productData.basePrice) + "," + escapeString(productData.weight) + ")";
+			if (!productData || !productData.name || productData.basePrice === undefined) return done(new Error("Not product data"));
+			var query = "INSERT INTO " + tables.products + " (name,basePrice) VALUES(" + escapeString(productData.name) + "," + escapeString(productData.basePrice) + ")";
 			runQuery(query, function(err, res) {
 				if (err || !res) return done(err);
 				else return done(null, res.insertId);

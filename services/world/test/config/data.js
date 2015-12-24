@@ -24,29 +24,24 @@ module.exports = {
 		bread: {
 			name: "Bread",
 			basePrice: 50,
-			weight: 1,
 			correct: true
 		},
 		redmeat: {
 			name: "Red meat",
 			basePrice: 50.2,
-			weight: 2.2,
 			correct: true
 		},
 		stone: {
 			name: "Stone",
 			basePrice: 10.2,
-			weight: 20.2,
 			correct: true
 		},
 		salt: {
 			basePrice: 100,
-			weight: 1,
 			correct: false
 		},
 		gold: {
 			name: "Gold",
-			weight: 1,
 			correct: false
 		}
 	},

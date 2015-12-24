@@ -226,7 +226,6 @@ describe('Database Handler', function() {
 							assert.ok(res[0].id);
 							assert.strictEqual(res[0].name, product.name);
 							assert.strictEqual(res[0].basePrice, product.basePrice);
-							assert.strictEqual(res[0].weight, product.weight);
 							dbHandler.get.byId(tables.products, "11111", function(err, res) {
 								assert.notOk(err);
 								assert.ok(res);
