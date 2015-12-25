@@ -11,5 +11,5 @@ module.exports = {
 
 	shipProducts: "shipId INT UNSIGNED, productId INT UNSIGNED, quantity INT UNSIGNED NOT NULL, PRIMARY KEY(shipId,productId), FOREIGN KEY(shipId) REFERENCES user_ships(id) ON DELETE CASCADE, FOREIGN KEY(productId) REFERENCES products(id) ON DELETE CASCADE",
 
-	cityProducts: "cityId INT UNSIGNED, productId INT UNSIGNED, quantity INT UNSIGNED NOT NULL, production FLOAT UNSIGNED NOT NULL, consumption FLOAT UNSIGNED NOT NULL, PRIMARY KEY(cityId,productId), FOREIGN KEY(cityId) REFERENCES cities(id) ON DELETE CASCADE, FOREIGN KEY(productId) REFERENCES products(id) ON DELETE CASCADE"
+	cityProducts: "cityId INT UNSIGNED, productId INT UNSIGNED, quantity FLOAT UNSIGNED NOT NULL, production FLOAT UNSIGNED NOT NULL, consumption FLOAT UNSIGNED NOT NULL, PRIMARY KEY(cityId,productId), FOREIGN KEY(cityId) REFERENCES cities(id) ON DELETE CASCADE, FOREIGN KEY(productId) REFERENCES products(id) ON DELETE CASCADE"
 };
