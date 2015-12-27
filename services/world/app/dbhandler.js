@@ -7,8 +7,8 @@ Description: Handler for world database
 
 var mysql = require('mysql');
 var async = require('async');
-var config = require('../config/database.js');
-var Models = require('../config/models.js');
+var config = require('../config/database');
+var Models = require('../config/models');
 var tables = config.tables;
 var pool = mysql.createPool(config.connection);
 

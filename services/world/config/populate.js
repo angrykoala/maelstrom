@@ -155,15 +155,18 @@ function insertCities(cities, done) {
 }
 
 data.prototype.populate = function(done) {
+	var ships = this.shipModels;
+	var products = this.products;
+	var cities = this.cities;
 	dbHandler.dropTables(function(err, res) {
 		if (err) return done(err);
 		dbHandler.createTables(function(err, res) {
 			if (err) return done(err);
-			insertShips(this.shipModels, function(err) {
+			insertShips(ships, function(err) {
 				if (err) return done(err);
-				insertProducts(this.products, function(err) {
+				insertProducts(products, function(err) {
 					if (err) return done(err);
-					insertCities(this.cities, function(err) {
+					insertCities(cities, function(err) {
 						return done(err);
 					});
 				});

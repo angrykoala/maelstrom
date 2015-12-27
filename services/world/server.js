@@ -8,45 +8,61 @@ Description: Game server to handle maelstrom dynamic world and game logic
 //Game loop example
 var gameUpdate = require('./app/game_update');
 var Get = require('./app/get_actions');
-var conf = require('./test/config/functions');
+var data = require('./config/populate');
 var assert = require('chai').assert;
 var dbHandler = require('./app/dbhandler');
+var async = require('async');
+var util = require('util');
 
 var nticks = 0;
+var populate = new data();
 
 function stopGame() {
 	gameUpdate.cancelLoop();
 	console.log("Game Stop at tick " + nticks);
 }
 
-function prepareDatabase(done) {
-	dbHandler.dropTables(function(err, res) {
+function logData(done) {
+	var dat = {};
+	Get.shipModels(function(err, res) {
 		assert.notOk(err);
-		dbHandler.createTables(function(err, res) {
+		dat.shipModels = res;
+		Get.productList(function(err, res) {
 			assert.notOk(err);
-			dbHandler.clearTables(function(err) {
+			dat.products = res;
+			Get.map(function(err, res) {
 				assert.notOk(err);
-				conf.populate(done);
+				dat.cities = [];
+				async.each(res, function(city, callback) {
+					var cityId = city.id;
+					Get.cityDetails(cityId, function(err, res) {
+						assert.notOk(err);
+						dat.cities.push(res);
+						callback();
+					});
+				}, function(err) {
+					assert.notOk(err);
+					done(dat);
+				});
 			});
 		});
 	});
 }
 
-prepareDatabase(function(err) {
-	assert.notOk(err);
-	Get.map(function(err, res) {
-		assert.notOk(err);
-		var cityId = res[0].id;
 
-		gameUpdate.beginLoop(1000, function(err) {
-			console.log("tick:" + nticks);
-			Get.cityProducts(cityId, function(err, res) {
-				assert.notOk(err);
-				console.log(res);
-			});
-			assert.notOk(err);
-			if (nticks > 5) stopGame();
-			nticks++;
+populate.populate(function(err) {
+	assert.notOk(err);
+	gameUpdate.beginLoop(1000, function(err) {
+		console.log("tick:" + nticks);
+		assert.notOk(err);
+		logData(function(res) {
+			console.log("LOG - " + nticks);
+			console.log(util.inspect(res, {
+				showHidden: false,
+				depth: null
+			}));
 		});
+		if (nticks > 50) stopGame();
+		nticks++;
 	});
 });
