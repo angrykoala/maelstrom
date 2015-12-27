@@ -6,6 +6,7 @@ Description: Actions in  world (API) to get info
 */
 
 var dbHandler = require('./dbhandler.js');
+var gameLogic = require('./game_logic');
 var tables = dbHandler.tables;
 
 //Maybe use some enum to handle the level of info to get
@@ -105,14 +106,16 @@ module.exports = {
 		return done(new Error("Not implemented"));
 	},
 	sellingPrice: function(cityId, productId, quantity, done) {
-		//TODO: improve
 		dbHandler.get.cityProduct(cityId, productId, function(err, res) {
 			if (err) return done(err);
 			if (!res || res.length === 0) return done(new Error("Not city-product found"));
+			var prod = res[0].production;
+			var cons = res[0].consumption;
+			var cityq = res[0].quantity;
 			dbHandler.get.byId(tables.products, productId, function(err, res) {
 				if (err) return done(err);
 				if (!res || res.length === 0) return done(new Error("Not product found"));
-				var price = res[0].basePrice * quantity * 0.8;
+				var price = gameLogic.sellingPrice(cityq, prod, cons, res[0].basePrice, quantity);
 				return done(null, price);
 			});
 		});
@@ -122,10 +125,13 @@ module.exports = {
 		dbHandler.get.cityProduct(cityId, productId, function(err, res) {
 			if (err) return done(err);
 			if (!res || res.length === 0) return done(new Error("Not city-product found"));
+			var prod = res[0].production;
+			var cons = res[0].consumption;
+			var cityq = res[0].quantity;
 			dbHandler.get.byId(tables.products, productId, function(err, res) {
 				if (err) return done(err);
 				if (!res || res.length === 0) return done(new Error("Not product found"));
-				var price = res[0].basePrice * quantity * 1.2;
+				var price = gameLogic.buyingPrice(cityq, prod, cons, res[0].basePrice, quantity);
 				return done(null, price);
 			});
 		});
