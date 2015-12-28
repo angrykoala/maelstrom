@@ -70,7 +70,7 @@ module.exports = {
 	buyProduct: function(userId, shipId, cityId, productId, quantity, done) {
 		if (userId === undefined || cityId === undefined || productId === undefined || quantity < 0) return done(new Error("Not valid data"), false);
 		if (quantity === 0) return done(null, true);
-		//TODO:Check city-ship and cargo
+		//TODO: Check city-ship and cargo
 
 		dbHandler.beginTransaction(function(err, connection) {
 			if (err) return done(err, false);
@@ -123,7 +123,7 @@ module.exports = {
 	sellProduct: function(userId, shipId, cityId, productId, quantity, done) {
 		if (userId === undefined || cityId === undefined || productId === undefined || quantity < 0) return done(new Error("Not valid data"), false);
 		if (quantity === 0) return done(null, true);
-		//TODO:Check city-ship
+		//TODO: Check city-ship
 		dbHandler.beginTransaction(function(err, connection) {
 			if (err) return done(err, false);
 			dbHandler.runTransactionQuery("SELECT * FROM " + tables.products + " WHERE id=" + dbHandler.escapeString(productId), connection, function(err, res) {
@@ -255,11 +255,11 @@ module.exports = {
 	},
 	repairShip: function(userId, shipId, done) {
 		done(new Error('Not implemented'));
-		//TODO
+		//TODO: repair ship
 	},
 	//calls ship to return from journey
 	returnShip: function(userId, shipId, done) {
 		done(new Error('Not implemented'));
-		//TODO
+		//TODO: return ship
 	}
 };

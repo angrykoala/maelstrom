@@ -41,6 +41,7 @@ var GameUpdate = {
 		});
 	},
 	shipsUpdate: function(done) {
+		//TODO: returning
 		var us = tables.userShips;
 		var query = "UPDATE " + us + " SET remaining=" + us + ".remaining-1" + " WHERE status=\"sailing\"";
 		var query2 = "UPDATE " + us + " SET city=" + us + ".destiny, status=\"docked\"" + " WHERE remaining=\"0\"";

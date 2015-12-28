@@ -295,10 +295,10 @@ describe('User Actions', function() {
 	});
 	it.skip("Repair Ship", function(done) {
 		done(new Error('Not implemented'));
-		//TODO
+		//TODO: test repair ship
 	});
 	it.skip("Return Ship", function(done) {
 		done(new Error('Not implemented'));
-		//TODO
+		//TODO: test return ship
 	});
 });

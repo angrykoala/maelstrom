@@ -206,10 +206,28 @@ describe('Get Actions', function() {
 			});
 		});
 	});
-	it.skip('Get Remaining Time', function(done) {
-		done(new Error("Not implemented"));
+	it('Get Remaining Time', function(done) {
+		var userId = data.users.arthur.id;
+		Get.ships(userId, function(err, res) {
+			assert.notOk(err);
+			assert.ok(res);
+			assert.ok(res[0]);
+			var shipId = res[0].id;
+			assert.strictEqual(res[0].status, "docked");
+			Get.remainingTime(shipId, function(err, res) {
+				assert.notOk(err);
+				assert.strictEqual(res, 0);
+				dbHandler.runQuery("UPDATE " + tables.userShips + " SET status=\"sailing\",remaining=\"10\" WHERE id=" + shipId, function(err, res) {
+					assert.notOk(err);
+					Get.remainingTime(shipId, function(err, res) {
+						assert.notOk(err);
+						assert.strictEqual(res, 10);
+						done();
+					});
+				});
+			});
+		});
 	});
-
 	it('Get Price', function(done) {
 		Get.map(function(err, res) {
 			assert.notOk(err);

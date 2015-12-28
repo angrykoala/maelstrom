@@ -102,8 +102,13 @@ module.exports = {
 			});
 		});
 	},
-	remainingTime: function(userId, shipId, done) {
-		return done(new Error("Not implemented"));
+	remainingTime: function(shipId, done) {
+		dbHandler.get.shipDetails(shipId, function(err, res) {
+			if (err) return done(err);
+			if (!res || res.length === 0) return done(new Error("No ship found"));
+			if (res[0].status !== "sailing" && res[0].status !== "returning") return done(null, 0);
+			else return done(null, res[0].remaining);
+		});
 	},
 	sellingPrice: function(cityId, productId, quantity, done) {
 		dbHandler.get.cityProduct(cityId, productId, function(err, res) {
