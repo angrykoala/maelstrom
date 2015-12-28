@@ -17,6 +17,9 @@ var util = require('util');
 var nticks = 0;
 var populate = new data();
 
+var app = require('express')();
+require('./app/routes.js')(app); //loads routes
+
 function stopGame() {
 	gameUpdate.cancelLoop();
 	console.log("Game Stop at tick " + nticks);
@@ -52,17 +55,19 @@ function logData(done) {
 
 populate.populate(function(err) {
 	assert.notOk(err);
-	gameUpdate.beginLoop(1000, function(err) {
-		console.log("tick:" + nticks);
-		assert.notOk(err);
-		logData(function(res) {
-			console.log("LOG - " + nticks);
-			console.log(util.inspect(res, {
-				showHidden: false,
-				depth: null
-			}));
+	app.listen(8080, function() {
+		gameUpdate.beginLoop(1000, function(err) {
+			//console.log("tick:" + nticks);
+			assert.notOk(err);
+			/*logData(function(res) {
+				console.log("LOG - " + nticks);
+				console.log(util.inspect(res, {
+					showHidden: false,
+					depth: null
+				}));
+			});*/
+			if (nticks > 50) stopGame();
+			//nticks++;
 		});
-		if (nticks > 50) stopGame();
-		nticks++;
 	});
 });
