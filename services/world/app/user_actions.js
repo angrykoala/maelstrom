@@ -9,6 +9,7 @@ var dbHandler = require('./dbhandler.js');
 var tables = dbHandler.tables;
 var Models = dbHandler.models;
 var Get = require('./get_actions.js');
+var gameLogic=require('./game_logic');
 
 
 
@@ -72,13 +73,23 @@ module.exports = {
 		//Check city-ship!!!
 		dbHandler.beginTransaction(function(err, connection) {
 			if (err) return done(err, false);
-			dbHandler.runTransactionQuery("SELECT * FROM " + tables.products + " WHERE id=" + productId, connection, function(err, res) {
+			dbHandler.runTransactionQuery("SELECT * FROM " + tables.products + " WHERE id=" + dbHandler.escapeString(productId), connection, function(err, res) {
 				if (err || !res) {
 					dbHandler.cancelTransaction(connection);
 					if (!err) err = new Error("product not found");
 					return done(err, false);
 				}
-				var price = res[0].basePrice * quantity;
+				var bPrice=res[0].basePrice;
+				dbHandler.runTransactionQuery("SELECT * FROM "+tables.cityProducts+" WHERE cityId=" + dbHandler.escapeString(cityId) + " AND productId=" + dbHandler.escapeString(productId),connection,function(err,res){
+					if (err || !res) {
+						dbHandler.cancelTransaction(connection);
+						if (!err) err = new Error("product not found");
+						return done(err, false);
+					}
+					var prod = res[0].production;
+					var cons = res[0].consumption;
+					var cityq = res[0].quantity;
+				var price = gameLogic.buyingPrice(res[0].quantity, res[0].production, res[0].consumption, bPrice, quantity);
 				dbHandler.update.removeUserMoney(connection, userId, price, function(err, res) {
 					if (err || !res) {
 						dbHandler.cancelTransaction(connection);
@@ -104,6 +115,7 @@ module.exports = {
 						});
 					});
 				});
+			});
 			});
 		});
 	},

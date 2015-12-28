@@ -121,7 +121,6 @@ module.exports = {
 		});
 	},
 	buyingPrice: function(cityId, productId, quantity, done) {
-		//TODO: improve
 		dbHandler.get.cityProduct(cityId, productId, function(err, res) {
 			if (err) return done(err);
 			if (!res || res.length === 0) return done(new Error("Not city-product found"));
