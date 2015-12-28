@@ -10,7 +10,7 @@ var async = require('async');
 
 var auxFunc = require('./config/functions.js');
 var data = require('./config/data.js');
-var gameLogic=require('../app/game_logic');
+var gameLogic = require('../app/game_logic');
 
 var Actions = require('../app/user_actions.js');
 var Get = require('../app/get_actions.js');
@@ -124,8 +124,8 @@ describe('User Actions', function() {
 								assert.notOk(err);
 								assert.ok(res[0]);
 								var cityQuantity = res[0].quantity;
-								var cityProduction=res[0].production;
-								var cityConsumption=res[0].consumption;
+								var cityProduction = res[0].production;
+								var cityConsumption = res[0].consumption;
 								assert.strictEqual(res[0].productId, productId);
 								Actions.buyProduct(userId, shipId, cityId, productId, 1, function(err, res) {
 									assert.notOk(err);
@@ -141,7 +141,7 @@ describe('User Actions', function() {
 											dbHandler.get.user(userId, function(err, res) {
 												assert.notOk(err);
 												assert.ok(res[0]);
-												var price=gameLogic.buyingPrice(cityQuantity, cityProduction, cityConsumption, productPrice, 1);
+												var price = gameLogic.buyingPrice(cityQuantity, cityProduction, cityConsumption, productPrice, 1);
 												assert.strictEqual(res[0].money, userMoney - price);
 												done();
 											});
@@ -182,7 +182,9 @@ describe('User Actions', function() {
 							dbHandler.get.cityProduct(cityId, productId, function(err, res) {
 								assert.notOk(err);
 								assert.ok(res[0]);
-								var cityProd = res[0].quantity;
+								var cityQuantity = res[0].quantity;
+								var cityProduction = res[0].production;
+								var cityConsumption = res[0].consumption;
 								assert.strictEqual(res[0].productId, productId);
 								Actions.sellProduct(userId, shipId, cityId, productId, 2, function(err, res) {
 									assert.notOk(err);
@@ -194,11 +196,12 @@ describe('User Actions', function() {
 										dbHandler.get.cityProduct(cityId, productId, function(err, res) {
 											assert.notOk(err);
 											assert.ok(res[0]);
-											assert.strictEqual(res[0].quantity, cityProd + 2);
+											assert.strictEqual(res[0].quantity, cityQuantity + 2);
 											dbHandler.get.user(userId, function(err, res) {
 												assert.notOk(err);
 												assert.ok(res[0]);
-												assert.strictEqual(res[0].money, userMoney + (productPrice * 2));
+												var price = gameLogic.sellingPrice(cityQuantity, cityProduction, cityConsumption, productPrice, 2);
+												assert.strictEqual(res[0].money, userMoney + price);
 												done();
 											});
 										});
