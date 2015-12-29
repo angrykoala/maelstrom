@@ -56,6 +56,7 @@ function logData(done) {
 populate.populate(function(err) {
 	assert.notOk(err);
 	app.listen(8080, function() {
+		console.log("Server running");
 		gameUpdate.beginLoop(1000, function(err) {
 			//console.log("tick:" + nticks);
 			assert.notOk(err);

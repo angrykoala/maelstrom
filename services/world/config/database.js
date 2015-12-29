@@ -22,5 +22,8 @@ module.exports = {
 		userShips: "user_ships",
 		shipProducts: "ship_products",
 		cityProducts: "city_products"
+	},
+	defaultUser:{
+		money: 1000
 	}
 };

@@ -61,7 +61,7 @@ module.exports = function(app) {
 	//returns an user token inside a json {token: mytoken}
 	app.post('/signup', function(req, res) {
 		if (!req.body) res.status(400).json({
-			error: "empty fohttp://localhost:8080/signuprms"
+			error: "empty forms"
 		});
 		else {
 			var info = {
@@ -96,7 +96,6 @@ module.exports = function(app) {
 		if (err.name === 'UnauthorizedError') res.status(401).json({
 			err: "invalid token"
 		});
-
 	});
 	/*app.get('/restricted', function(req,res){
 		//res.redirect('/restricted/dash');
