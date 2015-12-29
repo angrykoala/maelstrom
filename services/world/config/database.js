@@ -23,7 +23,7 @@ module.exports = {
 		shipProducts: "ship_products",
 		cityProducts: "city_products"
 	},
-	defaultUser:{
+	defaultUser: {
 		money: 1000
 	}
 };

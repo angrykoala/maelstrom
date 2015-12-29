@@ -1,3 +1,3 @@
-module.exports={
-    secret: "dontpanic"
+module.exports = {
+	secret: "dontpanic"
 };

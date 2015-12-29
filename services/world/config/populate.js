@@ -14,10 +14,17 @@ var data = function() {
 		},
 		caravel: {
 			name: "Caravel",
-			life: 100,
+			life: 250,
 			price: 1200,
 			speed: 15,
-			cargo: 80,
+			cargo: 150
+		},
+		schooner: {
+			name: "Schooner",
+			life: 100,
+			price: 500,
+			speed: 12,
+			cargo: 80
 		}
 	};
 	this.products = {
