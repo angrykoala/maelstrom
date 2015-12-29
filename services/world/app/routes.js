@@ -9,19 +9,20 @@ Description: api for world interaction
 var jwt = require('jsonwebtoken');
 var expressjwt = require('express-jwt');
 var bodyParser = require('body-parser');
-var Get = require('./get_actions');
+
 var config = require('../config/server');
 var dbHandler = require('./dbhandler');
 var defaultUser = require('../config/database').defaultUser;
-
+var Get = require('./get_actions');
+var Actions=require('./user_actions');
 
 
 module.exports = function(app) {
 
 	app.use(bodyParser.json()); // get information from body
-	app.use(bodyParser.urlencoded({
+	/*app.use(bodyParser.urlencoded({
 		extended: true
-	}));
+	}));*/
 
 	//all urls under restricted can only be accesed having a jwt in the header
 	//auth header must be: Bearer (jwt token)
@@ -83,5 +84,19 @@ module.exports = function(app) {
 			});
 			else return response.status(201).json(res);
 		});
+	});
+	app.put('/user/build/ship',function(req,response){
+		var userId = req.user.id;
+		var shipModelId=req.body.model;
+		var shipName=req.body.ship_name;
+		var cityId=req.body.city;
+		if(shipModelId===undefined || !shipName || cityId===undefined) return response.status(500).json({error: "Not valid data"});
+		console.log("Build ship " + userId);
+		Actions.buildShip(userId, shipModelId, cityId, shipName, function(err,res){
+			if (err) return response.status(500).json({
+				error: err.toString()
+			});
+			else return response.status(201).json(res);			
+		});	
 	});
 };
