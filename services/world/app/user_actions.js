@@ -70,48 +70,62 @@ module.exports = {
 	buyProduct: function(userId, shipId, cityId, productId, quantity, done) {
 		if (userId === undefined || cityId === undefined || productId === undefined || quantity < 0) return done(new Error("Not valid data"), false);
 		if (quantity === 0) return done(null, true);
-		//TODO: Check city-ship and cargo
-
+		//TODO: Check cargo
 		dbHandler.beginTransaction(function(err, connection) {
 			if (err) return done(err, false);
-			dbHandler.runTransactionQuery("SELECT * FROM " + tables.products + " WHERE id=" + dbHandler.escapeString(productId), connection, function(err, res) {
-				if (err || !res) {
+			dbHandler.runTransactionQuery("SELECT * FROM " + tables.userShips + " WHERE id=" + dbHandler.escapeString(shipId), connection, function(err, res) {
+				if (err || !res || !res[0]) {
 					dbHandler.cancelTransaction(connection);
-					if (!err) err = new Error("product not found");
+					if (!err) err = new Error("ship not found");
 					return done(err, false);
 				}
-				var bPrice = res[0].basePrice;
-				dbHandler.runTransactionQuery("SELECT * FROM " + tables.cityProducts + " WHERE cityId=" + dbHandler.escapeString(cityId) + " AND productId=" + dbHandler.escapeString(productId), connection, function(err, res) {
-					if (err || !res) {
+				if (res[0].city != cityId) {
+					dbHandler.cancelTransaction(connection);
+					return done(new Error("ship in different city"), false);
+				}
+				if(res[0].status!="docked"){
+					dbHandler.cancelTransaction(connection);
+					return done(new Error("ship not docked"), false);
+				}
+				dbHandler.runTransactionQuery("SELECT * FROM " + tables.products + " WHERE id=" + dbHandler.escapeString(productId), connection, function(err, res) {
+					if (err || !res || !res[0]) {
 						dbHandler.cancelTransaction(connection);
 						if (!err) err = new Error("product not found");
 						return done(err, false);
 					}
-					var prod = res[0].production;
-					var cons = res[0].consumption;
-					var cityq = res[0].quantity;
-					var price = gameLogic.buyingPrice(res[0].quantity, res[0].production, res[0].consumption, bPrice, quantity);
-					dbHandler.update.removeUserMoney(connection, userId, price, function(err, res) {
+					var bPrice = res[0].basePrice;
+					dbHandler.runTransactionQuery("SELECT * FROM " + tables.cityProducts + " WHERE cityId=" + dbHandler.escapeString(cityId) + " AND productId=" + dbHandler.escapeString(productId), connection, function(err, res) {
 						if (err || !res) {
 							dbHandler.cancelTransaction(connection);
-							if (!err) err = new Error("User money not removed");
+							if (!err) err = new Error("product not found");
 							return done(err, false);
 						}
-						dbHandler.update.removeCityProduct(connection, cityId, productId, quantity, function(err, res) {
+						var prod = res[0].production;
+						var cons = res[0].consumption;
+						var cityq = res[0].quantity;
+						var price = gameLogic.buyingPrice(res[0].quantity, res[0].production, res[0].consumption, bPrice, quantity);
+						dbHandler.update.removeUserMoney(connection, userId, price, function(err, res) {
 							if (err || !res) {
 								dbHandler.cancelTransaction(connection);
-								if (!res) err = new Error("City product not removed");
+								if (!err) err = new Error("User money not removed");
 								return done(err, false);
 							}
-							dbHandler.update.addShipProduct(connection, shipId, productId, quantity, function(err, res) {
+							dbHandler.update.removeCityProduct(connection, cityId, productId, quantity, function(err, res) {
 								if (err || !res) {
 									dbHandler.cancelTransaction(connection);
-									if (!res) err = new Error("Ship product not added");
+									if (!res) err = new Error("City product not removed");
 									return done(err, false);
 								}
-								dbHandler.commitTransaction(connection, function(err) {
-									if (err) return done(err, false);
-									else return done(null, true);
+								dbHandler.update.addShipProduct(connection, shipId, productId, quantity, function(err, res) {
+									if (err || !res) {
+										dbHandler.cancelTransaction(connection);
+										if (!res) err = new Error("Ship product not added");
+										return done(err, false);
+									}
+									dbHandler.commitTransaction(connection, function(err) {
+										if (err) return done(err, false);
+										else return done(null, true);
+									});
 								});
 							});
 						});
@@ -123,43 +137,58 @@ module.exports = {
 	sellProduct: function(userId, shipId, cityId, productId, quantity, done) {
 		if (userId === undefined || cityId === undefined || productId === undefined || quantity < 0) return done(new Error("Not valid data"), false);
 		if (quantity === 0) return done(null, true);
-		//TODO: Check city-ship
+
 		dbHandler.beginTransaction(function(err, connection) {
 			if (err) return done(err, false);
-			dbHandler.runTransactionQuery("SELECT * FROM " + tables.products + " WHERE id=" + dbHandler.escapeString(productId), connection, function(err, res) {
-				if (err || !res[0]) {
+			dbHandler.runTransactionQuery("SELECT * FROM " + tables.userShips + " WHERE id=" + dbHandler.escapeString(shipId), connection, function(err, res) {
+				if (err || !res || !res[0]) {
 					dbHandler.cancelTransaction(connection);
+					if (!err) err = new Error("ship not found");
 					return done(err, false);
 				}
-				var bPrice = res[0].basePrice;
-				dbHandler.runTransactionQuery("SELECT * FROM " + tables.cityProducts + " WHERE cityId=" + dbHandler.escapeString(cityId) + " AND productId=" + dbHandler.escapeString(productId), connection, function(err, res) {
-					if (err || !res) {
+				if (res[0].city != cityId) {
+					dbHandler.cancelTransaction(connection);
+					return done(new Error("ship in different city"), false);
+				}
+				if(res[0].status!="docked"){
+					dbHandler.cancelTransaction(connection);
+					return done(new Error("ship not docked"), false);
+				}
+				dbHandler.runTransactionQuery("SELECT * FROM " + tables.products + " WHERE id=" + dbHandler.escapeString(productId), connection, function(err, res) {
+					if (err || !res[0]) {
 						dbHandler.cancelTransaction(connection);
-						if (!err) err = new Error("product not found");
 						return done(err, false);
 					}
-					var prod = res[0].production;
-					var cons = res[0].consumption;
-					var cityq = res[0].quantity;
-					var price = gameLogic.sellingPrice(res[0].quantity, res[0].production, res[0].consumption, bPrice, quantity);
-					dbHandler.update.addUserMoney(connection, userId, price, function(err, res) {
+					var bPrice = res[0].basePrice;
+					dbHandler.runTransactionQuery("SELECT * FROM " + tables.cityProducts + " WHERE cityId=" + dbHandler.escapeString(cityId) + " AND productId=" + dbHandler.escapeString(productId), connection, function(err, res) {
 						if (err || !res) {
 							dbHandler.cancelTransaction(connection);
+							if (!err) err = new Error("product not found");
 							return done(err, false);
 						}
-						dbHandler.update.addCityProduct(connection, cityId, productId, quantity, function(err, res) {
+						var prod = res[0].production;
+						var cons = res[0].consumption;
+						var cityq = res[0].quantity;
+						var price = gameLogic.sellingPrice(res[0].quantity, res[0].production, res[0].consumption, bPrice, quantity);
+						dbHandler.update.addUserMoney(connection, userId, price, function(err, res) {
 							if (err || !res) {
 								dbHandler.cancelTransaction(connection);
 								return done(err, false);
 							}
-							dbHandler.update.removeShipProduct(connection, shipId, productId, quantity, function(err, res) {
+							dbHandler.update.addCityProduct(connection, cityId, productId, quantity, function(err, res) {
 								if (err || !res) {
 									dbHandler.cancelTransaction(connection);
 									return done(err, false);
 								}
-								dbHandler.commitTransaction(connection, function(err) {
-									if (err) return done(err, false);
-									else return done(null, true);
+								dbHandler.update.removeShipProduct(connection, shipId, productId, quantity, function(err, res) {
+									if (err || !res) {
+										dbHandler.cancelTransaction(connection);
+										return done(err, false);
+									}
+									dbHandler.commitTransaction(connection, function(err) {
+										if (err) return done(err, false);
+										else return done(null, true);
+									});
 								});
 							});
 						});

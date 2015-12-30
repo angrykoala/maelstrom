@@ -143,7 +143,10 @@ describe('User Actions', function() {
 												assert.ok(res[0]);
 												var price = gameLogic.buyingPrice(cityQuantity, cityProduction, cityConsumption, productPrice, 1);
 												assert.strictEqual(res[0].money, userMoney - price);
-												done();
+												Actions.buyProduct(userId, shipId, cityId + 1, productId, 1, function(err, res) {
+													assert.ok(err);
+													done();
+												});
 											});
 										});
 									});
@@ -202,7 +205,10 @@ describe('User Actions', function() {
 												assert.ok(res[0]);
 												var price = gameLogic.sellingPrice(cityQuantity, cityProduction, cityConsumption, productPrice, 2);
 												assert.strictEqual(res[0].money, userMoney + price);
-												done();
+												Actions.sellProduct(userId, shipId, cityId + 1, productId, 2, function(err, res) {
+													assert.ok(err);
+													done();
+												});
 											});
 										});
 									});

@@ -14,7 +14,7 @@ var config = require('../config/server');
 var dbHandler = require('./dbhandler');
 var defaultUser = require('../config/database').defaultUser;
 var Get = require('./get_actions');
-var Actions=require('./user_actions');
+var Actions = require('./user_actions');
 
 
 module.exports = function(app) {
@@ -85,18 +85,20 @@ module.exports = function(app) {
 			else return response.status(201).json(res);
 		});
 	});
-	app.put('/user/build/ship',function(req,response){
+	app.put('/user/build/ship', function(req, response) {
 		var userId = req.user.id;
-		var shipModelId=req.body.model;
-		var shipName=req.body.ship_name;
-		var cityId=req.body.city;
-		if(shipModelId===undefined || !shipName || cityId===undefined) return response.status(500).json({error: "Not valid data"});
+		var shipModelId = req.body.model;
+		var shipName = req.body.ship_name;
+		var cityId = req.body.city;
 		console.log("Build ship " + userId);
-		Actions.buildShip(userId, shipModelId, cityId, shipName, function(err,res){
+		if (shipModelId === undefined || !shipName || cityId === undefined) return response.status(500).json({
+			error: "Not valid data"
+		});
+		Actions.buildShip(userId, shipModelId, cityId, shipName, function(err, res) {
 			if (err) return response.status(500).json({
 				error: err.toString()
 			});
-			else return response.status(201).json(res);			
-		});	
+			else return response.status(201).json(res);
+		});
 	});
 };
