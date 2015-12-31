@@ -45,6 +45,15 @@ module.exports = function(app) {
 			else return response.status(200).json(res);
 		});
 	});
+	app.get('/city/:city_id',function(req,response){
+		var cityId=req.params.city_id;
+		Get.cityDetails(cityId,function(err,res){
+			if (err) return response.status(500).json({
+				error: err.toString()
+			});
+			else return response.status(200).json(res);
+		});		
+	});
 	app.get('/ship_models', function(req, response) {
 		Get.shipModels(function(err, res) {
 			if (err) return response.status(500).json({
