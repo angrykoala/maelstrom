@@ -110,4 +110,27 @@ module.exports = function(app) {
 			else return response.status(201).json(res);
 		});
 	});
+	app.put('/user/move/ship',function(req,response){
+		var userId=req.user.id;
+		var shipId=req.body.ship;
+		var cityId=req.body.city;
+		console.log("Move ship "+userId);
+		if (shipModelId === undefined || shipId===undefined || cityId === undefined) return response.status(500).json({
+			error: "Not valid data"
+		});
+		Actions.moveShip(userId, shipId, cityId,function(err,res){
+			if (err) return response.status(500).json({
+				error: err.toString()
+			});
+			else if(!res) return response.status(500).json({error: "Can't move ship"});
+			else return response.status(201).json(res);
+		});
+	});	
+/*	app.put('/user/buy',function(req,response){
+		var userId=req.user.id;
+		var shipId=req.body.ship;
+		var cityId=req.body.city;
+		
+		
+	});*/
 };
