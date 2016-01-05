@@ -127,7 +127,7 @@ describe('User Actions', function() {
 								var cityProduction = res[0].production;
 								var cityConsumption = res[0].consumption;
 								assert.strictEqual(res[0].productId, productId);
-								Actions.buyProduct(userId, shipId, cityId, productId, 1, function(err, res) {
+								Actions.buyProduct(userId, shipId, productId, 1, function(err, res) {
 									assert.notOk(err);
 									assert.ok(res);
 									dbHandler.get.shipProduct(shipId, productId, function(err, res) {
@@ -143,10 +143,7 @@ describe('User Actions', function() {
 												assert.ok(res[0]);
 												var price = gameLogic.buyingPrice(cityQuantity, cityProduction, cityConsumption, productPrice, 1);
 												assert.strictEqual(res[0].money, userMoney - price);
-												Actions.buyProduct(userId, shipId, cityId + 1, productId, 1, function(err, res) {
-													assert.ok(err);
-													done();
-												});
+												done();
 											});
 										});
 									});
@@ -189,7 +186,7 @@ describe('User Actions', function() {
 								var cityProduction = res[0].production;
 								var cityConsumption = res[0].consumption;
 								assert.strictEqual(res[0].productId, productId);
-								Actions.sellProduct(userId, shipId, cityId, productId, 2, function(err, res) {
+								Actions.sellProduct(userId, shipId, productId, 2, function(err, res) {
 									assert.notOk(err);
 									assert.ok(res);
 									dbHandler.get.shipProduct(shipId, productId, function(err, res) {
@@ -205,10 +202,7 @@ describe('User Actions', function() {
 												assert.ok(res[0]);
 												var price = gameLogic.sellingPrice(cityQuantity, cityProduction, cityConsumption, productPrice, 2);
 												assert.strictEqual(res[0].money, userMoney + price);
-												Actions.sellProduct(userId, shipId, cityId + 1, productId, 2, function(err, res) {
-													assert.ok(err);
-													done();
-												});
+												done();
 											});
 										});
 									});

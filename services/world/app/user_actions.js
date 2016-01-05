@@ -67,8 +67,8 @@ module.exports = {
 			});
 		});
 	},
-	buyProduct: function(userId, shipId, cityId, productId, quantity, done) {
-		if (userId === undefined || cityId === undefined || productId === undefined || quantity < 0) return done(new Error("Not valid data"), false);
+	buyProduct: function(userId, shipId, productId, quantity, done) {
+		if (userId === undefined || productId === undefined || quantity < 0) return done(new Error("Not valid data"), false);
 		if (quantity === 0) return done(null, true);
 		//TODO: Check cargo
 		dbHandler.beginTransaction(function(err, connection) {
@@ -79,10 +79,8 @@ module.exports = {
 					if (!err) err = new Error("ship not found");
 					return done(err, false);
 				}
-				if (res[0].city != cityId) {
-					dbHandler.cancelTransaction(connection);
-					return done(new Error("ship in different city"), false);
-				}
+				var cityId=res[0].city;
+				if(cityId===undefined) return done(new Error("Not city found"),false);
 				if(res[0].status!="docked"){
 					dbHandler.cancelTransaction(connection);
 					return done(new Error("ship not docked"), false);
@@ -134,8 +132,8 @@ module.exports = {
 			});
 		});
 	},
-	sellProduct: function(userId, shipId, cityId, productId, quantity, done) {
-		if (userId === undefined || cityId === undefined || productId === undefined || quantity < 0) return done(new Error("Not valid data"), false);
+	sellProduct: function(userId, shipId, productId, quantity, done) {
+		if (userId === undefined || productId === undefined || quantity < 0) return done(new Error("Not valid data"), false);
 		if (quantity === 0) return done(null, true);
 
 		dbHandler.beginTransaction(function(err, connection) {
@@ -146,10 +144,8 @@ module.exports = {
 					if (!err) err = new Error("ship not found");
 					return done(err, false);
 				}
-				if (res[0].city != cityId) {
-					dbHandler.cancelTransaction(connection);
-					return done(new Error("ship in different city"), false);
-				}
+				var cityId=res[0].city;
+				if(cityId===undefined) return done(new Error("Not city found"),false);
 				if(res[0].status!="docked"){
 					dbHandler.cancelTransaction(connection);
 					return done(new Error("ship not docked"), false);
