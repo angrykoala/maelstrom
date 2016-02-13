@@ -126,11 +126,21 @@ module.exports = function(app) {
 			else return response.status(201).json(res);
 		});
 	});	
-/*	app.put('/user/buy',function(req,response){
+	app.put('/user/buy',function(req,response){
 		var userId=req.user.id;
 		var shipId=req.body.ship;
-		var cityId=req.body.city;
-		
-		
-	});*/
+		var productId=req.body.product;
+		var quantity=req.body.quantity;
+		console.log("Buy Product "+userId);
+		if (shipId === undefined || userId===undefined || productId === undefined || quantity===undefined) return response.status(500).json({
+			error: "Not valid data"
+		});
+		Actions.buyProduct(userId, shipId, productId, quantity,function(err,res){
+			if (err) return response.status(500).json({
+				error: err.toString()
+			});
+			else if(!res) return response.status(500).json({error: "Can't buy product"});
+			else return response.status(201).json(res);
+		});
+	});
 };
