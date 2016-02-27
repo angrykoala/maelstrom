@@ -2,14 +2,22 @@
 Name: Map
 Project: Maelström - World
 Author: demiurgosoft <demiurgosoft@hotmail.com>
-Description: Actions in  world (API) to get info
+Description: 
 */
+var cities = {};
 
-var dbHandler = require('./dbhandler.js');
-var table=dbHandler.tables.cities;
-
-module.exports={
-    get: function(done){
-        dbHandler.get.all(tale, done);
-    }
+var map = {
+	addCity: function(city) {
+		if (city && city.name) {
+			this.cities[city.name] = city;
+		}
+	},
+	getCity: function(name) {
+		return this.cities[name] || null;
+	},
+	getAllCities: function() {
+		return Object.keys(this.cities);
+	}
 };
+
+module.exports = map;

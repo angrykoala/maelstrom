@@ -1,53 +1,51 @@
 /*
-Name: Ship
+Name:Ship Model
 Project: Maelström - World
 Author: demiurgosoft <demiurgosoft@hotmail.com>
-Description: Actions related to ships
+Description: 
 */
-
-var dbHandler = require('./dbhandler.js');
-var tables=dbHandler.tables;
-
-module.exports={
-    get:{
-        byId: function(shipId,done){
-            var query = "SELECT * FROM " + tables.userShips + " WHERE id=" + escapeString(shipId);
-            runQuery(query, done);            
-        },
-        //returns all userId ships basic info 
-        userShips: function(userId, done) {
-            var query = "SELECT * FROM " + tables-userShips + " WHERE userId=" + escapeString(userId);
-            runQuery(query, done);
-        },
-        shipProducts: function(shipId, done) {
-            var query = "SELECT * FROM " + tables.shipProducts + " WHERE shipId=" + escapeString(shipId);
-            runQuery(query, done);
-        },
-        //returns details of a certain ship
-        shipDetails: function(shipId, done) {
-            var getShip=this.byId;
-            var getShipProducts=this.shipProducts;
-            getShip(shipId, function(err, res) {
-                if (err || !res[0]) return done(err, null);
-                var shipDetails = res[0];
-                getShipProducts(shipId, function(err, res) {
-                    if (err || !res) return done(err, shipDetails);
-                    for (var i = 0; i < res.length; i++) delete res[i].shipId;
-                    shipDetails.products = res;
-                    done(null, shipDetails);
-                });
-            });
-        },
-        //return all ships models
-        shipModels: function(done) {
-            dbHandler.get.all(tables.shipModels, done);
-        },
-        shipModel: function(modelId, done) {
-            dbHandler.get.byId(tables.shipModels, modelId, function(err, res) {
-                if (err) return done(err, res);
-                else if (!res || res.length === 0) return done(new Error("Model not found"), null);
-                else return done(null, res[0]);
-            });
-        },    
-    }
+var Ship = function(name, user, shipModel) {
+	this.name = name;
+	this.owner = user;
+	this.model = shipModel;
+	this.life = shipModel.life;
+	this.city = null;
+	this.setStatus("DOCKED");
+	this.products = [];
 };
+Ship.prototype.setStatus = function(status, data) {
+	this.status = status;
+};
+Ship.prototype.getCurrentCargo = function() {
+
+};
+Ship.prototype.addProduct = function(product, quantity) {
+	if ((quantity + this.getCurrentCargo()) < this.model.cargo && quantity >= 0) {
+		this.products[product] = this.products[product] + quantity || quantity;
+		return true;
+	} else return false;
+};
+Ship.prototype.removeProduct = function(product, quantity) {
+	if (this.products[product] >= quantity) {
+		this.products[product] -= quantity;
+		if (this.products[product] === 0) delete this.product[product];
+	} else return false;
+};
+var ShipModel = function(name, data) {
+	this.name = name;
+	this.life = data.life || 0;
+	this.speed = data.speed || 0;
+	this.price = data.price || 0;
+	this.cargo = data.cargo || 0;
+};
+ShipModel.prototype.createShip = function(name, user) {
+	return new Ship(name, user, this);
+};
+
+
+
+module.exports = ShipModel;
+
+
+
+//id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,	userId INT UNSIGNED NOT NULL, name VARCHAR(64) NOT NULL, model INT UNSIGNED NOT NULL REFERENCES ship_models(id), life INT UNSIGNED NOT NULL, status VARCHAR(64) NOT NULL, city INT UNSIGNED NOT NULL REFERENCES cities(id), destiny INT UNSIGNED REFERENCES cities(id), remaining INT UNSIGNED, FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE, CONSTRAINT UNIQUE(userId,name)
