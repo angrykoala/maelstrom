@@ -42,8 +42,6 @@ ShipModel.prototype.createShip = function(name, user) {
 	return new Ship(name, user, this);
 };
 
-
-
 module.exports = ShipModel;
 
 

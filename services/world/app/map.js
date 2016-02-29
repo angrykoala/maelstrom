@@ -9,14 +9,16 @@ var cities = {};
 var map = {
 	addCity: function(city) {
 		if (city && city.name) {
-			this.cities[city.name] = city;
+			cities[city.name] = city;
 		}
 	},
-	getCity: function(name) {
-		return this.cities[name] || null;
+	getCity: function(name,done) {
+		var c=cities[name];
+		if(!c) return done(new Error("No city found"));
+		return done(null,c);
 	},
-	getAllCities: function() {
-		return Object.keys(this.cities);
+	getAllCities: function(done) {
+		return done(null,Object.keys(cities));
 	}
 };
 

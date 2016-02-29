@@ -5,6 +5,7 @@ Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: 
 */
 
+
 var User = function(id) {
 	this.id = id;
 	this.ships = {};
@@ -18,3 +19,5 @@ User.prototype.createShip = function(name, model) {
 		return true;
 	} else return false;
 };
+
+module.exports=User;
