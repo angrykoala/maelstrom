@@ -19,5 +19,8 @@ User.prototype.createShip = function(name, model) {
 		return true;
 	} else return false;
 };
+User.prototype.getAllShips=function(){
+	return Object.keys(this.ships);
+};
 
 module.exports=User;

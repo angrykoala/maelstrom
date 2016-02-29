@@ -50,9 +50,9 @@ module.exports = function(app) {
 			});
 			else return response.status(200).json(res);
 		});		
-	});/*
+	});
 	app.get('/ship_models', function(req, response) {
-		Get.shipModels(function(err, res) {
+		World.ships.getShipList(function(err,res){
 			if (err) return response.status(500).json({
 				error: err.toString()
 			});
@@ -61,14 +61,13 @@ module.exports = function(app) {
 	});
 	app.get('/user/ships', function(req, response) {
 		var userId = req.user.id;
-		console.log("Get ships user " + userId);
-		Get.ships(userId, function(err, res) {
+		World.users.getUser(userId,function(err,res){
 			if (err) return response.status(500).json({
 				error: err.toString()
 			});
-			else return response.status(200).json(res);
+			else return response.status(200).json(res.getAllShips());
 		});
-	});
+	});/*
 	app.get('/user/data', function(req, response) {
 		var userId = req.user.id;
 		console.log("Get user data " + userId);

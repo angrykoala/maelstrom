@@ -10,13 +10,13 @@ var map=require('./map');
 
 var users={
     users:{},
-    getUser:function(id){
+    getUser:function(id,done){
         var res=this.users[id];
         if(!res){
             this.users[id]=new User(id);
             res=this.users[id];
         }
-        return res;
+        return done(null,res);
     }
 };
 
@@ -27,11 +27,11 @@ var ships = {
 			this.list[model.name] = model;
 		}
 	},
-	getship: function(name) {
+	getShip: function(name) {
 		return this.list[name] || null;
 	},
-	getshipList: function() {
-		return Object.keys(this.list);
+	getShipList: function(done) {
+		return done(null,this.list);
 	}
 };
 

@@ -6,7 +6,7 @@ Description:
 */
 var Ship = function(name, user, shipModel) {
 	this.name = name;
-	this.owner = user;
+	this.owner = user.id;
 	this.model = shipModel;
 	this.life = shipModel.life;
 	this.city = null;
