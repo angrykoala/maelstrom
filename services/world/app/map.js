@@ -19,6 +19,10 @@ var map = {
 	},
 	getAllCities: function(done) {
 		return done(null, Object.keys(cities));
+	},
+	isCity: function(name) {
+		if (cities[name]) return true;
+		else return false;
 	}
 };
 

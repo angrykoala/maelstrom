@@ -4,12 +4,12 @@ Project: Maelström - World
 Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: 
 */
-var Ship = function(name, user, shipModel) {
+var Ship = function(name, user, shipModel, city) {
 	this.name = name;
 	this.owner = user.id;
 	this.model = shipModel;
 	this.life = shipModel.life;
-	this.city = null;
+	this.city = city;
 	this.setStatus("DOCKED");
 	this.products = [];
 };
@@ -38,8 +38,8 @@ var ShipModel = function(name, data) {
 	this.price = data.price || 0;
 	this.cargo = data.cargo || 0;
 };
-ShipModel.prototype.createShip = function(name, user) {
-	return new Ship(name, user, this);
+ShipModel.prototype.createShip = function(name, user, city) {
+	return new Ship(name, user, this, city);
 };
 
 module.exports = ShipModel;

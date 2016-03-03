@@ -12,11 +12,11 @@ var User = function(id) {
 	this.money = 0;
 };
 
-User.prototype.buildShip = function(name, model,done) {
+User.prototype.buildShip = function(name, model, city, done) {
 	if (this.ships[name] === undefined) {
-		var ship = model.createShip(name, this);
+		var ship = model.createShip(name, this, city);
 		this.ships[name] = ship;
-		return done(null,this.ships[name]);
+		return done(null, this.ships[name]);
 	} else return done(new Error("Ship already exists"));
 };
 User.prototype.getAllShips = function() {

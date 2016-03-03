@@ -96,6 +96,7 @@ module.exports = function(app) {
 		});
 	});
 	app.put('/user/build/ship', function(req, response) {
+		//TODO: set money
 		var userId = req.user.id;
 		var shipModelId = req.body.model;
 		var shipName = req.body.ship_name;
@@ -109,11 +110,14 @@ module.exports = function(app) {
 				error: err.toString()
 			});
 			else {
-				var model=World.ships.getShip(shipModelId);
-				if(!model) return response.status(500).json({
-					error:"No shipModel found"
+				var model = World.ships.getShip(shipModelId);
+				if (!model) return response.status(500).json({
+					error: "No shipModel found"
 				});
-				user.buildShip(shipName, model, function(err, res) {
+				if (!World.map.isCity(cityId)) return response.status(500).json({
+					error: "City doesn't exist"
+				});
+				user.buildShip(shipName, model, cityId, function(err, res) {
 					if (err) return response.status(500).json({
 						error: err.toString()
 					});
@@ -122,24 +126,25 @@ module.exports = function(app) {
 			}
 		});
 	});
-	/*
-		app.put('/user/move/ship',function(req,response){
-			var userId=req.user.id;
-			var shipId=req.body.ship;
-			var cityId=req.body.city;
-			console.log("Move ship "+userId);
-			if (shipModelId === undefined || shipId===undefined || cityId === undefined) return response.status(500).json({
-				error: "Not valid data"
+	app.put('/user/move/ship', function(req, response) {
+		var userId = req.user.id;
+		var shipId = req.body.ship;
+		var cityId = req.body.city;
+		console.log("Move ship " + userId);
+		if (shipModelId === undefined || shipId === undefined || cityId === undefined) return response.status(500).json({
+			error: "Not valid data"
+		});
+		Actions.moveShip(userId, shipId, cityId, function(err, res) {
+			if (err) return response.status(500).json({
+				error: err.toString()
 			});
-			Actions.moveShip(userId, shipId, cityId,function(err,res){
-				if (err) return response.status(500).json({
-					error: err.toString()
-				});
-				else if(!res) return response.status(500).json({error: "Can't move ship"});
-				else return response.status(201).json(res);
+			else if (!res) return response.status(500).json({
+				error: "Can't move ship"
 			});
-		});	
-		app.put('/user/buy',function(req,response){
+			else return response.status(201).json(res);
+		});
+	});
+	/*app.put('/user/buy',function(req,response){
 			var userId=req.user.id;
 			var shipId=req.body.ship;
 			var productId=req.body.product;
