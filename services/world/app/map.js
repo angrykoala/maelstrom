@@ -12,13 +12,13 @@ var map = {
 			cities[city.name] = city;
 		}
 	},
-	getCity: function(name,done) {
-		var c=cities[name];
-		if(!c) return done(new Error("No city found"));
-		return done(null,c);
+	getCity: function(name, done) {
+		var c = cities[name];
+		if (!c) return done(new Error("No city found"));
+		return done(null, c);
 	},
 	getAllCities: function(done) {
-		return done(null,Object.keys(cities));
+		return done(null, Object.keys(cities));
 	}
 };
 
