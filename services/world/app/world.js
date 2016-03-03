@@ -13,10 +13,17 @@ var users={
     getUser:function(id,done){
         var res=this.users[id];
         if(!res){
-            this.users[id]=new User(id);
-            res=this.users[id];
+            return done(new Error("Not user"));
         }
         return done(null,res);
+    },
+    addUser: function(id,done){
+        if(this.users[id]) return done(new Error("User already exists"));
+        else{
+        this.users[id]=new User(id);
+        res=this.users[id];
+        return done(null,res);
+        }
     }
 };
 

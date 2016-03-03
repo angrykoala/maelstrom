@@ -67,29 +67,31 @@ module.exports = function(app) {
 			});
 			else return response.status(200).json(res.getAllShips());
 		});
-	});/*
+	});
 	app.get('/user/data', function(req, response) {
 		var userId = req.user.id;
-		console.log("Get user data " + userId);
-		Get.userData(userId, function(err, res) {
+		World.users.getUser(userId,function(err,res){
 			if (err) return response.status(500).json({
 				error: err.toString()
 			});
-			else return response.status(200).json(res);
+			else{
+				var resp={"id":res.id,"money":res.money};
+				 return response.status(200).json(resp);
+			 }
 		});
 	});
 	app.post('/user/signup', function(req, response) {
-		//TODO: improve auth
 		var userId = req.user.id;
 		console.log("Create user " + userId);
-		response.status(200);
-		dbHandler.insert.user(userId, defaultUser, function(err, res) {
-			if (err) return response.status(500).json({
+		World.users.addUser(userId,function(err,res){
+			if(err) return response.status(500).json({
 				error: err.toString()
 			});
-			else return response.status(201).json(res);
+			else{
+				return response.status(201).json(res);
+			}			
 		});
-	});
+	});/*
 	app.put('/user/build/ship', function(req, response) {
 		var userId = req.user.id;
 		var shipModelId = req.body.model;
