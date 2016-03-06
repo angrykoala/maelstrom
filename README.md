@@ -9,10 +9,9 @@ _Version: 0.2.3_
 [![Dependency Status](https://gemnasium.com/demiurgosoft/maelstrom.svg)](https://gemnasium.com/demiurgosoft/maelstrom)
 [![Code Climate](https://codeclimate.com/github/demiurgosoft/maelstrom/badges/gpa.svg)](https://codeclimate.com/github/demiurgosoft/maelstrom)
 
+![Maelström Logo](https://raw.githubusercontent.com/demiurgosoft/maelstrom/master/logo/trans_logo.png)
+
 Economy and trading **MMO-RTS**(_Massively Multiplayer Online - Real Time Strategy_) simulation videogame framework under Node.js.
-
-
-![Logo](logo.jpg)
 
 ## Requirements
 Maelström will need the following software installed to work (may vary for each service)
@@ -43,3 +42,4 @@ Maelström is composed of several [_microservices_](https://github.com/demiurgos
 |World       |In progress|0.2.7      |World server and game logic               |
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
+> Maelström logo by @iblancasa under CC0
