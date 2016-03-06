@@ -1,7 +1,6 @@
 module.exports = function(grunt) {
 
 	//load plugins
-	grunt.loadNpmTasks('grunt-auto-install');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-mocha-test');
 
@@ -22,9 +21,9 @@ module.exports = function(grunt) {
 			}
 		},
 		clean: {
-			node_modules: ["node_modules/", "services/*/node_modules/"],
-			coverage: ["coverage/", "services/*/coverage/", "etc/", "services/*/etc/"],
-			backup: ["*.log", "services/*/*.log"]
+			node_modules: ["node_modules/"],
+			coverage: ["coverage/"],
+			backup: ["*.log"]
 		},
 		mochaTest: {
 			options: {

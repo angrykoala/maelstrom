@@ -4,8 +4,7 @@
   "description": "economic RTS-MMO ",
   "main": "index.js",
   "scripts": {
-    "install": "grunt auto_install",
-    "test": "istanbul cover grunt mochaTest -x gruntfile.js",
+    "test": "istanbul cover _mocha",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "clean": "grunt clean"
   },
@@ -32,7 +31,6 @@
   "dependencies": {
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
-    "grunt-auto-install": "^0.3.0",
     "grunt-contrib-clean": "^0.7.0"
   }
 }
