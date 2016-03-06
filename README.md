@@ -9,7 +9,10 @@ _Version: 0.2.3_
 [![Dependency Status](https://gemnasium.com/demiurgosoft/maelstrom.svg)](https://gemnasium.com/demiurgosoft/maelstrom)
 [![Code Climate](https://codeclimate.com/github/demiurgosoft/maelstrom/badges/gpa.svg)](https://codeclimate.com/github/demiurgosoft/maelstrom)
 
-Economy and trading **MMO-RTS**(_Massively Multiplayer Online - Real Time Strategy_) simulation videogame framework under Node.js. 
+Economy and trading **MMO-RTS**(_Massively Multiplayer Online - Real Time Strategy_) simulation videogame framework under Node.js.
+
+
+![Logo](logo.jpg)
 
 ## Requirements
 Maelström will need the following software installed to work (may vary for each service)
@@ -27,7 +30,7 @@ Each service can be deployed and tested separately, however, you can simple run 
     * `npm install --production` will only install production dependencies (not dev dependencies, note that dev-dependencies are necessary to execute the tests)
 * `npm test` will test every service with mocha and generate coverage info
     * `npm run coverall` is used by travis-ci and coverall
-* `npm clean` will clean all services and root folders, this will remove all backup files, unnecessary folders and **all** dependencies 
+* `npm clean` will clean all services and root folders, this will remove all backup files, unnecessary folders and **all** dependencies
 
 
 ## Services
