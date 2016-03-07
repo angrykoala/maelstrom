@@ -42,4 +42,4 @@ Maelström is composed of several [_microservices_](https://github.com/demiurgos
 |World       |In progress|0.2.7      |World server and game logic               |
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
-> Maelström logo by @iblancasa under CC0
+> Maelström logo by @iblancasa under CC-by-sa
