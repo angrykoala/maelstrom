@@ -22,10 +22,10 @@ Maelström is composed of several which provides the features with low interdepe
 |[Web][web]    |In Progress|Game web client                          |
 |[Messages][messages]|Not Started|Game messaging system              |
 
-[users]:[https://github.com/demiurgosoft/maelstrom-users]
-[world]:[https://github.com/demiurgosoft/maelstrom-world]
-[messages]:[https://github.com/demiurgosoft/maelstrom-messages]
-[web]:[https://github.com/demiurgosoft/maelstrom-web]
+[users]:https://github.com/demiurgosoft/maelstrom-users
+[world]:https://github.com/demiurgosoft/maelstrom-world
+[messages]:https://github.com/demiurgosoft/maelstrom-messages
+[web]:https://github.com/demiurgosoft/maelstrom-web
 
 
 
