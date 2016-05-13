@@ -31,4 +31,5 @@ node_modules
 *~
 ncp
 *.bak
-etc
+maelstrom-users
+maelstrom-world

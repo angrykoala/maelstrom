@@ -4,8 +4,6 @@ _by @demiurgosoft_
 
 [![Build Status](https://travis-ci.org/demiurgosoft/maelstrom.svg)](https://travis-ci.org/demiurgosoft/maelstrom)
 [![Coverage Status](https://coveralls.io/repos/demiurgosoft/maelstrom/badge.svg?branch=master&service=github)](https://coveralls.io/github/demiurgosoft/maelstrom?branch=master)
-[![Dependency Status](https://gemnasium.com/demiurgosoft/maelstrom.svg)](https://gemnasium.com/demiurgosoft/maelstrom)
-[![Code Climate](https://codeclimate.com/github/demiurgosoft/maelstrom/badges/gpa.svg)](https://codeclimate.com/github/demiurgosoft/maelstrom)
 
 ![Maelström Logo](https://raw.githubusercontent.com/demiurgosoft/maelstrom/master/logo/logo.jpg)
 
@@ -27,6 +25,11 @@ Maelström is composed of several which provides the features with low interdepe
 [messages]:https://github.com/demiurgosoft/maelstrom-messages
 [web]:https://github.com/demiurgosoft/maelstrom-web
 
+
+## Testing
+For full testing of maelström services:
+1- `npm install` will clone and install all services
+2- `npm test` will test all the services
 
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
