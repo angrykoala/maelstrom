@@ -6,22 +6,13 @@ node_js:
     - "0.12"
     - "0.10"
 services:
-#    - mongodb #mongo 2.4
+    - mongodb #mongo 2.4
     - rabbitmq
-    - mysql
+#    - mysql
 sudo: false
-addons: #installs mongo 3
-  apt:
-    sources:
-      - mongodb-upstart 
-      - mongodb-3.0-precise
-    packages:
-      - mongodb-org-server
-      - mongodb-org-shell      
 before_script:
   - sleep 15
-  - mysql -e 'create database maelstrom_world'
-  
+
 script:
     - npm test
 after_success:
