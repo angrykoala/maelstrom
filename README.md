@@ -27,9 +27,9 @@ Maelström is composed of several which provides the features with low interdepe
 
 
 ## Testing
-For full testing of maelström services:
-1- `npm install` will clone and install all services
-2- `npm test` will test all the services
+For full testing of maelström services:    
+1. `npm install` will clone and install all services    
+2. `npm test` will test all the services    
 
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
