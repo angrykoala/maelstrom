@@ -33,3 +33,5 @@ ncp
 *.bak
 maelstrom-users
 maelstrom-world
+maelstrom-web
+maelstrom-bot

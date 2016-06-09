@@ -1,6 +1,6 @@
 {
   "name": "maelstrom",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "economic RTS-MMO ",
   "main": "index.js",
   "scripts": {
