@@ -1,8 +1,6 @@
 Memoria y presentación de Maelström
 ================================
 
-![](imagenes/maelstrom_logo.png)
-
 ## Framework para videojuegos multijugador masivo online
 
 **Autor**    
@@ -32,10 +30,12 @@ During this project, it is expected to find and develop a set of tools and solut
 * **Memoria**
 Para compilar _markdown_ a un archivo pdf, es necesario tener _pandoc_ y _latex_ instalados. Ejecutar el script `build.sh`
 
+[Visualización Online](https://cdn.rawgit.com/demiurgosoft/maelstrom/master/memoria/memoria.pdf)
+
 * **Presentación**
 Hecha con **Markdown** y [Remarkjs](https://github.com/gnab/remark). Para visualizar cargar `slides/index.html` en cualquier navegador
 
-[Visualización Online]()
+[Visualización Online](https://rawgit.com/demiurgosoft/maelstrom/master/memoria/slides/index.html)
 
 
 
