@@ -41,6 +41,3 @@ Hecha con **Markdown** y [Remarkjs](https://github.com/gnab/remark). Para visual
 
 > Todos contenido bajo licencia **CC-BY-SA** a excepción de slides/images/logos, imagenes wow.jpg, coc.png, mono-micro.png y websocket.png en slides/images y diagramas/mono-micro.png
 >![](cc-by-sa.png)
-
-
->Slides/s 
