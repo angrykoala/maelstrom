@@ -83,7 +83,7 @@ Prototipo Open-Source de un videojuego **Multijugador Masivo Online** de estrate
 
 * Desarrollar prototipo (MVP) y analizar viabilidad con tecnología extensible y modernas
 
-* Proponer un framework?   
+* Proponer un framework
 
 ---
 
@@ -100,7 +100,8 @@ Prototipo Open-Source de un videojuego **Multijugador Masivo Online** de estrate
 
 ???
 
-multiplayer=/=mmo
+Multiplayer=/=mmo
+Comentar latencia
 
 
 ---
@@ -117,7 +118,7 @@ multiplayer=/=mmo
 
 * Qué son los microservicios   
 * Ventajas:
-    * Tecnologia especifica
+    * Tecnologia específica
     * Escalabilidad
     * Extensibilidad
 
@@ -150,10 +151,9 @@ Simplificacion en World
 
 Arquitectura actual
 
-Comentar bots
+Baja latencia
 
 ---
-
 
 ## Arquitectura: Cliente
 
@@ -169,10 +169,12 @@ Comentar bots
 </center>
 
 ???
-Cliente web desarrollado
 
 Asíncrono: El cliente obtiene la información de forma dinámica y la actualiza de forma asíncrona de diversos servidores
 
+Comentar bots
+
+**Websockets vs HTTP**
 
 ---
 
@@ -193,6 +195,8 @@ Asíncrono: El cliente obtiene la información de forma dinámica y la actualiza
 \>250 issues
 \>20 milestones
 
+Desarrollo basado en XP
+
 ---
 
 ## Implementación
@@ -204,9 +208,10 @@ Asíncrono: El cliente obtiene la información de forma dinámica y la actualiza
 </center>
 
 ???
-Comentar desarrollo: test,prototiping, 
+Comentar desarrollo: test,prototiping
+4 módulos independientes 
 
-LOC
+LOC (sin comentarios ni lineas blancas)
 
 ---
 
@@ -272,9 +277,6 @@ Cliente desarrollado con **React**, **JQuery** y **Bootstrap**
 <img src="images/logos/jwt.svg" height=80></img>    
 Comunicación cliente-servidor mediante **Ajax**, implementación de _websockets_ con **socket.io** y autentificación con **JSON Web Tokens**
 
-???
-Asignaturas relevantes
-
 ---------
 
 <img src="images/logos/browserify.png" height=90></img>
@@ -301,10 +303,8 @@ Integración continua con **Travis.ci**, tests con **mocha** y **chai**, cobertu
 <img src="images/logos/npm.png" width=15%></img>
 <img src="images/logos/openshift.png" width=10%></img>
 <img src="images/logos/heroku.jpg" width=20%></img>   
-Gestión de paquetes y despliegue con **npm**, **heroku** y **openshift**
+Gestión de paquetes y despliegue con **npm**, **openshift** y **heroku**
 
-???
-Asignaturas relevantes
 
 ---
 class: center, middle
@@ -320,7 +320,7 @@ Prototipo MMO:
 
 * Diseño arquitectónico modular basado en servicios.
 
-* Latencia reducida (websockets)
+* Baja latencia (websockets)
 
 * Sistema distribuido
 
@@ -333,6 +333,9 @@ Prototipo MMO:
 * Asignaturas Relevantes
 
 * Almacenamiento de datos NoSQL (MongoDB)
+
+* Latencia menor de 300ms
+
 
 ---
 
@@ -370,11 +373,66 @@ Patrones:
 * Prototype (Creacion de barcos)
 * Singleton (elemento world)
 
------
+Node vs Python vs PHP
 
-**Node vs Python | PHP**
+TCP vs UDP
+
+---
+count: false
+
+## Json Web Token
+
+<center>
+    <img src="images/jwt-diagram.png" width=100%></br>
+    <i class="footnote">Diagrama de JWT (auth0)</i>
+</center>
+
+???
+
+JWT
+
+* 3 partes (header, payload, signature)
+* ID en payload (id comun entre servicios)
+* Conexion http y wss con autentificación jwt
+* `Bearer <token>`
+    
+---
+count: false
+
+## Sync vs Async
+
+<center>
+    <img src="images/async.png" width=80%></br>
+</center>
 
 
+---
+count: false
+
+## Desarrollo Ágil
+
+* Historias de usuario
+
+* Desarrollo iterativo
+
+* Funcionalidad mínima
+
+* Prototipado
+
+* Desarrollo de _spikes_
+
+* Refactorización continua
+
+* Desarrollo de tests
+
+* Repositorio común de código
+
+* Integración continua
+
+* Codificación estándar
+
+???
+Técnicas basadas en XP
 
     </textarea>
     <script src="./remark-latest.min.js">
