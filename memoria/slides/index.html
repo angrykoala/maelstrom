@@ -100,13 +100,27 @@ Prototipo Open-Source de un videojuego **Multijugador Masivo Online** de estrate
 
 ???
 
-Multiplayer=/=mmo
+Multiplayer=/=mmo 
+
 Comentar latencia
+
+Dificultades técnicas
+
+--
+
+
+### Requisitos
+
+* Escalable
+
+* Baja latencia
+
+* Gestión de datos complejos
 
 
 ---
 
-## Arquitectura
+## Arquitectura: servidor
 
 <center>
 <img src="images/mono-micro.png" width=100%></br>
@@ -124,7 +138,7 @@ Comentar latencia
 
 ---
 
-## Arquitectura
+## Arquitectura: servidor
 
 <center>
 <img src="images/server_arch.png" width=100%></br>
@@ -139,7 +153,7 @@ Orientacion a servicios (SOA)
 
 ---
 
-## Arquitectura
+## Arquitectura: servidor
 
 <center>
 <img src="images/server_arch_2.svg" width=90%></br>
@@ -155,7 +169,7 @@ Baja latencia
 
 ---
 
-## Arquitectura: Cliente
+## Arquitectura: cliente
 
 * Servidor independiente del cliente
     * Cliente Web
@@ -175,6 +189,8 @@ Asíncrono: El cliente obtiene la información de forma dinámica y la actualiza
 Comentar bots
 
 **Websockets vs HTTP**
+
+Publish-subscribe
 
 ---
 
@@ -215,7 +231,7 @@ LOC (sin comentarios ni lineas blancas)
 
 ---
 
-## Implementación: Pruebas
+## Implementación: pruebas
 
 * _World_
     * Tests: 32
@@ -238,7 +254,7 @@ LOC
 
 ---
 
-## Implementación: Pruebas
+## Implementación: pruebas
 <center>
 <img src="images/world.png" width=80%></br>
 <i class="footnote">Evolución del servicio de mundo</i>
@@ -312,17 +328,26 @@ class: center, middle
 
 <!--iframe src="http://maelstrom-mmo.herokuapp.com/" width="100%" height=600px></iframe-->
 
+???
+http://maelstrom-mmo.herokuapp.com/   
+
+http://maelstromusers-demiurgosoft.rhcloud.com/
+
+http://maelstrom-world.herokuapp.com/   
+
 
 ---
 ## Conclusión y trabajos futuros
 
 Prototipo MMO:
 
-* Diseño arquitectónico modular basado en servicios.
+* Diseño arquitectónico extensible basado en servicios.
 
-* Baja latencia (websockets)
+* Baja latencia.
 
-* Sistema distribuido
+* Sistema distribuido.
+
+* Open-source.
 
 
 
@@ -352,6 +377,8 @@ Prototipo MMO:
 ???
 Comentar dificultades en escalabilidad
 
+Bases de datos (Redis)
+
 **Comercialización:**
 
 * tipos de modelo de negocio (desarrollo juegos, venta del framework (pequeñas y grandes empresas), proporcionar servicio)
@@ -365,6 +392,7 @@ class: center, middle
 <img src="images/maelstrom_logo.png" width="40%">
 
 ???
+
 Patrones:
 
 * Observer (cliente y servidor)
@@ -399,7 +427,7 @@ JWT
 ---
 count: false
 
-## Sync vs Async
+## Sync vs async
 
 <center>
     <img src="images/async.png" width=80%></br>
@@ -409,7 +437,9 @@ count: false
 ---
 count: false
 
-## Desarrollo Ágil
+## Desarrollo ágil
+
+**Principios basados en XP**
 
 * Historias de usuario
 
@@ -432,7 +462,31 @@ count: false
 * Codificación estándar
 
 ???
+
 Técnicas basadas en XP
+
+---
+count: false
+
+## Maelström
+
+>"Maelstrom, Moskoëstrom, Malstrøm, Mailström o también Moskstraumen es un gran remolino que se halla en las costas meridionales del archipiélago noruego de las islas Lofoten, en la provincia de Nordland"
+
+_Wikipedia_
+
+
+* Edgar Allan Poe. _"Un descenso al Maelstrom"_
+
+<center>
+<img src="images/maelstrom_map.png" width="50%"></br>
+<i class="footnote">Carta Marina de Olaus Magnus - Wikipedia</i>
+</center>
+
+???
+
+* Usado como sinónimo de _Remolino Gigante_
+
+
 
     </textarea>
     <script src="./remark-latest.min.js">
